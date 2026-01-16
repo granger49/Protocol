@@ -46,13 +46,13 @@ export async function PUT(
     if (body.source !== undefined) updateData.source = body.source
     if (body.source_url !== undefined) updateData.source_url = body.source_url
 
-    const { data, error } = await supabase
-      .from('exercise_library')
-      .update(updateData as any)
-      .eq('id', id)
-      .eq('user_id', user.id)
-      .select()
-      .single()
+    const { data, error } = await (supabase
+  .from('exercise_library')
+  .update(updateData)
+  .eq('id', id)
+  .eq('user_id', user.id)
+  .select()
+  .single() as any)
     
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
