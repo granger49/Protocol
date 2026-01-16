@@ -3,11 +3,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-}
-
-module.exports = nextConfig
-/** @type {import('next').NextConfig} */
-const nextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
