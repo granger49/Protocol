@@ -48,7 +48,7 @@ export async function PUT(
 
     const { data, error } = await supabase
       .from('exercise_library')
-      .update(updateData)
+      .update(updateData as any)
       .eq('id', id)
       .eq('user_id', user.id)
       .select()
