@@ -7,10 +7,10 @@ import StarRating from '../components/StarRating'
 import QRCodeModal from '../components/QRCodeModal'
 import { findShowBySlug } from '../data/shows'
 import { FRIEND_REVIEWS, friendById } from '../data/mockFriends'
-import { addReview, getLibrary, getReviews, getUser, setLibraryStatus, uid } from '../lib/storage'
-import type { WatchStatus } from '../types'
+import { addReview, addToList, getLists, getListItems, getUser, moveToDefaultList, removeFromList, getReviews, uid } from '../lib/storage'
+import type { DefaultListKind } from '../types'
 
-const STATUS_LABELS: Record<WatchStatus, string> = {
+const STATUS_LABELS: Record<DefaultListKind, string> = {
   watching: 'Watching',
   want: 'Want to watch',
   finished: 'Finished',
@@ -22,13 +22,19 @@ export default function ShowDetail() {
   const show = slug ? findShowBySlug(slug) : undefined
   const user = getUser()
 
-  const [library, setLibrary] = useState(getLibrary())
+  const [lists] = useState(getLists())
+  const [items, setItems] = useState(getListItems())
   const [reviews, setReviews] = useState(getReviews())
   const [showQr, setShowQr] = useState(false)
   const [draftRating, setDraftRating] = useState(0)
   const [draftText, setDraftText] = useState('')
 
-  const myEntry = show ? library.find((e) => e.showId === show.id) : undefined
+  const defaultLists = lists.filter((l) => l.kind !== 'custom')
+  const customLists = lists.filter((l) => l.kind === 'custom')
+
+  const currentDefaultListId = show ? items.find((i) => i.showId === show.id && defaultLists.some((l) => l.id === i.listId))?.listId : undefined
+  const customListIdsWithShow = show ? new Set(items.filter((i) => i.showId === show.id).map((i) => i.listId)) : new Set<string>()
+
   const myReview = show ? reviews.find((r) => r.showId === show.id && r.authorId === user.id) : undefined
 
   const allReviews = useMemo(() => {
@@ -46,14 +52,22 @@ export default function ShowDetail() {
   if (!show) {
     return (
       <>
-        <TopBar title="Not found" back="/shows" />
+        <TopBar title="Not found" back="/lists" />
         <p className="px-4 py-8 text-sm text-white/50">That show isn't in the catalog.</p>
       </>
     )
   }
 
-  function setStatus(status: WatchStatus) {
-    setLibrary(setLibraryStatus(show!.id, status))
+  function setDefaultStatus(kind: DefaultListKind) {
+    setItems(moveToDefaultList(show!.id, kind))
+  }
+
+  function toggleCustomList(listId: string) {
+    if (customListIdsWithShow.has(listId)) {
+      setItems(removeFromList(listId, show!.id))
+    } else {
+      setItems(addToList(listId, show!.id))
+    }
   }
 
   function submitReview() {
@@ -73,7 +87,7 @@ export default function ShowDetail() {
 
   return (
     <>
-      <TopBar title={show.title} back="/shows" />
+      <TopBar title={show.title} back="/lists" />
       <div className="px-4 pt-4 pb-8">
         <div className="flex gap-4">
           <ShowPoster show={show} size="md" />
@@ -100,28 +114,47 @@ export default function ShowDetail() {
 
         <p className="text-sm text-white/70 leading-relaxed mt-4">{show.synopsis}</p>
 
-        <div className="flex gap-2 mt-4">
-          <select
-            value={myEntry?.status ?? ''}
-            onChange={(e) => setStatus(e.target.value as WatchStatus)}
-            className="flex-1 bg-white/5 border border-line rounded-full text-sm px-3 py-2 outline-none"
-          >
-            <option value="" disabled>
-              Add to my shows…
-            </option>
-            {(Object.keys(STATUS_LABELS) as WatchStatus[]).map((s) => (
-              <option key={s} value={s}>
-                {STATUS_LABELS[s]}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => setShowQr(true)}
-            className="flex items-center gap-1.5 rounded-full border border-line px-3 py-2 text-sm"
-          >
+        <div className="flex items-center justify-between mt-5 mb-2">
+          <p className="text-xs uppercase tracking-wide text-white/40">Your lists</p>
+          <button onClick={() => setShowQr(true)} className="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs">
             <span>▦</span> Share QR
           </button>
         </div>
+
+        <select
+          value={currentDefaultListId ?? ''}
+          onChange={(e) => {
+            const list = defaultLists.find((l) => l.id === e.target.value)
+            if (list) setDefaultStatus(list.kind as DefaultListKind)
+          }}
+          className="w-full bg-white/5 border border-line rounded-full text-sm px-3 py-2 outline-none mb-2"
+        >
+          <option value="" disabled>
+            Add to a default list…
+          </option>
+          {defaultLists.map((l) => (
+            <option key={l.id} value={l.id}>
+              {STATUS_LABELS[l.kind as DefaultListKind] ?? l.name}
+            </option>
+          ))}
+        </select>
+
+        {customLists.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {customLists.map((l) => (
+              <button
+                key={l.id}
+                onClick={() => toggleCustomList(l.id)}
+                className={`text-xs rounded-full border px-3 py-1.5 transition-colors ${
+                  customListIdsWithShow.has(l.id) ? 'border-accent2/50 bg-accent2/10 text-white' : 'border-line text-white/50'
+                }`}
+              >
+                {customListIdsWithShow.has(l.id) ? '✓ ' : '+ '}
+                {l.name}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="mt-6">
           <p className="text-xs uppercase tracking-wide text-white/40 mb-2">

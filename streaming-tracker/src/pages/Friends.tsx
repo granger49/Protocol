@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import TopBar from '../components/TopBar'
-import { FRIENDS, FRIEND_POSTS } from '../data/mockFriends'
+import { FRIENDS, listsForFriend } from '../data/mockFriends'
 
 export default function Friends() {
   return (
@@ -12,7 +12,7 @@ export default function Friends() {
         </p>
         <div className="flex flex-col gap-2">
           {FRIENDS.map((friend) => {
-            const postCount = FRIEND_POSTS.filter((p) => p.authorId === friend.id).length
+            const listCount = listsForFriend(friend.id).length
             return (
               <Link
                 key={friend.id}
@@ -23,7 +23,7 @@ export default function Friends() {
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium">{friend.name}</p>
                   <p className="text-xs text-white/40">
-                    @{friend.handle} · {postCount} post{postCount === 1 ? '' : 's'}
+                    @{friend.handle} · {listCount} list{listCount === 1 ? '' : 's'}
                   </p>
                 </div>
                 <span className="text-white/30">›</span>

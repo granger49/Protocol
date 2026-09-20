@@ -1,9 +1,9 @@
-import type { LibraryEntry, Post, Review, User, WatchStatus } from '../types'
+import type { DefaultListKind, ListDef, ListItem, Review, User, Visibility } from '../types'
 
 const KEYS = {
   user: 'reel.user',
-  posts: 'reel.posts',
-  library: 'reel.library',
+  lists: 'reel.lists',
+  listItems: 'reel.listItems',
   reviews: 'reel.reviews',
 } as const
 
@@ -32,49 +32,120 @@ export function saveUser(user: User) {
   write(KEYS.user, user)
 }
 
-export function getPosts(): Post[] {
-  return read<Post[]>(KEYS.posts, [])
-}
+export const DEFAULT_LISTS: { kind: DefaultListKind; name: string; visibility: Visibility }[] = [
+  { kind: 'watching', name: 'Watching', visibility: 'friends' },
+  { kind: 'want', name: 'Want to Watch', visibility: 'friends' },
+  { kind: 'finished', name: 'Finished', visibility: 'friends' },
+  { kind: 'dropped', name: 'Dropped', visibility: 'private' },
+]
 
-export function addPost(post: Post) {
-  const posts = getPosts()
-  posts.unshift(post)
-  write(KEYS.posts, posts)
-  return posts
-}
-
-export function updatePost(id: string, patch: Partial<Post>) {
-  const posts = getPosts().map((p) => (p.id === id ? { ...p, ...patch } : p))
-  write(KEYS.posts, posts)
-  return posts
-}
-
-export function deletePost(id: string) {
-  const posts = getPosts().filter((p) => p.id !== id)
-  write(KEYS.posts, posts)
-  return posts
-}
-
-export function getLibrary(): LibraryEntry[] {
-  return read<LibraryEntry[]>(KEYS.library, [])
-}
-
-export function setLibraryStatus(showId: string, status: WatchStatus) {
-  const lib = getLibrary()
-  const existing = lib.find((e) => e.showId === showId)
-  let next: LibraryEntry[]
-  if (existing) {
-    next = lib.map((e) => (e.showId === showId ? { ...e, status } : e))
-  } else {
-    next = [...lib, { showId, status, addedAt: new Date().toISOString() }]
+export function getLists(): ListDef[] {
+  const lists = read<ListDef[]>(KEYS.lists, [])
+  if (lists.length === 0) {
+    return ensureDefaultLists()
   }
-  write(KEYS.library, next)
+  return lists
+}
+
+function ensureDefaultLists(): ListDef[] {
+  const user = getUser()
+  const lists: ListDef[] = DEFAULT_LISTS.map((d) => ({
+    id: uid('list'),
+    ownerId: user.id,
+    name: d.name,
+    kind: d.kind,
+    visibility: d.visibility,
+    createdAt: new Date().toISOString(),
+  }))
+  write(KEYS.lists, lists)
+  return lists
+}
+
+export function createList(name: string, visibility: Visibility) {
+  const user = getUser()
+  const lists = getLists()
+  const list: ListDef = {
+    id: uid('list'),
+    ownerId: user.id,
+    name,
+    kind: 'custom',
+    visibility,
+    createdAt: new Date().toISOString(),
+  }
+  const next = [...lists, list]
+  write(KEYS.lists, next)
+  return { lists: next, list }
+}
+
+export function updateListVisibility(listId: string, visibility: Visibility) {
+  const next = getLists().map((l) => (l.id === listId ? { ...l, visibility } : l))
+  write(KEYS.lists, next)
   return next
 }
 
-export function removeFromLibrary(showId: string) {
-  const next = getLibrary().filter((e) => e.showId !== showId)
-  write(KEYS.library, next)
+export function renameList(listId: string, name: string) {
+  const next = getLists().map((l) => (l.id === listId ? { ...l, name } : l))
+  write(KEYS.lists, next)
+  return next
+}
+
+export function deleteList(listId: string) {
+  const nextLists = getLists().filter((l) => l.id !== listId)
+  const nextItems = getListItems().filter((i) => i.listId !== listId)
+  write(KEYS.lists, nextLists)
+  write(KEYS.listItems, nextItems)
+  return { lists: nextLists, items: nextItems }
+}
+
+export function getListItems(): ListItem[] {
+  return read<ListItem[]>(KEYS.listItems, [])
+}
+
+export function addToList(
+  listId: string,
+  showId: string,
+  extra: { photo?: string | null; note?: string } = {},
+) {
+  const items = getListItems()
+  // a show only appears once per list
+  const filtered = items.filter((i) => !(i.listId === listId && i.showId === showId))
+  const item: ListItem = {
+    id: uid('item'),
+    listId,
+    showId,
+    photo: extra.photo ?? null,
+    note: extra.note ?? '',
+    addedAt: new Date().toISOString(),
+  }
+  const next = [item, ...filtered]
+  write(KEYS.listItems, next)
+  return next
+}
+
+/** Moves a show between the mutually-exclusive default status lists (watching/want/finished/dropped). */
+export function moveToDefaultList(showId: string, kind: DefaultListKind, extra?: { photo?: string | null; note?: string }) {
+  const lists = getLists()
+  const defaultListIds = new Set(lists.filter((l) => l.kind !== 'custom').map((l) => l.id))
+  const target = lists.find((l) => l.kind === kind)
+  if (!target) return getListItems()
+
+  const items = getListItems().filter((i) => !(defaultListIds.has(i.listId) && i.showId === showId))
+  const item: ListItem = {
+    id: uid('item'),
+    listId: target.id,
+    showId,
+    photo: extra?.photo ?? null,
+    note: extra?.note ?? '',
+    addedAt: new Date().toISOString(),
+  }
+  const next = [item, ...items]
+  write(KEYS.listItems, next)
+  return next
+}
+
+export function removeFromList(listId: string, showId: string) {
+  const next = getListItems().filter((i) => !(i.listId === listId && i.showId === showId))
+  write(KEYS.listItems, next)
   return next
 }
 
@@ -93,8 +164,8 @@ export function exportData() {
   return JSON.stringify(
     {
       user: getUser(),
-      posts: getPosts(),
-      library: getLibrary(),
+      lists: getLists(),
+      listItems: getListItems(),
       reviews: getReviews(),
       exportedAt: new Date().toISOString(),
     },
@@ -106,8 +177,8 @@ export function exportData() {
 export function importData(json: string) {
   const data = JSON.parse(json)
   if (data.user) write(KEYS.user, data.user)
-  if (data.posts) write(KEYS.posts, data.posts)
-  if (data.library) write(KEYS.library, data.library)
+  if (data.lists) write(KEYS.lists, data.lists)
+  if (data.listItems) write(KEYS.listItems, data.listItems)
   if (data.reviews) write(KEYS.reviews, data.reviews)
 }
 

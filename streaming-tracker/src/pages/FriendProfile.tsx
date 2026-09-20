@@ -1,21 +1,12 @@
-import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import TopBar from '../components/TopBar'
-import PostCard from '../components/PostCard'
-import ShowPoster from '../components/ShowPoster'
-import { friendById, FRIEND_POSTS } from '../data/mockFriends'
-import { findShowById } from '../data/shows'
+import ListSummaryCard from '../components/ListSummaryCard'
+import { friendById, listsForFriend, itemsForList } from '../data/mockFriends'
 
 export default function FriendProfile() {
   const { id } = useParams()
   const friend = id ? friendById(id) : undefined
-
-  const posts = useMemo(() => FRIEND_POSTS.filter((p) => p.authorId === id && p.visibility !== 'private'), [id])
-
-  const watchedShows = useMemo(() => {
-    const ids = new Set(posts.map((p) => p.showId))
-    return [...ids].map(findShowById).filter(Boolean)
-  }, [posts])
+  const lists = id ? listsForFriend(id) : []
 
   if (!friend) {
     return (
@@ -39,24 +30,19 @@ export default function FriendProfile() {
         </div>
         <p className="text-sm text-white/70 mt-3">{friend.bio}</p>
 
-        {watchedShows.length > 0 && (
-          <div className="mt-5">
-            <p className="text-xs uppercase tracking-wide text-white/40 mb-2">Recently watched</p>
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {watchedShows.map((show) => (
-                <ShowPoster key={show!.id} show={show!} size="sm" />
+        <div className="mt-6">
+          <p className="text-xs uppercase tracking-wide text-white/40 mb-2">
+            {friend.name.split(' ')[0]}'s lists
+          </p>
+          {lists.length === 0 ? (
+            <p className="text-sm text-white/40">No public or shared lists yet.</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-2">
+              {lists.map((list) => (
+                <ListSummaryCard key={list.id} list={list} items={itemsForList(list.id)} to={`/friends/${friend.id}/lists/${list.id}`} />
               ))}
             </div>
-          </div>
-        )}
-
-        <div className="mt-5">
-          <p className="text-xs uppercase tracking-wide text-white/40 mb-2">Posts</p>
-          <div className="flex flex-col gap-3">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} authorName={friend.name} authorColor={friend.avatarColor} />
-            ))}
-          </div>
+          )}
         </div>
       </div>
     </>

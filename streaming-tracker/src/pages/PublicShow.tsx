@@ -55,7 +55,7 @@ export default function PublicShow() {
         <div className="w-full max-w-sm mt-8 rounded-xl2 border border-line bg-panel p-5">
           <p className="font-display font-semibold mb-1">See what your friends think</p>
           <p className="text-xs text-white/50 mb-4">
-            Get Reel to read full reviews, track what you're watching, and share your own posts.
+            Get Reel to read full reviews, track what you're watching, and build your own lists.
           </p>
           <div className="flex flex-col gap-2">
             <button className="rounded-full bg-white text-ink text-sm font-semibold py-2.5">

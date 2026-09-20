@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
-import type { Post } from '../types'
+import type { ListItem } from '../types'
 import { findShowById } from '../data/shows'
 import ShowPoster from './ShowPoster'
-import StarRating from './StarRating'
 import PlatformBadge from './PlatformBadge'
 
 function timeAgo(iso: string) {
@@ -14,24 +13,20 @@ function timeAgo(iso: string) {
   return `${days}d ago`
 }
 
-const VISIBILITY_LABEL: Record<Post['visibility'], string> = {
-  public: '🌐 Public',
-  friends: '👥 Friends',
-  private: '🔒 Only me',
-}
-
-export default function PostCard({
-  post,
+export default function ActivityRow({
+  item,
   authorName,
   authorColor,
-  onDelete,
+  listName,
+  onRemove,
 }: {
-  post: Post
+  item: ListItem
   authorName: string
   authorColor: string
-  onDelete?: () => void
+  listName: string
+  onRemove?: () => void
 }) {
-  const show = findShowById(post.showId)
+  const show = findShowById(item.showId)
   if (!show) return null
 
   return (
@@ -39,20 +34,21 @@ export default function PostCard({
       <div className="flex items-center gap-2 mb-3">
         <span className={`h-8 w-8 rounded-full bg-gradient-to-br ${authorColor} flex-shrink-0`} />
         <div className="min-w-0">
-          <p className="text-sm font-medium truncate">{authorName}</p>
-          <p className="text-xs text-white/40">
-            {timeAgo(post.createdAt)} · {VISIBILITY_LABEL[post.visibility]}
+          <p className="text-sm">
+            <span className="font-medium">{authorName}</span>{' '}
+            <span className="text-white/50">added to</span> <span className="font-medium">{listName}</span>
           </p>
+          <p className="text-xs text-white/40">{timeAgo(item.addedAt)}</p>
         </div>
-        {onDelete && (
-          <button onClick={onDelete} className="ml-auto text-white/30 hover:text-white/70 text-sm px-1">
+        {onRemove && (
+          <button onClick={onRemove} className="ml-auto text-white/30 hover:text-white/70 text-sm px-1">
             ✕
           </button>
         )}
       </div>
 
-      {post.photo ? (
-        <img src={post.photo} alt={show.title} className="w-full aspect-video object-cover rounded-lg mb-3" />
+      {item.photo ? (
+        <img src={item.photo} alt={show.title} className="w-full aspect-video object-cover rounded-lg mb-3" />
       ) : null}
 
       <div className="flex gap-3">
@@ -68,11 +64,10 @@ export default function PostCard({
               <PlatformBadge key={p} platform={p} />
             ))}
           </div>
-          {post.rating != null && <StarRating value={post.rating} readOnly size="sm" />}
         </div>
       </div>
 
-      {post.caption && <p className="text-sm text-white/80 mt-3 leading-relaxed">{post.caption}</p>}
+      {item.note && <p className="text-sm text-white/80 mt-3 leading-relaxed">{item.note}</p>}
     </article>
   )
 }

@@ -31,25 +31,29 @@ export interface Review {
   createdAt: string
 }
 
-export type WatchStatus = 'watching' | 'want' | 'finished' | 'dropped'
-
-export interface LibraryEntry {
-  showId: string
-  status: WatchStatus
-  addedAt: string
-}
-
 export type Visibility = 'public' | 'friends' | 'private'
 
-export interface Post {
+// The four default lists every user starts with. Users can also create
+// their own custom lists ('custom') alongside these.
+export type DefaultListKind = 'watching' | 'want' | 'finished' | 'dropped'
+export type ListKind = DefaultListKind | 'custom'
+
+export interface ListDef {
   id: string
-  authorId: string
-  showId: string
-  photo: string | null // data URL, captured from the TV
-  caption: string
-  rating: number | null
+  ownerId: string
+  name: string
+  kind: ListKind
   visibility: Visibility
   createdAt: string
+}
+
+export interface ListItem {
+  id: string
+  listId: string
+  showId: string
+  photo: string | null // data URL, captured from the TV
+  note: string
+  addedAt: string
 }
 
 export interface Friend {

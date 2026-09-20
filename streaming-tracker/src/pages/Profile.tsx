@@ -39,7 +39,7 @@ export default function Profile() {
   }
 
   function reset() {
-    if (confirm('Clear all local data? This removes your posts, ratings, and library.')) {
+    if (confirm('Clear all local data? This removes your lists, ratings, and reviews.')) {
       clearAllData()
       window.location.reload()
     }
@@ -99,7 +99,7 @@ export default function Profile() {
             <p>This is a local-first prototype for working out the UX. A few things are simulated for now:</p>
             <ul className="list-disc pl-4 flex flex-col gap-1">
               <li>Show recognition from a photo picks a plausible match from a small local catalog rather than calling a real vision API.</li>
-              <li>Friends and their posts are seeded so the feed feels alive without a backend.</li>
+              <li>Friends and their lists are seeded so the home activity feed feels alive without a backend.</li>
               <li>"Where to watch" data is hardcoded per show instead of coming from a live availability API.</li>
             </ul>
             <p>Swap points are isolated in <code>src/lib/recognize.ts</code> (recognition) and <code>src/data</code> (catalog + social) so real APIs and a shared backend can replace them without touching the UI.</p>
