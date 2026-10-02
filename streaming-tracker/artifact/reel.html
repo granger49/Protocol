@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600&display=swap"
   rel="stylesheet"
 />
 <script>
@@ -12,38 +12,87 @@
     theme: {
       extend: {
         colors: {
-          ink: '#0b0d12',
-          panel: '#12151c',
-          line: '#22262f',
-          accent: '#ff5a5f',
-          accent2: '#5ac8fa',
+          bg: 'rgb(var(--bg) / <alpha-value>)',
+          surface: 'rgb(var(--surface) / <alpha-value>)',
+          surface2: 'rgb(var(--surface-2) / <alpha-value>)',
+          line: 'rgb(var(--line) / <alpha-value>)',
+          ink: 'rgb(var(--ink) / <alpha-value>)',
+          inksoft: 'rgb(var(--ink-soft) / <alpha-value>)',
+          accent: 'rgb(var(--accent) / <alpha-value>)',
+          accentsoft: 'rgb(var(--accent-soft) / <alpha-value>)',
+          accentink: 'rgb(var(--accent-ink) / <alpha-value>)',
+          gold: 'rgb(var(--gold) / <alpha-value>)',
+          danger: 'rgb(var(--danger) / <alpha-value>)',
         },
-        fontFamily: { display: ['"Space Grotesk"', 'system-ui', 'sans-serif'] },
+        fontFamily: { display: ['"Instrument Serif"', 'Georgia', 'serif'] },
         borderRadius: { xl2: '1.25rem' },
       },
     },
   }
 </script>
 <style>
-  :root { color-scheme: dark; }
-  html, body { background: #0b0d12; }
+  :root {
+    color-scheme: light dark;
+    --bg: 240 240 241; --surface: 255 255 255; --surface-2: 231 231 232; --line: 219 219 221;
+    --ink: 32 32 34; --ink-soft: 118 117 122; --accent: 91 109 143; --accent-soft: 221 227 235;
+    --accent-ink: 255 255 255; --gold: 176 136 71; --danger: 178 93 83;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: 20 21 23; --surface: 29 30 33; --surface-2: 38 39 43; --line: 54 55 60;
+      --ink: 234 234 232; --ink-soft: 155 154 150; --accent: 148 165 196; --accent-soft: 42 50 63;
+      --accent-ink: 20 21 23; --gold: 210 173 112; --danger: 212 138 128;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: 20 21 23; --surface: 29 30 33; --surface-2: 38 39 43; --line: 54 55 60;
+    --ink: 234 234 232; --ink-soft: 155 154 150; --accent: 148 165 196; --accent-soft: 42 50 63;
+    --accent-ink: 20 21 23; --gold: 210 173 112; --danger: 212 138 128;
+  }
+  html, body { background: rgb(var(--bg)); }
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Work Sans', system-ui, sans-serif;
     font-size: 16px;
-    color: #ffffff;
-    background: radial-gradient(circle at 20% -10%, #1a1030 0%, #0b0d12 45%) fixed;
+    color: rgb(var(--ink));
     min-height: 100%;
   }
-  .font-display { font-family: 'Space Grotesk', system-ui, sans-serif; }
+  .font-display { font-family: 'Instrument Serif', Georgia, serif; }
   * { -webkit-tap-highlight-color: transparent; }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-thumb { background: #2a2f3a; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb { background: rgb(var(--line)); border-radius: 999px; }
   .safe-top { padding-top: env(safe-area-inset-top, 0px); }
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
-  @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-  .animate-scan { animation: scan 1.8s ease-in-out infinite; }
-  @keyframes pop-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-  .animate-pop { animation: pop-in 0.25s ease-out both; }
+
+  /* poster "art": muted duotone families + a faint grain so blocks of color read as paper/print, not UI chrome */
+  .poster-0 { background: linear-gradient(160deg, #C98B7A, #3B2E2E); }
+  .poster-1 { background: linear-gradient(160deg, #8FA68E, #2B332C); }
+  .poster-2 { background: linear-gradient(160deg, #6E85A8, #232C3B); }
+  .poster-3 { background: linear-gradient(160deg, #B9775A, #3A2A22); }
+  .poster-4 { background: linear-gradient(160deg, #C9A565, #332A1E); }
+  .poster-5 { background: linear-gradient(160deg, #9C8CA8, #2D2436); }
+  .poster-6 { background: linear-gradient(160deg, #6FA39A, #1E302D); }
+  .poster-7 { background: linear-gradient(160deg, #A89D8E, #2B2825); }
+  .poster-8 { background: linear-gradient(160deg, #C77B72, #3A1F1E); }
+  .poster-9 { background: linear-gradient(160deg, #7E93AE, #22283A); }
+  [class*="poster-"] { position: relative; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08); }
+  .poster-grain::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .05;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .avatar-me { background: rgb(var(--accent)); }
+  .avatar-rose { background: #C98B7A; }
+  .avatar-slate { background: #6E85A8; }
+  .avatar-sage { background: #8FA68E; }
+  .avatar-lavender { background: #9C8CA8; }
+
+  @keyframes breathe { 0%, 100% { opacity: .35 } 50% { opacity: .85 } }
+  .animate-scan { animation: breathe 2.4s ease-in-out infinite; }
+  @keyframes pop-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-pop { animation: pop-in 0.35s ease-out both; }
   [hidden] { display: none !important; }
 </style>
 
@@ -54,37 +103,37 @@
    DATA
    ========================================================================= */
 const SHOWS = [
-  { id: 's1', slug: 'severance', title: 'Severance', year: 2022, genres: ['Sci-Fi', 'Thriller'], platforms: ['Apple TV+'], synopsis: 'Employees undergo a procedure to split their memories between work and home.', color: 'from-indigo-600 to-cyan-500', emoji: '🧠' },
-  { id: 's2', slug: 'the-bear', title: 'The Bear', year: 2022, genres: ['Drama', 'Comedy'], platforms: ['Hulu'], synopsis: "A young chef returns home to run his late brother's sandwich shop.", color: 'from-orange-600 to-red-500', emoji: '🍞' },
-  { id: 's3', slug: 'succession', title: 'Succession', year: 2018, genres: ['Drama'], platforms: ['Max'], synopsis: 'A media dynasty fights over who will take control of the family empire.', color: 'from-slate-700 to-zinc-500', emoji: '👑' },
-  { id: 's4', slug: 'stranger-things', title: 'Stranger Things', year: 2016, genres: ['Sci-Fi', 'Horror'], platforms: ['Netflix'], synopsis: 'Kids in a small town uncover supernatural forces and secret experiments.', color: 'from-red-700 to-purple-700', emoji: '📼' },
-  { id: 's5', slug: 'the-last-of-us', title: 'The Last of Us', year: 2023, genres: ['Drama', 'Horror'], platforms: ['Max'], synopsis: 'A smuggler escorts a girl across a post-pandemic United States.', color: 'from-emerald-700 to-lime-600', emoji: '🍄' },
-  { id: 's6', slug: 'fleabag', title: 'Fleabag', year: 2016, genres: ['Comedy', 'Drama'], platforms: ['Prime Video'], synopsis: 'A woman navigates modern life in London while breaking the fourth wall.', color: 'from-pink-600 to-rose-500', emoji: '🍷' },
-  { id: 's7', slug: 'ted-lasso', title: 'Ted Lasso', year: 2020, genres: ['Comedy', 'Sport'], platforms: ['Apple TV+'], synopsis: 'An American football coach takes over an English football club.', color: 'from-yellow-500 to-amber-600', emoji: '⚽' },
-  { id: 's8', slug: 'the-crown', title: 'The Crown', year: 2016, genres: ['Drama', 'History'], platforms: ['Netflix'], synopsis: 'The reign of Queen Elizabeth II, from the 1940s to modern times.', color: 'from-yellow-700 to-stone-500', emoji: '👑' },
-  { id: 's9', slug: 'abbott-elementary', title: 'Abbott Elementary', year: 2021, genres: ['Comedy'], platforms: ['Hulu'], synopsis: 'A mockumentary about teachers at an underfunded Philadelphia school.', color: 'from-sky-600 to-blue-500', emoji: '🏫' },
-  { id: 's10', slug: 'house-of-the-dragon', title: 'House of the Dragon', year: 2022, genres: ['Fantasy', 'Drama'], platforms: ['Max'], synopsis: 'The Targaryen civil war, two hundred years before Game of Thrones.', color: 'from-red-800 to-black', emoji: '🐉' },
-  { id: 's11', slug: 'only-murders-in-the-building', title: 'Only Murders in the Building', year: 2021, genres: ['Comedy', 'Mystery'], platforms: ['Hulu'], synopsis: 'Three strangers obsessed with true crime investigate a death in their building.', color: 'from-purple-700 to-fuchsia-600', emoji: '🔎' },
-  { id: 's12', slug: 'the-mandalorian', title: 'The Mandalorian', year: 2019, genres: ['Sci-Fi', 'Action'], platforms: ['Disney+'], synopsis: 'A lone bounty hunter makes his way through the outer reaches of the galaxy.', color: 'from-neutral-700 to-slate-600', emoji: '🪐' },
-  { id: 's13', slug: 'reservation-dogs', title: 'Reservation Dogs', year: 2021, genres: ['Comedy', 'Drama'], platforms: ['Hulu'], synopsis: 'Four Indigenous teens in rural Oklahoma navigate life and loss.', color: 'from-orange-700 to-yellow-600', emoji: '🌵' },
-  { id: 's14', slug: 'yellowjackets', title: 'Yellowjackets', year: 2021, genres: ['Horror', 'Mystery'], platforms: ['Paramount+'], synopsis: "A girls' soccer team survives a plane crash in the wilderness — with consequences.", color: 'from-yellow-600 to-green-700', emoji: '🏕️' },
-  { id: 's15', slug: 'the-white-lotus', title: 'The White Lotus', year: 2021, genres: ['Drama', 'Satire'], platforms: ['Max'], synopsis: 'Guests and staff at a luxury resort unravel over the course of a week.', color: 'from-teal-600 to-emerald-500', emoji: '🌺' },
-  { id: 's16', slug: 'slow-horses', title: 'Slow Horses', year: 2022, genres: ['Spy', 'Thriller'], platforms: ['Apple TV+'], synopsis: 'MI5 rejects investigate a case from the bottom rung of the service.', color: 'from-gray-700 to-blue-900', emoji: '🐎' },
-  { id: 's17', slug: 'atlanta', title: 'Atlanta', year: 2016, genres: ['Comedy', 'Surreal'], platforms: ['Hulu'], synopsis: 'Two cousins navigate the Atlanta rap scene and everyday absurdity.', color: 'from-violet-700 to-indigo-600', emoji: '🎤' },
-  { id: 's18', slug: 'poker-face', title: 'Poker Face', year: 2023, genres: ['Mystery', 'Comedy'], platforms: ['Peacock'], synopsis: 'A woman with a natural lie-detecting ability solves a new mystery each week.', color: 'from-red-600 to-yellow-500', emoji: '🃏' },
-  { id: 's19', slug: 'shogun', title: 'Shōgun', year: 2024, genres: ['Drama', 'History'], platforms: ['Hulu', 'FX'], synopsis: "A shipwrecked English sailor gets caught up in feudal Japan's power struggle.", color: 'from-red-900 to-stone-700', emoji: '⚔️' },
-  { id: 's20', slug: 'better-call-saul', title: 'Better Call Saul', year: 2015, genres: ['Crime', 'Drama'], platforms: ['AMC', 'Netflix'], synopsis: 'The transformation of a small-time lawyer into the man known as Saul Goodman.', color: 'from-amber-600 to-orange-700', emoji: '⚖️' },
-  { id: 's21', slug: 'the-boys', title: 'The Boys', year: 2019, genres: ['Superhero', 'Satire'], platforms: ['Prime Video'], synopsis: 'Vigilantes take on corrupt superheroes secretly controlled by a corporation.', color: 'from-red-600 to-blue-800', emoji: '🦸' },
-  { id: 's22', slug: 'loki', title: 'Loki', year: 2021, genres: ['Sci-Fi', 'Fantasy'], platforms: ['Disney+'], synopsis: 'The God of Mischief is recruited by a mysterious bureaucratic organization.', color: 'from-emerald-700 to-green-500', emoji: '🐍' },
-  { id: 's23', slug: 'girls5eva', title: 'Girls5eva', year: 2021, genres: ['Comedy', 'Musical'], platforms: ['Netflix'], synopsis: 'A one-hit-wonder girl group gets a shot at a comeback.', color: 'from-pink-500 to-purple-500', emoji: '🎶' },
-  { id: 's24', slug: 'true-detective', title: 'True Detective', year: 2014, genres: ['Crime', 'Anthology'], platforms: ['Max'], synopsis: 'An anthology series following detectives entangled in dark, layered investigations.', color: 'from-slate-800 to-cyan-800', emoji: '🔦' },
+  { id: 's1', slug: 'severance', title: 'Severance', year: 2022, genres: ['Sci-Fi', 'Thriller'], platforms: ['Apple TV+'], synopsis: 'Employees undergo a procedure to split their memories between work and home.', pal: 2, emoji: '🧠' },
+  { id: 's2', slug: 'the-bear', title: 'The Bear', year: 2022, genres: ['Drama', 'Comedy'], platforms: ['Hulu'], synopsis: "A young chef returns home to run his late brother's sandwich shop.", pal: 3, emoji: '🍞' },
+  { id: 's3', slug: 'succession', title: 'Succession', year: 2018, genres: ['Drama'], platforms: ['Max'], synopsis: 'A media dynasty fights over who will take control of the family empire.', pal: 7, emoji: '👑' },
+  { id: 's4', slug: 'stranger-things', title: 'Stranger Things', year: 2016, genres: ['Sci-Fi', 'Horror'], platforms: ['Netflix'], synopsis: 'Kids in a small town uncover supernatural forces and secret experiments.', pal: 8, emoji: '📼' },
+  { id: 's5', slug: 'the-last-of-us', title: 'The Last of Us', year: 2023, genres: ['Drama', 'Horror'], platforms: ['Max'], synopsis: 'A smuggler escorts a girl across a post-pandemic United States.', pal: 1, emoji: '🍄' },
+  { id: 's6', slug: 'fleabag', title: 'Fleabag', year: 2016, genres: ['Comedy', 'Drama'], platforms: ['Prime Video'], synopsis: 'A woman navigates modern life in London while breaking the fourth wall.', pal: 5, emoji: '🍷' },
+  { id: 's7', slug: 'ted-lasso', title: 'Ted Lasso', year: 2020, genres: ['Comedy', 'Sport'], platforms: ['Apple TV+'], synopsis: 'An American football coach takes over an English football club.', pal: 4, emoji: '⚽' },
+  { id: 's8', slug: 'the-crown', title: 'The Crown', year: 2016, genres: ['Drama', 'History'], platforms: ['Netflix'], synopsis: 'The reign of Queen Elizabeth II, from the 1940s to modern times.', pal: 4, emoji: '👑' },
+  { id: 's9', slug: 'abbott-elementary', title: 'Abbott Elementary', year: 2021, genres: ['Comedy'], platforms: ['Hulu'], synopsis: 'A mockumentary about teachers at an underfunded Philadelphia school.', pal: 9, emoji: '🏫' },
+  { id: 's10', slug: 'house-of-the-dragon', title: 'House of the Dragon', year: 2022, genres: ['Fantasy', 'Drama'], platforms: ['Max'], synopsis: 'The Targaryen civil war, two hundred years before Game of Thrones.', pal: 8, emoji: '🐉' },
+  { id: 's11', slug: 'only-murders-in-the-building', title: 'Only Murders in the Building', year: 2021, genres: ['Comedy', 'Mystery'], platforms: ['Hulu'], synopsis: 'Three strangers obsessed with true crime investigate a death in their building.', pal: 3, emoji: '🔎' },
+  { id: 's12', slug: 'the-mandalorian', title: 'The Mandalorian', year: 2019, genres: ['Sci-Fi', 'Action'], platforms: ['Disney+'], synopsis: 'A lone bounty hunter makes his way through the outer reaches of the galaxy.', pal: 7, emoji: '🪐' },
+  { id: 's13', slug: 'reservation-dogs', title: 'Reservation Dogs', year: 2021, genres: ['Comedy', 'Drama'], platforms: ['Hulu'], synopsis: 'Four Indigenous teens in rural Oklahoma navigate life and loss.', pal: 3, emoji: '🌵' },
+  { id: 's14', slug: 'yellowjackets', title: 'Yellowjackets', year: 2021, genres: ['Horror', 'Mystery'], platforms: ['Paramount+'], synopsis: "A girls' soccer team survives a plane crash in the wilderness — with consequences.", pal: 1, emoji: '🏕️' },
+  { id: 's15', slug: 'the-white-lotus', title: 'The White Lotus', year: 2021, genres: ['Drama', 'Satire'], platforms: ['Max'], synopsis: 'Guests and staff at a luxury resort unravel over the course of a week.', pal: 6, emoji: '🌺' },
+  { id: 's16', slug: 'slow-horses', title: 'Slow Horses', year: 2022, genres: ['Spy', 'Thriller'], platforms: ['Apple TV+'], synopsis: 'MI5 rejects investigate a case from the bottom rung of the service.', pal: 2, emoji: '🐎' },
+  { id: 's17', slug: 'atlanta', title: 'Atlanta', year: 2016, genres: ['Comedy', 'Surreal'], platforms: ['Hulu'], synopsis: 'Two cousins navigate the Atlanta rap scene and everyday absurdity.', pal: 5, emoji: '🎤' },
+  { id: 's18', slug: 'poker-face', title: 'Poker Face', year: 2023, genres: ['Mystery', 'Comedy'], platforms: ['Peacock'], synopsis: 'A woman with a natural lie-detecting ability solves a new mystery each week.', pal: 4, emoji: '🃏' },
+  { id: 's19', slug: 'shogun', title: 'Shōgun', year: 2024, genres: ['Drama', 'History'], platforms: ['Hulu', 'FX'], synopsis: "A shipwrecked English sailor gets caught up in feudal Japan's power struggle.", pal: 8, emoji: '⚔️' },
+  { id: 's20', slug: 'better-call-saul', title: 'Better Call Saul', year: 2015, genres: ['Crime', 'Drama'], platforms: ['AMC', 'Netflix'], synopsis: 'The transformation of a small-time lawyer into the man known as Saul Goodman.', pal: 7, emoji: '⚖️' },
+  { id: 's21', slug: 'the-boys', title: 'The Boys', year: 2019, genres: ['Superhero', 'Satire'], platforms: ['Prime Video'], synopsis: 'Vigilantes take on corrupt superheroes secretly controlled by a corporation.', pal: 8, emoji: '🦸' },
+  { id: 's22', slug: 'loki', title: 'Loki', year: 2021, genres: ['Sci-Fi', 'Fantasy'], platforms: ['Disney+'], synopsis: 'The God of Mischief is recruited by a mysterious bureaucratic organization.', pal: 1, emoji: '🐍' },
+  { id: 's23', slug: 'girls5eva', title: 'Girls5eva', year: 2021, genres: ['Comedy', 'Musical'], platforms: ['Netflix'], synopsis: 'A one-hit-wonder girl group gets a shot at a comeback.', pal: 5, emoji: '🎶' },
+  { id: 's24', slug: 'true-detective', title: 'True Detective', year: 2014, genres: ['Crime', 'Anthology'], platforms: ['Max'], synopsis: 'An anthology series following detectives entangled in dark, layered investigations.', pal: 2, emoji: '🔦' },
 ]
 
 const FRIENDS = [
-  { id: 'f1', name: 'Priya Shah', handle: 'priyawatches', avatarColor: 'from-rose-500 to-orange-400', bio: 'Prestige drama enjoyer. Currently obsessed with anything A24-adjacent.' },
-  { id: 'f2', name: 'Marcus Webb', handle: 'marcusw', avatarColor: 'from-blue-500 to-cyan-400', bio: 'Sci-fi and true crime. Will not shut up about Severance.' },
-  { id: 'f3', name: 'Dana Okafor', handle: 'danao', avatarColor: 'from-violet-500 to-fuchsia-400', bio: 'Comfort comedy rewatcher. Ask me about The Bear.' },
-  { id: 'f4', name: 'Leo Fontaine', handle: 'leofontaine', avatarColor: 'from-emerald-500 to-teal-400', bio: 'Horror and mystery. Yellowjackets truther.' },
+  { id: 'f1', name: 'Priya Shah', handle: 'priyawatches', avatarClass: 'avatar-rose', bio: 'Prestige drama enjoyer. Currently obsessed with anything A24-adjacent.' },
+  { id: 'f2', name: 'Marcus Webb', handle: 'marcusw', avatarClass: 'avatar-slate', bio: 'Sci-fi and true crime. Will not shut up about Severance.' },
+  { id: 'f3', name: 'Dana Okafor', handle: 'danao', avatarClass: 'avatar-lavender', bio: 'Comfort comedy rewatcher. Ask me about The Bear.' },
+  { id: 'f4', name: 'Leo Fontaine', handle: 'leofontaine', avatarClass: 'avatar-sage', bio: 'Horror and mystery. Yellowjackets truther.' },
 ]
 
 const FRIENDS_NOW = Date.now()
@@ -247,36 +296,38 @@ const VIS_ICON = { public: '🌐', friends: '👥', private: '🔒' }
 const VIS_LABEL = { public: '🌐 Public', friends: '👥 Friends', private: '🔒 Only me' }
 const STATUS_LABELS = { watching: 'Watching', want: 'Want to watch', finished: 'Finished', dropped: 'Dropped' }
 
-const PLATFORM_STYLES = {
-  Netflix: 'bg-red-600/20 text-red-400 border-red-600/30',
-  Hulu: 'bg-green-500/20 text-green-400 border-green-500/30',
-  Max: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
-  'Disney+': 'bg-blue-600/20 text-blue-300 border-blue-600/30',
-  'Prime Video': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
-  'Apple TV+': 'bg-slate-400/20 text-slate-200 border-slate-400/30',
-  'Paramount+': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  Peacock: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
-  FX: 'bg-neutral-500/20 text-neutral-200 border-neutral-500/30',
-  AMC: 'bg-red-800/20 text-red-300 border-red-800/30',
-}
 function platformBadges(platforms) {
-  return platforms.map((p) => `<span class="text-[11px] font-medium px-2 py-0.5 rounded-full border ${PLATFORM_STYLES[p] || 'bg-white/5 text-white/60 border-line'}">${esc(p)}</span>`).join('')
+  return platforms.map((p) => `<span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full border border-line text-inksoft">${esc(p)}</span>`).join('')
 }
+
+/* Compact poster thumbnail (lists, pickers, search results). */
 function posterHtml(show, size) {
-  const sizeClass = size === 'sm' ? 'w-12 h-16 text-xl rounded-lg' : size === 'lg' ? 'w-full aspect-[2/3] text-6xl rounded-2xl' : 'w-20 h-28 text-3xl rounded-xl'
-  return `<div class="flex-shrink-0 flex items-center justify-center bg-gradient-to-br ${show.color} ${sizeClass} shadow-lg shadow-black/40 select-none"><span>${show.emoji}</span></div>`
+  const sizeClass = size === 'sm' ? 'w-12 h-16 rounded-lg' : size === 'lg' ? 'w-full aspect-[2/3] rounded-2xl' : 'w-20 h-28 rounded-xl'
+  const emojiSize = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-3xl' : 'text-lg'
+  return `<div class="poster-grain flex-shrink-0 overflow-hidden ${sizeClass} poster-${show.pal} select-none">
+    <span class="absolute left-1.5 bottom-1.5 ${emojiSize} opacity-80">${show.emoji}</span>
+  </div>`
+}
+/* Large poster "art" used as the feed/hero image when there's no captured photo — the movie-poster treatment. */
+function posterHero(show) {
+  return `<div class="poster-grain w-full aspect-[4/5] overflow-hidden rounded-2xl poster-${show.pal}">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-black/5"></div>
+    <span class="absolute right-3.5 top-3.5 text-[10px] tracking-[0.2em] uppercase text-white/75">${show.year}</span>
+    <span class="absolute left-3.5 top-3.5 text-lg opacity-80">${show.emoji}</span>
+    <p class="absolute left-4 right-4 bottom-4 font-display italic text-[1.7rem] leading-[1.15] text-white" style="text-wrap:balance">${esc(show.title)}</p>
+  </div>`
 }
 function starsReadOnly(value, size) {
-  const cls = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl' : 'text-lg'
+  const cls = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl' : 'text-base'
   let out = `<div class="flex gap-0.5 ${cls}">`
-  for (let i = 1; i <= 5; i++) out += `<span class="${i <= value ? 'text-accent' : 'text-white/15'}">★</span>`
+  for (let i = 1; i <= 5; i++) out += `<span class="${i <= value ? 'text-gold' : 'text-inksoft/30'}">★</span>`
   return out + '</div>'
 }
 function starsInteractive(groupId, value, size) {
-  const cls = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl' : 'text-lg'
+  const cls = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl' : 'text-base'
   let out = `<div id="${groupId}" data-value="${value}" class="flex gap-0.5 ${cls}">`
   for (let i = 1; i <= 5; i++) {
-    out += `<button type="button" onclick="setStars('${groupId}', ${i})" class="leading-none cursor-pointer active:scale-90 transition-transform ${i <= value ? 'text-accent' : 'text-white/15'}" aria-label="${i} star">★</button>`
+    out += `<button type="button" onclick="setStars('${groupId}', ${i})" class="leading-none cursor-pointer active:scale-90 transition-transform ${i <= value ? 'text-gold' : 'text-inksoft/30'}" aria-label="${i} star">★</button>`
   }
   return out + '</div>'
 }
@@ -285,7 +336,7 @@ function setStars(groupId, value) {
   if (!el) return
   el.dataset.value = String(value)
   Array.from(el.children).forEach((btn, idx) => {
-    btn.className = btn.className.replace(/text-(accent|white\/15)/, (idx + 1) <= value ? 'text-accent' : 'text-white/15')
+    btn.className = btn.className.replace(/text-(gold|inksoft\/30)/, (idx + 1) <= value ? 'text-gold' : 'text-inksoft/30')
   })
 }
 function getStars(groupId) {
@@ -336,7 +387,7 @@ function publicShowUrl(slug) {
 }
 function makeQrDataUrl(text) {
   return new Promise((resolve, reject) => {
-    QRCode.toDataURL(text, { margin: 1, width: 480, color: { dark: '#0b0d12ff', light: '#ffffffff' } }, (err, url) => {
+    QRCode.toDataURL(text, { margin: 1, width: 480, color: { dark: '#202022ff', light: '#ffffffff' } }, (err, url) => {
       if (err) reject(err); else resolve(url)
     })
   })
@@ -346,32 +397,32 @@ function makeQrDataUrl(text) {
    CHROME
    ========================================================================= */
 function topBarHtml(title, backHash) {
-  const back = backHash ? `<a href="${backHash}" class="text-white/60 text-xl leading-none px-1 -ml-1">‹</a>` : `<span class="text-xl">🎬</span>`
-  return `<header class="sticky z-20 border-b border-line bg-ink/85 backdrop-blur px-4 py-3 flex items-center gap-3" style="top:env(safe-area-inset-top,0px)">
+  const back = backHash ? `<a href="${backHash}" class="text-inksoft text-xl leading-none px-1 -ml-1">‹</a>` : `<span class="text-lg">🎞️</span>`
+  return `<header class="sticky z-20 border-b border-line bg-bg/90 backdrop-blur px-4 py-3 flex items-center gap-3" style="top:env(safe-area-inset-top,0px)">
     ${back}
-    <h1 class="font-display font-semibold text-lg tracking-tight">${esc(title)}</h1>
+    <h1 class="font-display italic text-xl tracking-tight text-ink">${esc(title)}</h1>
   </header>`
 }
 const NAV_ITEMS = [
-  { hash: '#/', label: 'Home', icon: '🏠' },
-  { hash: '#/lists', label: 'Lists', icon: '📺' },
-  { hash: '#/capture', label: 'Capture', icon: '📸', primary: true },
-  { hash: '#/friends', label: 'Friends', icon: '👥' },
-  { hash: '#/profile', label: 'Profile', icon: '⚙️' },
+  { hash: '#/', label: 'Home', icon: '⌂' },
+  { hash: '#/lists', label: 'Lists', icon: '▦' },
+  { hash: '#/capture', label: 'Capture', icon: '◉', primary: true },
+  { hash: '#/friends', label: 'Friends', icon: '◎' },
+  { hash: '#/profile', label: 'Profile', icon: '⚙' },
 ]
 function bottomNavHtml(activeHash) {
   const items = NAV_ITEMS.map((item) => {
     const isActive = item.hash === activeHash
     if (item.primary) {
-      return `<a href="${item.hash}" class="flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5">
-        <span class="${isActive ? 'bg-accent scale-105' : 'bg-accent/90'} -mt-6 flex h-12 w-12 items-center justify-center rounded-full text-xl shadow-lg shadow-accent/30 transition-transform">${item.icon}</span>
+      return `<a href="${item.hash}" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5">
+        <span class="flex h-9 w-9 items-center justify-center rounded-full border text-base transition-colors ${isActive ? 'border-accent text-accent bg-accentsoft' : 'border-line text-inksoft'}">${item.icon}</span>
       </a>`
     }
-    return `<a href="${item.hash}" class="flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 text-[11px] font-medium ${isActive ? 'text-accent' : 'text-white/50'}">
-      <span class="text-lg leading-none">${item.icon}</span><span>${item.label}</span>
+    return `<a href="${item.hash}" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-[11px] font-medium ${isActive ? 'text-accent' : 'text-inksoft'}">
+      <span class="text-base leading-none">${item.icon}</span><span>${item.label}</span>
     </a>`
   }).join('')
-  return `<nav class="fixed bottom-0 left-0 right-0 z-30 border-t border-line bg-panel/90 backdrop-blur safe-bottom">
+  return `<nav class="fixed bottom-0 left-0 right-0 z-30 border-t border-line bg-surface/95 backdrop-blur safe-bottom">
     <div class="mx-auto max-w-lg flex items-stretch justify-between px-2">${items}</div>
   </nav>`
 }
@@ -423,11 +474,9 @@ function renderHome() {
   const lists = getLists()
   const myItems = getListItems()
 
-  const listStrip = lists.map((l) => listSummaryCard(l, myItems.filter((i) => i.listId === l.id), '#/lists/' + l.id)).join('')
-
   let activity = myItems.map((item) => {
     const list = lists.find((l) => l.id === item.listId)
-    return { item, listName: list ? list.name : 'a list', authorId: user.id, authorName: 'You', authorColor: 'from-accent to-accent2', mine: true }
+    return { item, listName: list ? list.name : 'a list', authorId: user.id, authorName: 'You', avatarClass: 'avatar-me', mine: true }
   })
   if (homeTab === 'all') {
     FRIEND_LIST_ITEMS.forEach((item) => {
@@ -435,30 +484,30 @@ function renderHome() {
       if (!list || list.visibility === 'private') return
       const friend = FRIENDS.find((f) => f.id === list.ownerId)
       if (!friend) return
-      activity.push({ item, listName: list.name, authorId: friend.id, authorName: friend.name, authorColor: friend.avatarColor, mine: false })
+      activity.push({ item, listName: list.name, authorId: friend.id, authorName: friend.name, avatarClass: friend.avatarClass, mine: false })
     })
   }
   activity.sort((a, b) => new Date(b.item.addedAt).getTime() - new Date(a.item.addedAt).getTime())
 
   const activityHtml = activity.length === 0
-    ? `<div class="text-center py-20">
-        <p class="text-4xl mb-3">🍿</p>
-        <p class="text-white/60 text-sm mb-4">Nothing added yet. Point your phone at what you're watching.</p>
-        <a href="#/capture" class="inline-block bg-accent text-white text-sm font-medium px-4 py-2 rounded-full">Capture a show</a>
+    ? `<div class="text-center py-24">
+        <p class="font-display italic text-3xl text-ink mb-2">Nothing here yet</p>
+        <p class="text-inksoft text-sm mb-6">Point your phone at what you're watching, and it'll land here.</p>
+        <a href="#/capture" class="inline-block border border-accent text-accent text-sm font-medium px-5 py-2 rounded-full">Capture a show</a>
       </div>`
-    : `<div class="flex flex-col gap-3 pb-4">${activity.map((a) => activityRow(a.item, a.authorName, a.authorColor, a.listName, a.mine ? `homeRemoveItem('${a.item.listId}','${a.item.showId}')` : null)).join('')}</div>`
+    : `<div class="flex flex-col gap-9 pb-6">${activity.map((a) => activityRow(a.item, a.authorName, a.avatarClass, a.listName, a.mine ? `homeRemoveItem('${a.item.listId}','${a.item.showId}')` : null)).join('')}</div>`
 
   return shell('#/', 'Reel', null, `
     <div class="px-4 pt-3">
-      <div class="flex items-center justify-between mb-2">
-        <p class="text-xs uppercase tracking-wide text-white/40">Your lists</p>
-        <a href="#/lists" class="text-xs text-accent2">Manage</a>
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft">Your lists</p>
+        <a href="#/lists" class="text-xs text-accent">Manage</a>
       </div>
-      <div class="flex gap-2 overflow-x-auto pb-1 mb-5 -mx-4 px-4">${lists.map((l) => `<div class="w-40 flex-shrink-0">${listSummaryCard(l, myItems.filter((i) => i.listId === l.id), '#/lists/' + l.id)}</div>`).join('')}</div>
+      <div class="flex gap-2.5 overflow-x-auto pb-1 mb-7 -mx-4 px-4">${lists.map((l) => `<div class="w-36 flex-shrink-0">${listSummaryCard(l, myItems.filter((i) => i.listId === l.id), '#/lists/' + l.id)}</div>`).join('')}</div>
 
-      <div class="flex gap-2 mb-4">
-        <button onclick="setHomeTab('all')" class="text-sm px-3 py-1.5 rounded-full border transition-colors ${homeTab === 'all' ? 'bg-white text-ink border-white' : 'border-line text-white/60'}">Everyone</button>
-        <button onclick="setHomeTab('mine')" class="text-sm px-3 py-1.5 rounded-full border transition-colors ${homeTab === 'mine' ? 'bg-white text-ink border-white' : 'border-line text-white/60'}">Just me</button>
+      <div class="flex gap-2 mb-6">
+        <button onclick="setHomeTab('all')" class="text-xs px-3 py-1.5 rounded-full border transition-colors ${homeTab === 'all' ? 'border-accent text-accent bg-accentsoft' : 'border-line text-inksoft'}">Everyone</button>
+        <button onclick="setHomeTab('mine')" class="text-xs px-3 py-1.5 rounded-full border transition-colors ${homeTab === 'mine' ? 'border-accent text-accent bg-accentsoft' : 'border-line text-inksoft'}">Just me</button>
       </div>
 
       ${activityHtml}
@@ -469,41 +518,39 @@ function setHomeTab(tab) { homeTab = tab; renderRoute() }
 function homeRemoveItem(listId, showId) { removeFromList(listId, showId); renderRoute() }
 
 function listSummaryCard(list, items, href) {
-  const posters = items.slice(0, 4).map((i) => findShowById(i.showId)).filter(Boolean)
+  const posters = items.slice(0, 3).map((i) => findShowById(i.showId)).filter(Boolean)
   const posterHtmlStr = posters.length
-    ? `<div class="flex -space-x-3">${posters.map((s) => `<span class="h-12 w-9 rounded-md bg-gradient-to-br ${s.color} flex items-center justify-center text-sm ring-2 ring-panel">${s.emoji}</span>`).join('')}${items.length > 4 ? `<span class="h-12 w-9 rounded-md bg-white/5 ring-2 ring-panel flex items-center justify-center text-[11px] text-white/50">+${items.length - 4}</span>` : ''}</div>`
-    : `<p class="text-xs text-white/30">Empty</p>`
-  return `<a href="${href}" class="block rounded-xl2 border border-line bg-panel p-3">
-    <div class="flex items-center justify-between mb-2"><p class="text-sm font-medium">${esc(list.name)}</p><span class="text-[11px] text-white/40">${VIS_LABEL[list.visibility]}</span></div>
+    ? `<div class="flex -space-x-4">${posters.map((s) => `<span class="h-14 w-10 rounded-md poster-${s.pal} ring-2 ring-surface"></span>`).join('')}${items.length > 3 ? `<span class="h-14 w-10 rounded-md bg-surface2 ring-2 ring-surface flex items-center justify-center text-[10px] text-inksoft">+${items.length - 3}</span>` : ''}</div>`
+    : `<div class="h-14 w-10 rounded-md bg-surface2"></div>`
+  return `<a href="${href}" class="block rounded-2xl border border-line bg-surface p-3">
+    <p class="text-sm font-medium text-ink truncate mb-2.5">${esc(list.name)}</p>
     ${posterHtmlStr}
-    <p class="text-xs text-white/40 mt-2">${items.length} show${items.length === 1 ? '' : 's'}</p>
+    <p class="text-[11px] text-inksoft mt-2.5">${VIS_LABEL[list.visibility]} · ${items.length}</p>
   </a>`
 }
 
-function activityRow(item, authorName, authorColor, listName, onRemoveJs) {
+function activityRow(item, authorName, avatarClass, listName, onRemoveJs) {
   const show = findShowById(item.showId)
   if (!show) return ''
-  const removeBtn = onRemoveJs ? `<button onclick="${onRemoveJs}" class="ml-auto text-white/30 hover:text-white/70 text-sm px-1">✕</button>` : ''
-  const photoHtml = item.photo ? `<img src="${item.photo}" alt="${esc(show.title)}" class="w-full aspect-video object-cover rounded-lg mb-3" />` : ''
-  const noteHtml = item.note ? `<p class="text-sm text-white/80 mt-3 leading-relaxed">${esc(item.note)}</p>` : ''
-  return `<article class="animate-pop rounded-xl2 border border-line bg-panel p-4">
-    <div class="flex items-center gap-2 mb-3">
-      <span class="h-8 w-8 rounded-full bg-gradient-to-br ${authorColor} flex-shrink-0"></span>
+  const removeBtn = onRemoveJs ? `<button onclick="${onRemoveJs}" class="ml-auto text-inksoft hover:text-ink text-sm px-1">✕</button>` : ''
+  const media = item.photo
+    ? `<img src="${item.photo}" alt="${esc(show.title)}" class="w-full aspect-[4/5] object-cover rounded-2xl" />`
+    : posterHero(show)
+  return `<article class="animate-pop">
+    <div class="flex items-center gap-2.5 mb-2.5">
+      <span class="h-8 w-8 rounded-full ${avatarClass} flex-shrink-0"></span>
       <div class="min-w-0">
-        <p class="text-sm"><span class="font-medium">${esc(authorName)}</span> <span class="text-white/50">added to</span> <span class="font-medium">${esc(listName)}</span></p>
-        <p class="text-xs text-white/40">${timeAgo(item.addedAt)}</p>
+        <p class="text-sm text-ink"><span class="font-medium">${esc(authorName)}</span> <span class="text-inksoft">added to</span> <span class="font-medium">${esc(listName)}</span></p>
+        <p class="text-xs text-inksoft">${timeAgo(item.addedAt)}</p>
       </div>
       ${removeBtn}
     </div>
-    ${photoHtml}
-    <div class="flex gap-3">
-      <a href="#/show/${show.slug}">${posterHtml(show, 'sm')}</a>
-      <div class="min-w-0 flex-1">
-        <a href="#/show/${show.slug}" class="font-display font-semibold text-sm hover:text-accent transition-colors">${esc(show.title)}</a>
-        <div class="flex flex-wrap gap-1 mt-1">${platformBadges(show.platforms)}</div>
-      </div>
+    <a href="#/show/${show.slug}" class="block">${media}</a>
+    <div class="mt-2.5">
+      <a href="#/show/${show.slug}" class="font-display italic text-lg text-ink hover:text-accent transition-colors">${esc(show.title)}</a>
+      <div class="flex flex-wrap gap-1.5 mt-1.5">${platformBadges(show.platforms)}</div>
+      ${item.note ? `<p class="text-sm text-ink/80 mt-2.5 leading-relaxed">${esc(item.note)}</p>` : ''}
     </div>
-    ${noteHtml}
   </article>`
 }
 
@@ -517,26 +564,26 @@ function renderLists() {
   const customLists = lists.filter((l) => l.kind === 'custom')
 
   const customSection = customLists.length
-    ? `<p class="text-xs uppercase tracking-wide text-white/40 mb-2">Your custom lists</p>
-       <div class="grid grid-cols-2 gap-2 mb-6">${customLists.map((l) => listSummaryCard(l, items.filter((i) => i.listId === l.id), '#/lists/' + l.id)).join('')}</div>`
+    ? `<p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Your custom lists</p>
+       <div class="grid grid-cols-2 gap-2.5 mb-7">${customLists.map((l) => listSummaryCard(l, items.filter((i) => i.listId === l.id), '#/lists/' + l.id)).join('')}</div>`
     : ''
 
   return shell('#/lists', 'Your Lists', null, `
     <div class="px-4 pt-3 pb-8">
-      <p class="text-xs uppercase tracking-wide text-white/40 mb-2">Default lists</p>
-      <div class="grid grid-cols-2 gap-2 mb-6">${defaultLists.map((l) => listSummaryCard(l, items.filter((i) => i.listId === l.id), '#/lists/' + l.id)).join('')}</div>
+      <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Default lists</p>
+      <div class="grid grid-cols-2 gap-2.5 mb-7">${defaultLists.map((l) => listSummaryCard(l, items.filter((i) => i.listId === l.id), '#/lists/' + l.id)).join('')}</div>
       ${customSection}
       <div id="new-list-toggle">
-        <button onclick="document.getElementById('new-list-toggle').hidden=true; document.getElementById('new-list-form').hidden=false; document.getElementById('new-list-name').focus()" class="w-full rounded-full border border-dashed border-line py-2.5 text-sm text-white/50">+ New list</button>
+        <button onclick="document.getElementById('new-list-toggle').hidden=true; document.getElementById('new-list-form').hidden=false; document.getElementById('new-list-name').focus()" class="w-full rounded-full border border-dashed border-line py-2.5 text-sm text-inksoft">+ New list</button>
       </div>
-      <div id="new-list-form" hidden class="rounded-xl2 border border-line bg-panel p-4 flex flex-col gap-3 animate-pop">
-        <input id="new-list-name" placeholder="e.g. Oscar contenders, Date night" class="w-full bg-white/5 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent2/50" />
+      <div id="new-list-form" hidden class="rounded-2xl border border-line bg-surface p-4 flex flex-col gap-3 animate-pop">
+        <input id="new-list-name" placeholder="e.g. Oscar contenders, Date night" class="w-full bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" />
         <div id="new-list-vis" data-value="friends" class="flex gap-2">
-          ${['public', 'friends', 'private'].map((v) => `<button type="button" onclick="chipSelect('new-list-vis', '${v}')" data-value="${v}" class="flex-1 text-xs rounded-full border py-1.5 transition-colors ${v === 'friends' ? 'border-accent2/50 bg-accent2/10' : 'border-line text-white/60'}">${VIS_LABEL[v]}</button>`).join('')}
+          ${['public', 'friends', 'private'].map((v) => `<button type="button" onclick="chipSelect('new-list-vis', '${v}')" data-value="${v}" class="flex-1 text-xs rounded-full border py-1.5 transition-colors ${v === 'friends' ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft'}">${VIS_LABEL[v]}</button>`).join('')}
         </div>
         <div class="flex gap-2">
-          <button onclick="document.getElementById('new-list-toggle').hidden=false; document.getElementById('new-list-form').hidden=true" class="flex-1 rounded-full border border-line py-2 text-sm text-white/60">Cancel</button>
-          <button onclick="submitNewList()" class="flex-1 rounded-full bg-accent py-2 text-sm font-medium">Create</button>
+          <button onclick="document.getElementById('new-list-toggle').hidden=false; document.getElementById('new-list-form').hidden=true" class="flex-1 rounded-full border border-line py-2 text-sm text-inksoft">Cancel</button>
+          <button onclick="submitNewList()" class="flex-1 rounded-full bg-accent text-accentink py-2 text-sm font-medium">Create</button>
         </div>
       </div>
     </div>
@@ -548,7 +595,7 @@ function chipSelect(containerId, value) {
   el.dataset.value = value
   Array.from(el.children).forEach((btn) => {
     const active = btn.dataset.value === value
-    btn.className = 'flex-1 text-xs rounded-full border py-1.5 transition-colors ' + (active ? 'border-accent2/50 bg-accent2/10' : 'border-line text-white/60')
+    btn.className = 'flex-1 text-xs rounded-full border py-1.5 transition-colors ' + (active ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft')
   })
 }
 function submitNewList() {
@@ -565,26 +612,26 @@ function submitNewList() {
 function renderListDetail(id) {
   const lists = getLists()
   const list = lists.find((l) => l.id === id)
-  if (!list) return shell('#/lists', 'Not found', '#/lists', `<p class="px-4 py-8 text-sm text-white/50">That list doesn't exist.</p>`)
+  if (!list) return shell('#/lists', 'Not found', '#/lists', `<p class="px-4 py-8 text-sm text-inksoft">That list doesn't exist.</p>`)
   const items = getListItems().filter((i) => i.listId === id).sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
 
   const itemsHtml = items.length === 0
-    ? `<p class="text-sm text-white/40 text-center py-10">Nothing here yet — add shows from the Capture tab or a show's page.</p>`
-    : `<div class="flex flex-col gap-3">${items.map((item) => activityRow(item, 'You', 'from-accent to-accent2', list.name, `listDetailRemoveItem('${list.id}','${item.showId}')`)).join('')}</div>`
+    ? `<p class="text-sm text-inksoft text-center py-10">Nothing here yet — add shows from the Capture tab or a show's page.</p>`
+    : `<div class="flex flex-col gap-9">${items.map((item) => activityRow(item, 'You', 'avatar-me', list.name, `listDetailRemoveItem('${list.id}','${item.showId}')`)).join('')}</div>`
 
-  const deleteBtn = list.kind === 'custom' ? `<button onclick="listDetailDelete('${list.id}')" class="w-full mt-6 rounded-full border border-red-900/50 text-red-400 py-2.5 text-sm">Delete list</button>` : ''
+  const deleteBtn = list.kind === 'custom' ? `<button onclick="listDetailDelete('${list.id}')" class="w-full mt-8 rounded-full border border-danger/40 text-danger py-2.5 text-sm">Delete list</button>` : ''
 
   return shell('#/lists', list.name, '#/lists', `
     <div class="px-4 pt-4 pb-8">
       <div class="flex items-center gap-2 mb-1">
-        <h2 id="list-detail-title" class="font-display font-semibold text-xl">${esc(list.name)}</h2>
-        <button onclick="listDetailRename('${list.id}')" class="text-xs text-white/40 underline">rename</button>
+        <h2 id="list-detail-title" class="font-display italic text-2xl text-ink">${esc(list.name)}</h2>
+        <button onclick="listDetailRename('${list.id}')" class="text-xs text-inksoft underline">rename</button>
       </div>
-      <p class="text-xs text-white/40 mb-4">${items.length} show${items.length === 1 ? '' : 's'}</p>
+      <p class="text-xs text-inksoft mb-5">${items.length} show${items.length === 1 ? '' : 's'}</p>
 
-      <p class="text-xs uppercase tracking-wide text-white/40 mb-2">Who can see this list</p>
-      <div id="list-detail-vis" data-value="${list.visibility}" data-list-id="${list.id}" class="flex gap-2 mb-6">
-        ${['public', 'friends', 'private'].map((v) => `<button type="button" onclick="listDetailVisibility('${v}')" data-value="${v}" class="flex-1 text-xs rounded-full border py-1.5 transition-colors ${v === list.visibility ? 'border-accent2/50 bg-accent2/10' : 'border-line text-white/60'}">${VIS_LABEL[v]}</button>`).join('')}
+      <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Who can see this list</p>
+      <div id="list-detail-vis" data-value="${list.visibility}" data-list-id="${list.id}" class="flex gap-2 mb-7">
+        ${['public', 'friends', 'private'].map((v) => `<button type="button" onclick="listDetailVisibility('${v}')" data-value="${v}" class="flex-1 text-xs rounded-full border py-1.5 transition-colors ${v === list.visibility ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft'}">${VIS_LABEL[v]}</button>`).join('')}
       </div>
 
       ${itemsHtml}
@@ -616,7 +663,7 @@ function listDetailRemoveItem(listId, showId) { removeFromList(listId, showId); 
    ========================================================================= */
 function renderShowDetail(slug) {
   const show = findShowBySlug(slug)
-  if (!show) return shell('#/lists', 'Not found', '#/lists', `<p class="px-4 py-8 text-sm text-white/50">That show isn't in the catalog.</p>`)
+  if (!show) return shell('#/lists', 'Not found', '#/lists', `<p class="px-4 py-8 text-sm text-inksoft">That show isn't in the catalog.</p>`)
   const user = getUser()
   const lists = getLists()
   const items = getListItems()
@@ -633,17 +680,17 @@ function renderShowDetail(slug) {
   const avgRating = allReviews.length ? allReviews.reduce((s, r) => s + r.rating, 0) / allReviews.length : null
 
   const customChips = customLists.length
-    ? `<div class="flex flex-wrap gap-2 mt-2">${customLists.map((l) => `<button onclick="toggleCustomList('${show.id}','${l.id}')" class="text-xs rounded-full border px-3 py-1.5 transition-colors ${customListIdsWithShow.has(l.id) ? 'border-accent2/50 bg-accent2/10 text-white' : 'border-line text-white/50'}">${customListIdsWithShow.has(l.id) ? '✓ ' : '+ '}${esc(l.name)}</button>`).join('')}</div>`
+    ? `<div class="flex flex-wrap gap-2 mt-2.5">${customLists.map((l) => `<button onclick="toggleCustomList('${show.id}','${l.id}')" class="text-xs rounded-full border px-3 py-1.5 transition-colors ${customListIdsWithShow.has(l.id) ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft'}">${customListIdsWithShow.has(l.id) ? '✓ ' : '+ '}${esc(l.name)}</button>`).join('')}</div>`
     : ''
 
   const reviewsHtml = allReviews.length
-    ? `<div class="mt-6"><p class="text-xs uppercase tracking-wide text-white/40 mb-2">All reviews</p><div class="flex flex-col gap-3">
+    ? `<div class="mt-7"><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">All reviews</p><div class="flex flex-col gap-3">
         ${allReviews.map((r) => {
           const isMine = r.authorId === user.id
           const friend = !isMine ? FRIENDS.find((f) => f.id === r.authorId) : null
-          return `<div class="rounded-xl border border-line bg-panel p-3">
-            <div class="flex items-center justify-between mb-1"><span class="text-sm font-medium">${isMine ? 'You' : esc(friend ? friend.name : 'Unknown')}</span>${starsReadOnly(r.rating, 'sm')}</div>
-            ${r.text ? `<p class="text-sm text-white/70">${esc(r.text)}</p>` : ''}
+          return `<div class="rounded-2xl border border-line bg-surface p-3.5">
+            <div class="flex items-center justify-between mb-1"><span class="text-sm font-medium text-ink">${isMine ? 'You' : esc(friend ? friend.name : 'Unknown')}</span>${starsReadOnly(r.rating, 'sm')}</div>
+            ${r.text ? `<p class="text-sm text-ink/80">${esc(r.text)}</p>` : ''}
           </div>`
         }).join('')}
       </div></div>`
@@ -651,36 +698,34 @@ function renderShowDetail(slug) {
 
   const html = `
     <div class="px-4 pt-4 pb-8">
-      <div class="flex gap-4">
-        ${posterHtml(show, 'md')}
-        <div class="min-w-0 flex-1">
-          <h2 class="font-display font-semibold text-xl leading-tight">${esc(show.title)}</h2>
-          <p class="text-xs text-white/40 mt-0.5">${show.year} · ${esc(show.genres.join(', '))}</p>
-          <div class="flex flex-wrap gap-1 mt-2">${platformBadges(show.platforms)}</div>
-          ${avgRating != null ? `<div class="flex items-center gap-2 mt-2">${starsReadOnly(Math.round(avgRating), 'sm')}<span class="text-xs text-white/40">${avgRating.toFixed(1)} · ${allReviews.length} review${allReviews.length === 1 ? '' : 's'}</span></div>` : ''}
-        </div>
+      ${posterHero(show)}
+      <div class="mt-4">
+        <h2 class="font-display italic text-3xl text-ink leading-tight">${esc(show.title)}</h2>
+        <p class="text-xs text-inksoft mt-1">${show.year} · ${esc(show.genres.join(', '))}</p>
+        <div class="flex flex-wrap gap-1.5 mt-2.5">${platformBadges(show.platforms)}</div>
+        ${avgRating != null ? `<div class="flex items-center gap-2 mt-2.5">${starsReadOnly(Math.round(avgRating), 'sm')}<span class="text-xs text-inksoft">${avgRating.toFixed(1)} · ${allReviews.length} review${allReviews.length === 1 ? '' : 's'}</span></div>` : ''}
       </div>
 
-      <p class="text-sm text-white/70 leading-relaxed mt-4">${esc(show.synopsis)}</p>
+      <p class="text-sm text-ink/80 leading-relaxed mt-4">${esc(show.synopsis)}</p>
 
-      <div class="flex items-center justify-between mt-5 mb-2">
-        <p class="text-xs uppercase tracking-wide text-white/40">Your lists</p>
-        <button onclick="openQr('${show.slug}')" class="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs"><span>▦</span> Share QR</button>
+      <div class="flex items-center justify-between mt-6 mb-2.5">
+        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft">Your lists</p>
+        <button onclick="openQr('${show.slug}')" class="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs text-inksoft"><span>▦</span> Share QR</button>
       </div>
 
-      <select onchange="setDefaultStatus('${show.id}', this.value)" class="w-full bg-white/5 border border-line rounded-full text-sm px-3 py-2 outline-none mb-2">
+      <select onchange="setDefaultStatus('${show.id}', this.value)" class="w-full bg-surface2 border border-line rounded-full text-sm px-3 py-2 outline-none mb-2.5 text-ink">
         <option value="" disabled ${!currentDefaultListId ? 'selected' : ''}>Add to a default list…</option>
         ${defaultLists.map((l) => `<option value="${l.kind}" ${currentDefaultListId === l.id ? 'selected' : ''}>${STATUS_LABELS[l.kind] || esc(l.name)}</option>`).join('')}
       </select>
 
       ${customChips}
 
-      <div class="mt-6">
-        <p class="text-xs uppercase tracking-wide text-white/40 mb-2">${myReview ? 'Your review' : 'Rate & review'}</p>
-        <div class="rounded-xl2 border border-line bg-panel p-4">
+      <div class="mt-7">
+        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">${myReview ? 'Your review' : 'Rate & review'}</p>
+        <div class="rounded-2xl border border-line bg-surface p-4">
           ${starsInteractive('review-stars', (myReview && myReview.rating) || 0, 'lg')}
-          <textarea id="review-text" placeholder="${myReview && myReview.text ? esc(myReview.text) : 'What did you think?'}" rows="2" class="w-full mt-3 rounded-xl bg-white/5 border border-line px-3 py-2 text-sm outline-none focus:border-accent2/50 resize-none"></textarea>
-          <button onclick="submitReview('${show.id}')" class="mt-3 w-full bg-accent text-white text-sm font-medium py-2 rounded-full">${myReview ? 'Update review' : 'Post review'}</button>
+          <textarea id="review-text" placeholder="${myReview && myReview.text ? esc(myReview.text) : 'What did you think?'}" rows="2" class="w-full mt-3 rounded-xl bg-surface2 border border-line px-3 py-2 text-sm outline-none focus:border-accent text-ink resize-none"></textarea>
+          <button onclick="submitReview('${show.id}')" class="mt-3 w-full bg-accent text-accentink text-sm font-medium py-2 rounded-full">${myReview ? 'Update review' : 'Post review'}</button>
         </div>
       </div>
 
@@ -711,14 +756,14 @@ function openQr(slug) {
   const root = document.getElementById('qr-modal-root')
   if (!root) return
   root.innerHTML = `
-    <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm" onclick="closeQr(event)">
-      <div class="animate-pop w-full sm:w-96 sm:rounded-xl2 rounded-t-xl2 bg-panel border border-line p-6 text-center" onclick="event.stopPropagation()">
-        <p class="text-xs uppercase tracking-wide text-white/40 mb-1">Scan to view &amp; download</p>
-        <h2 class="font-display font-semibold text-xl mb-4">${esc(show.title)}</h2>
+    <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm" onclick="closeQr(event)">
+      <div class="animate-pop w-full sm:w-96 sm:rounded-xl2 rounded-t-xl2 bg-surface border border-line p-6 text-center" onclick="event.stopPropagation()">
+        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-1">Scan to view &amp; download</p>
+        <h2 class="font-display italic text-2xl text-ink mb-4">${esc(show.title)}</h2>
         <div class="bg-white rounded-xl p-3 inline-block"><img id="qr-img" alt="QR code linking to ${esc(show.title)}" class="w-56 h-56" /></div>
-        <p class="text-xs text-white/50 mt-4 break-all">${esc(url)}</p>
-        <p class="text-xs text-white/40 mt-1">Anyone who scans this lands on ${esc(show.title)}'s page and gets prompted to download Reel.</p>
-        <button onclick="closeQr()" class="mt-5 w-full rounded-full border border-line py-2.5 text-sm font-medium text-white/70">Close</button>
+        <p class="text-xs text-inksoft mt-4 break-all">${esc(url)}</p>
+        <p class="text-xs text-inksoft mt-1">Anyone who scans this lands on ${esc(show.title)}'s page and gets prompted to download Reel.</p>
+        <button onclick="closeQr()" class="mt-5 w-full rounded-full border border-line py-2.5 text-sm font-medium text-inksoft">Close</button>
       </div>
     </div>`
   makeQrDataUrl(url).then((dataUrl) => { const img = document.getElementById('qr-img'); if (img) img.src = dataUrl })
@@ -745,20 +790,19 @@ function renderCapture() {
 
   if (captureState.step === 'capture') {
     body = `
-      <div class="relative rounded-xl2 overflow-hidden bg-black aspect-[3/4]" id="camera-wrap">
+      <div class="relative rounded-2xl overflow-hidden bg-black aspect-[3/4]" id="camera-wrap">
         <video id="camera-video" playsinline muted class="w-full h-full object-cover"></video>
-        <div id="camera-loading" class="absolute inset-0 flex items-center justify-center bg-black/60"><p class="text-sm text-white/50">Starting camera…</p></div>
+        <div id="camera-loading" class="absolute inset-0 flex items-center justify-center bg-black/60"><p class="text-sm text-white/60">Starting camera…</p></div>
         <div id="camera-fail" hidden class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center bg-black px-6">
-          <p class="text-4xl">📷</p>
+          <p class="text-4xl opacity-70">📷</p>
           <p class="text-sm text-white/60 max-w-xs">Couldn't access your camera directly — use your device camera instead.</p>
-          <button onclick="document.getElementById('capture-file').click()" class="bg-accent text-white text-sm font-medium px-5 py-2.5 rounded-full">Open camera</button>
+          <button onclick="document.getElementById('capture-file').click()" class="bg-accent text-accentink text-sm font-medium px-5 py-2.5 rounded-full">Open camera</button>
         </div>
-        <div class="pointer-events-none absolute inset-6 rounded-xl border-2 border-white/30"></div>
-        <div class="pointer-events-none absolute inset-6 overflow-hidden rounded-xl"><div class="h-0.5 w-full bg-accent2/80 shadow-[0_0_12px_2px_rgba(90,200,250,0.7)] animate-scan"></div></div>
+        <div class="pointer-events-none absolute inset-6 rounded-xl border border-white/40 animate-scan"></div>
         <p class="absolute top-3 left-0 right-0 text-center text-xs text-white/70">Point at the TV and tap the shutter</p>
         <div class="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-8">
           <button onclick="document.getElementById('capture-file').click()" class="h-10 w-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center text-lg" aria-label="Upload from gallery">🖼️</button>
-          <button id="shutter-btn" onclick="shutterCapture()" disabled class="h-16 w-16 rounded-full bg-white ring-4 ring-white/30 active:scale-95 transition-transform disabled:opacity-40" aria-label="Take photo"></button>
+          <button id="shutter-btn" onclick="shutterCapture()" disabled class="h-16 w-16 rounded-full bg-white ring-4 ring-white/25 active:scale-95 transition-transform disabled:opacity-40" aria-label="Take photo"></button>
           <span class="h-10 w-10"></span>
         </div>
         <input id="capture-file" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleFileCapture(event)" />
@@ -768,8 +812,8 @@ function renderCapture() {
   } else if (captureState.step === 'recognizing') {
     body = `
       <div class="flex flex-col items-center gap-4 py-16">
-        ${captureState.photo ? `<img src="${captureState.photo}" class="w-40 rounded-xl opacity-60" />` : ''}
-        <div class="flex items-center gap-2 text-white/60 text-sm"><span class="h-2 w-2 rounded-full bg-accent2 animate-pulse"></span>Identifying what's on screen…</div>
+        ${captureState.photo ? `<img src="${captureState.photo}" class="w-40 rounded-xl opacity-70" />` : ''}
+        <div class="flex items-center gap-2 text-inksoft text-sm"><span class="h-1.5 w-1.5 rounded-full bg-accent animate-pulse"></span>Identifying what's on screen…</div>
       </div>`
   } else if (captureState.step === 'confirm') {
     const top = captureState.candidates[0]
@@ -777,24 +821,24 @@ function renderCapture() {
     body = `
       <div class="flex flex-col gap-4">
         ${top ? `<div>
-          <p class="text-xs uppercase tracking-wide text-white/40 mb-2">Best match</p>
-          <button onclick="selectCandidate('${top.show.id}')" class="w-full flex items-center gap-3 rounded-xl2 border border-accent/40 bg-accent/10 p-3 text-left animate-pop">
+          <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Best match</p>
+          <button onclick="selectCandidate('${top.show.id}')" class="w-full flex items-center gap-3 rounded-2xl border border-accent/40 bg-accentsoft p-3 text-left animate-pop">
             ${posterHtml(top.show, 'sm')}
-            <div class="min-w-0 flex-1"><p class="font-display font-semibold">${esc(top.show.title)}</p><p class="text-xs text-white/50">${top.show.year}</p><div class="flex flex-wrap gap-1 mt-1">${platformBadges(top.show.platforms)}</div></div>
-            <div class="text-right flex-shrink-0"><p class="text-lg font-semibold text-accent">${Math.round(top.confidence * 100)}%</p><p class="text-[10px] text-white/40">match</p></div>
+            <div class="min-w-0 flex-1"><p class="font-display italic text-lg text-ink">${esc(top.show.title)}</p><p class="text-xs text-inksoft">${top.show.year}</p><div class="flex flex-wrap gap-1 mt-1">${platformBadges(top.show.platforms)}</div></div>
+            <div class="text-right flex-shrink-0"><p class="text-lg font-semibold text-accent">${Math.round(top.confidence * 100)}%</p><p class="text-[10px] text-inksoft">match</p></div>
           </button>
         </div>` : ''}
-        ${rest.length ? `<div><p class="text-xs uppercase tracking-wide text-white/40 mb-2">Other possibilities</p><div class="flex flex-col gap-2">
-          ${rest.map((c) => `<button onclick="selectCandidate('${c.show.id}')" class="flex items-center gap-3 rounded-xl border border-line bg-panel p-2.5 text-left">
-            ${posterHtml(c.show, 'sm')}<div class="min-w-0 flex-1"><p class="text-sm font-medium">${esc(c.show.title)}</p><p class="text-xs text-white/40">${c.show.year}</p></div><p class="text-sm text-white/40 flex-shrink-0">${Math.round(c.confidence * 100)}%</p>
+        ${rest.length ? `<div><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Other possibilities</p><div class="flex flex-col gap-2">
+          ${rest.map((c) => `<button onclick="selectCandidate('${c.show.id}')" class="flex items-center gap-3 rounded-xl border border-line bg-surface p-2.5 text-left">
+            ${posterHtml(c.show, 'sm')}<div class="min-w-0 flex-1"><p class="text-sm font-medium text-ink">${esc(c.show.title)}</p><p class="text-xs text-inksoft">${c.show.year}</p></div><p class="text-sm text-inksoft flex-shrink-0">${Math.round(c.confidence * 100)}%</p>
           </button>`).join('')}
         </div></div>` : ''}
         <div class="flex gap-2 mt-1">
-          <button onclick="resetCaptureState(); renderRoute()" class="flex-1 rounded-full border border-line py-2.5 text-sm font-medium text-white/70">Retake photo</button>
-          <button onclick="document.getElementById('capture-search-panel').hidden = !document.getElementById('capture-search-panel').hidden" class="flex-1 rounded-full border border-line py-2.5 text-sm font-medium text-white/70">Not it? Search</button>
+          <button onclick="resetCaptureState(); renderRoute()" class="flex-1 rounded-full border border-line py-2.5 text-sm font-medium text-inksoft">Retake photo</button>
+          <button onclick="document.getElementById('capture-search-panel').hidden = !document.getElementById('capture-search-panel').hidden" class="flex-1 rounded-full border border-line py-2.5 text-sm font-medium text-inksoft">Not it? Search</button>
         </div>
         <div id="capture-search-panel" hidden class="animate-pop">
-          <input id="capture-search-input" oninput="renderCaptureSearchResults(this.value)" placeholder="Search by title, genre, or platform" class="w-full rounded-full bg-white/5 border border-line px-4 py-2.5 text-sm outline-none focus:border-accent2/50" />
+          <input id="capture-search-input" oninput="renderCaptureSearchResults(this.value)" placeholder="Search by title, genre, or platform" class="w-full rounded-full bg-surface2 border border-line px-4 py-2.5 text-sm outline-none focus:border-accent text-ink" />
           <div id="capture-search-results" class="flex flex-col gap-2 mt-2 max-h-72 overflow-y-auto"></div>
         </div>
       </div>`
@@ -809,38 +853,38 @@ function renderCapture() {
         ${captureState.photo ? `<img src="${captureState.photo}" class="w-full aspect-video object-cover rounded-xl" />` : ''}
         <div class="flex items-center gap-3">
           ${posterHtml(show, 'sm')}
-          <div><p class="font-display font-semibold">${esc(show.title)}</p><div class="flex flex-wrap gap-1 mt-1">${platformBadges(show.platforms)}</div></div>
-          <button onclick="captureState.step='confirm'; renderRoute()" class="ml-auto text-xs text-white/40 underline">change</button>
+          <div><p class="font-display italic text-lg text-ink">${esc(show.title)}</p><div class="flex flex-wrap gap-1 mt-1">${platformBadges(show.platforms)}</div></div>
+          <button onclick="captureState.step='confirm'; renderRoute()" class="ml-auto text-xs text-inksoft underline">change</button>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-wide text-white/40 mb-2">Add to which list?</p>
+          <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Add to which list?</p>
           <div id="compose-list-picker" class="flex flex-col gap-2">
-            ${lists.map((l) => `<button type="button" onclick="pickComposeList('${l.id}')" data-list-id="${l.id}" class="flex items-center justify-between rounded-xl border px-3 py-2.5 text-left transition-colors ${captureState.selectedListId === l.id ? 'border-accent2/50 bg-accent2/10' : 'border-line'}">
-              <span class="text-sm font-medium">${esc(l.name)}</span><span class="text-xs text-white/40">${VIS_ICON[l.visibility]}</span>
+            ${lists.map((l) => `<button type="button" onclick="pickComposeList('${l.id}')" data-list-id="${l.id}" class="flex items-center justify-between rounded-xl border px-3 py-2.5 text-left transition-colors ${captureState.selectedListId === l.id ? 'border-accent bg-accentsoft' : 'border-line'}">
+              <span class="text-sm font-medium text-ink">${esc(l.name)}</span><span class="text-xs text-inksoft">${VIS_ICON[l.visibility]}</span>
             </button>`).join('')}
-            <div id="compose-newlist-toggle"><button onclick="document.getElementById('compose-newlist-toggle').hidden=true; document.getElementById('compose-newlist-form').hidden=false" class="rounded-xl border border-dashed border-line px-3 py-2.5 text-left text-sm text-white/50 w-full">+ New list</button></div>
+            <div id="compose-newlist-toggle"><button onclick="document.getElementById('compose-newlist-toggle').hidden=true; document.getElementById('compose-newlist-form').hidden=false" class="rounded-xl border border-dashed border-line px-3 py-2.5 text-left text-sm text-inksoft w-full">+ New list</button></div>
             <div id="compose-newlist-form" hidden class="flex gap-2">
-              <input id="compose-newlist-name" placeholder="List name" class="flex-1 bg-white/5 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent2/50" />
-              <button onclick="composeCreateList()" class="rounded-lg bg-accent px-3 text-sm font-medium">Add</button>
+              <input id="compose-newlist-name" placeholder="List name" class="flex-1 bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" />
+              <button onclick="composeCreateList()" class="rounded-lg bg-accent text-accentink px-3 text-sm font-medium">Add</button>
             </div>
           </div>
         </div>
-        <div><p class="text-xs uppercase tracking-wide text-white/40 mb-2">Rating (optional)</p>${starsInteractive('compose-stars', 0, 'lg')}</div>
-        <div><p class="text-xs uppercase tracking-wide text-white/40 mb-2">Note (optional)</p>
-          <textarea id="compose-note" placeholder="What did you think?" rows="3" class="w-full rounded-xl bg-white/5 border border-line px-3 py-2.5 text-sm outline-none focus:border-accent2/50 resize-none"></textarea>
+        <div><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Rating (optional)</p>${starsInteractive('compose-stars', 0, 'lg')}</div>
+        <div><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Note (optional)</p>
+          <textarea id="compose-note" placeholder="What did you think?" rows="3" class="w-full rounded-xl bg-surface2 border border-line px-3 py-2.5 text-sm outline-none focus:border-accent text-ink resize-none"></textarea>
         </div>
-        <button onclick="submitCapturePost()" class="w-full bg-accent text-white font-medium py-3 rounded-full">Add to list</button>
+        <button onclick="submitCapturePost()" class="w-full bg-accent text-accentink font-medium py-3 rounded-full">Add to list</button>
       </div>`
   } else if (captureState.step === 'done') {
     const show = captureState.show
     body = `
       <div class="flex flex-col items-center text-center py-16 gap-4 animate-pop">
-        <p class="text-5xl">✅</p>
-        <p class="font-display font-semibold text-lg">Added to ${esc(captureState.postedListName || '')}</p>
-        <p class="text-sm text-white/50">${esc(show.title)} is now in your "${esc(captureState.postedListName || '')}" list.</p>
+        <div class="h-14 w-14 rounded-full border border-accent flex items-center justify-center text-2xl text-accent">✓</div>
+        <p class="font-display italic text-2xl text-ink">Added to ${esc(captureState.postedListName || '')}</p>
+        <p class="text-sm text-inksoft">${esc(show.title)} is now in your "${esc(captureState.postedListName || '')}" list.</p>
         <div class="flex gap-2 mt-2">
-          <button onclick="resetCaptureState(); renderRoute()" class="rounded-full border border-line px-4 py-2 text-sm">Capture another</button>
-          <button onclick="navigate('#/show/${show.slug}')" class="rounded-full bg-accent px-4 py-2 text-sm font-medium">View show</button>
+          <button onclick="resetCaptureState(); renderRoute()" class="rounded-full border border-line px-4 py-2 text-sm text-inksoft">Capture another</button>
+          <button onclick="navigate('#/show/${show.slug}')" class="rounded-full bg-accent text-accentink px-4 py-2 text-sm font-medium">View show</button>
         </div>
       </div>`
   }
@@ -904,8 +948,8 @@ function renderCaptureSearchResults(query) {
   const results = searchShows(query)
   const el = document.getElementById('capture-search-results')
   if (!el) return
-  el.innerHTML = results.map((show) => `<button onclick="selectCandidate('${show.id}')" class="flex items-center gap-3 rounded-xl border border-line bg-panel p-2.5 text-left w-full">
-    ${posterHtml(show, 'sm')}<div class="min-w-0 flex-1"><p class="text-sm font-medium">${esc(show.title)}</p><p class="text-xs text-white/40">${esc(show.platforms.join(', '))}</p></div>
+  el.innerHTML = results.map((show) => `<button onclick="selectCandidate('${show.id}')" class="flex items-center gap-3 rounded-xl border border-line bg-surface p-2.5 text-left w-full">
+    ${posterHtml(show, 'sm')}<div class="min-w-0 flex-1"><p class="text-sm font-medium text-ink">${esc(show.title)}</p><p class="text-xs text-inksoft">${esc(show.platforms.join(', '))}</p></div>
   </button>`).join('')
 }
 function pickComposeList(listId) {
@@ -914,7 +958,7 @@ function pickComposeList(listId) {
   if (!container) return
   Array.from(container.querySelectorAll('button[data-list-id]')).forEach((btn) => {
     const active = btn.dataset.listId === listId
-    btn.className = 'flex items-center justify-between rounded-xl border px-3 py-2.5 text-left transition-colors ' + (active ? 'border-accent2/50 bg-accent2/10' : 'border-line')
+    btn.className = 'flex items-center justify-between rounded-xl border px-3 py-2.5 text-left transition-colors ' + (active ? 'border-accent bg-accentsoft' : 'border-line')
   })
 }
 function composeCreateList() {
@@ -954,47 +998,47 @@ function submitCapturePost() {
 function renderFriends() {
   const rows = FRIENDS.map((friend) => {
     const listCount = FRIEND_LISTS.filter((l) => l.ownerId === friend.id && l.visibility !== 'private').length
-    return `<a href="#/friends/${friend.id}" class="flex items-center gap-3 rounded-xl2 border border-line bg-panel p-3">
-      <span class="h-12 w-12 rounded-full bg-gradient-to-br ${friend.avatarColor} flex-shrink-0"></span>
-      <div class="min-w-0 flex-1"><p class="text-sm font-medium">${esc(friend.name)}</p><p class="text-xs text-white/40">@${esc(friend.handle)} · ${listCount} list${listCount === 1 ? '' : 's'}</p></div>
-      <span class="text-white/30">›</span>
+    return `<a href="#/friends/${friend.id}" class="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3">
+      <span class="h-12 w-12 rounded-full ${friend.avatarClass} flex-shrink-0"></span>
+      <div class="min-w-0 flex-1"><p class="text-sm font-medium text-ink">${esc(friend.name)}</p><p class="text-xs text-inksoft">@${esc(friend.handle)} · ${listCount} list${listCount === 1 ? '' : 's'}</p></div>
+      <span class="text-inksoft">›</span>
     </a>`
   }).join('')
   return shell('#/friends', 'Friends', null, `
     <div class="px-4 pt-3 pb-8">
-      <p class="text-xs text-white/40 mb-4">This is a local demo, so friends are seeded — in the real app you'd invite people or find them by handle.</p>
+      <p class="text-xs text-inksoft mb-4">This is a local demo, so friends are seeded — in the real app you'd invite people or find them by handle.</p>
       <div class="flex flex-col gap-2">${rows}</div>
     </div>`)
 }
 
 function renderFriendProfile(id) {
   const friend = FRIENDS.find((f) => f.id === id)
-  if (!friend) return shell('#/friends', 'Not found', '#/friends', `<p class="px-4 py-8 text-sm text-white/50">Couldn't find that friend.</p>`)
+  if (!friend) return shell('#/friends', 'Not found', '#/friends', `<p class="px-4 py-8 text-sm text-inksoft">Couldn't find that friend.</p>`)
   const lists = FRIEND_LISTS.filter((l) => l.ownerId === id && l.visibility !== 'private')
   const listsHtml = lists.length
-    ? `<div class="grid grid-cols-2 gap-2">${lists.map((l) => listSummaryCard(l, FRIEND_LIST_ITEMS.filter((i) => i.listId === l.id), `#/friends/${friend.id}/lists/${l.id}`)).join('')}</div>`
-    : `<p class="text-sm text-white/40">No public or shared lists yet.</p>`
+    ? `<div class="grid grid-cols-2 gap-2.5">${lists.map((l) => listSummaryCard(l, FRIEND_LIST_ITEMS.filter((i) => i.listId === l.id), `#/friends/${friend.id}/lists/${l.id}`)).join('')}</div>`
+    : `<p class="text-sm text-inksoft">No public or shared lists yet.</p>`
   return shell('#/friends', friend.name, '#/friends', `
     <div class="px-4 pt-4 pb-8">
       <div class="flex items-center gap-3">
-        <span class="h-16 w-16 rounded-full bg-gradient-to-br ${friend.avatarColor} flex-shrink-0"></span>
-        <div><p class="font-display font-semibold text-lg">${esc(friend.name)}</p><p class="text-xs text-white/40">@${esc(friend.handle)}</p></div>
+        <span class="h-16 w-16 rounded-full ${friend.avatarClass} flex-shrink-0"></span>
+        <div><p class="font-display italic text-2xl text-ink">${esc(friend.name)}</p><p class="text-xs text-inksoft">@${esc(friend.handle)}</p></div>
       </div>
-      <p class="text-sm text-white/70 mt-3">${esc(friend.bio)}</p>
-      <div class="mt-6"><p class="text-xs uppercase tracking-wide text-white/40 mb-2">${esc(friend.name.split(' ')[0])}'s lists</p>${listsHtml}</div>
+      <p class="text-sm text-ink/80 mt-3">${esc(friend.bio)}</p>
+      <div class="mt-6"><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">${esc(friend.name.split(' ')[0])}'s lists</p>${listsHtml}</div>
     </div>`)
 }
 
 function renderFriendListDetail(id, listId) {
   const friend = FRIENDS.find((f) => f.id === id)
   const list = FRIEND_LISTS.find((l) => l.id === listId && l.ownerId === id)
-  if (!friend || !list) return shell('#/friends', 'Not found', id ? `#/friends/${id}` : '#/friends', `<p class="px-4 py-8 text-sm text-white/50">That list isn't visible to you.</p>`)
+  if (!friend || !list) return shell('#/friends', 'Not found', id ? `#/friends/${id}` : '#/friends', `<p class="px-4 py-8 text-sm text-inksoft">That list isn't visible to you.</p>`)
   const items = FRIEND_LIST_ITEMS.filter((i) => i.listId === listId).sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
   const itemsHtml = items.length
-    ? `<div class="flex flex-col gap-3">${items.map((item) => activityRow(item, friend.name, friend.avatarColor, list.name, false)).join('')}</div>`
-    : `<p class="text-sm text-white/40 text-center py-10">Nothing in this list yet.</p>`
+    ? `<div class="flex flex-col gap-9">${items.map((item) => activityRow(item, friend.name, friend.avatarClass, list.name, null)).join('')}</div>`
+    : `<p class="text-sm text-inksoft text-center py-10">Nothing in this list yet.</p>`
   return shell('#/friends', `${friend.name.split(' ')[0]}'s ${list.name}`, `#/friends/${friend.id}`, `
-    <div class="px-4 pt-4 pb-8"><p class="text-xs text-white/40 mb-4">${items.length} show${items.length === 1 ? '' : 's'}</p>${itemsHtml}</div>`)
+    <div class="px-4 pt-4 pb-8"><p class="text-xs text-inksoft mb-5">${items.length} show${items.length === 1 ? '' : 's'}</p>${itemsHtml}</div>`)
 }
 
 /* =========================================================================
@@ -1003,33 +1047,34 @@ function renderFriendListDetail(id, listId) {
 function renderProfile() {
   const user = getUser()
   return shell('#/profile', 'Profile', null, `
-    <div class="px-4 pt-4 pb-8 flex flex-col gap-6">
+    <div class="px-4 pt-4 pb-8 flex flex-col gap-7">
       <div>
-        <p class="text-xs uppercase tracking-wide text-white/40 mb-2">You</p>
-        <div class="rounded-xl2 border border-line bg-panel p-4 flex flex-col gap-3">
-          <label class="text-xs text-white/50">Display name<input id="profile-name" value="${esc(user.name)}" class="mt-1 w-full bg-white/5 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent2/50" /></label>
-          <label class="text-xs text-white/50">Handle<input id="profile-handle" value="${esc(user.handle)}" class="mt-1 w-full bg-white/5 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent2/50" /></label>
-          <button id="profile-save-btn" onclick="profileSave()" class="rounded-full bg-accent text-white text-sm font-medium py-2">Save</button>
+        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">You</p>
+        <div class="rounded-2xl border border-line bg-surface p-4 flex flex-col gap-3">
+          <label class="text-xs text-inksoft">Display name<input id="profile-name" value="${esc(user.name)}" class="mt-1 w-full bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" /></label>
+          <label class="text-xs text-inksoft">Handle<input id="profile-handle" value="${esc(user.handle)}" class="mt-1 w-full bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" /></label>
+          <button id="profile-save-btn" onclick="profileSave()" class="rounded-full bg-accent text-accentink text-sm font-medium py-2">Save</button>
         </div>
       </div>
       <div>
-        <p class="text-xs uppercase tracking-wide text-white/40 mb-2">Your data</p>
-        <div class="rounded-xl2 border border-line bg-panel p-4 flex flex-col gap-2">
-          <p class="text-xs text-white/50 mb-1">Everything lives in this browser's local storage — nothing leaves your device yet.</p>
-          <button onclick="profileExport()" class="rounded-full border border-line py-2 text-sm">Export data (.json)</button>
-          <button onclick="document.getElementById('profile-import-file').click()" class="rounded-full border border-line py-2 text-sm">Import data</button>
+        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Your data</p>
+        <div class="rounded-2xl border border-line bg-surface p-4 flex flex-col gap-2">
+          <p class="text-xs text-inksoft mb-1">Everything lives in this browser's local storage — nothing leaves your device yet.</p>
+          <button onclick="profileExport()" class="rounded-full border border-line py-2 text-sm text-inksoft">Export data (.json)</button>
+          <button onclick="document.getElementById('profile-import-file').click()" class="rounded-full border border-line py-2 text-sm text-inksoft">Import data</button>
           <input id="profile-import-file" type="file" accept="application/json" class="hidden" onchange="profileImport(event)" />
-          <button onclick="profileClear()" class="rounded-full border border-red-900/50 text-red-400 py-2 text-sm">Clear all data</button>
+          <button onclick="profileClear()" class="rounded-full border border-danger/40 text-danger py-2 text-sm">Clear all data</button>
         </div>
       </div>
       <div>
-        <p class="text-xs uppercase tracking-wide text-white/40 mb-2">About this build</p>
-        <div class="rounded-xl2 border border-line bg-panel p-4 text-xs text-white/50 leading-relaxed flex flex-col gap-2">
+        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">About this build</p>
+        <div class="rounded-2xl border border-line bg-surface p-4 text-xs text-inksoft leading-relaxed flex flex-col gap-2">
           <p>This is a local-first prototype for working out the UX. A few things are simulated for now:</p>
           <ul class="list-disc pl-4 flex flex-col gap-1">
             <li>Show recognition from a photo picks a plausible match from a small local catalog rather than calling a real vision API.</li>
             <li>Friends and their lists are seeded so the home activity feed feels alive without a backend.</li>
             <li>"Where to watch" data is hardcoded per show instead of coming from a live availability API.</li>
+            <li>Poster art is a generated duotone treatment, not real licensed artwork.</li>
           </ul>
           <p>This build runs as a single self-contained page (vanilla JS, Tailwind via CDN) so it can be opened directly on your phone with no install step. A production version would move the list/review data to a real backend so it syncs across your devices.</p>
         </div>
@@ -1073,31 +1118,31 @@ function profileClear() {
    ========================================================================= */
 function renderPublicShow(slug) {
   const show = findShowBySlug(slug)
-  if (!show) return `<div class="min-h-full flex flex-col items-center justify-center text-center px-6"><p class="text-4xl mb-3">🎬</p><p class="text-white/60 text-sm">This show isn't in the demo catalog.</p></div>`
+  if (!show) return `<div class="min-h-full flex flex-col items-center justify-center text-center px-6"><p class="text-4xl mb-3 opacity-70">🎞️</p><p class="text-inksoft text-sm">This show isn't in the demo catalog.</p></div>`
   const reviews = FRIEND_REVIEWS.filter((r) => r.showId === show.id)
   const avg = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : null
   const reviewsHtml = reviews.length
-    ? `<div class="w-full max-w-sm mt-6 flex flex-col gap-2 text-left"><p class="text-xs uppercase tracking-wide text-white/40">From the Reel community</p>
-        ${reviews.slice(0, 3).map((r) => `<div class="rounded-xl border border-line bg-panel p-3">${starsReadOnly(r.rating, 'sm')}<p class="text-sm text-white/70 mt-1">${esc(r.text)}</p></div>`).join('')}
+    ? `<div class="w-full max-w-sm mt-6 flex flex-col gap-2 text-left"><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft">From the Reel community</p>
+        ${reviews.slice(0, 3).map((r) => `<div class="rounded-2xl border border-line bg-surface p-3.5">${starsReadOnly(r.rating, 'sm')}<p class="text-sm text-ink/80 mt-1">${esc(r.text)}</p></div>`).join('')}
       </div>` : ''
   return `
     <div class="min-h-full flex flex-col">
-      <header class="px-5 py-4 flex items-center gap-2 safe-top"><span class="text-xl">🎬</span><span class="font-display font-semibold">Reel</span></header>
+      <header class="px-5 py-4 flex items-center gap-2 safe-top"><span class="text-lg">🎞️</span><span class="font-display italic text-lg text-ink">Reel</span></header>
       <main class="flex-1 px-5 pb-10 flex flex-col items-center text-center">
-        ${posterHtml(show, 'lg')}
-        <h1 class="font-display font-semibold text-2xl mt-5">${esc(show.title)}</h1>
-        <p class="text-sm text-white/40 mt-1">${show.year} · ${esc(show.genres.join(', '))}</p>
+        <div class="w-full max-w-sm">${posterHero(show)}</div>
+        <h1 class="font-display italic text-3xl text-ink mt-5">${esc(show.title)}</h1>
+        <p class="text-sm text-inksoft mt-1">${show.year} · ${esc(show.genres.join(', '))}</p>
         <div class="flex flex-wrap gap-1.5 justify-center mt-3">${platformBadges(show.platforms)}</div>
-        ${avg != null ? `<div class="flex items-center gap-2 mt-3">${starsReadOnly(Math.round(avg), 'md')}<span class="text-sm text-white/50">${avg.toFixed(1)} from your friends on Reel</span></div>` : ''}
-        <p class="text-sm text-white/70 leading-relaxed mt-5 max-w-sm">${esc(show.synopsis)}</p>
-        <div class="w-full max-w-sm mt-8 rounded-xl2 border border-line bg-panel p-5">
-          <p class="font-display font-semibold mb-1">See what your friends think</p>
-          <p class="text-xs text-white/50 mb-4">Get Reel to read full reviews, track what you're watching, and build your own lists.</p>
+        ${avg != null ? `<div class="flex items-center gap-2 mt-3">${starsReadOnly(Math.round(avg), 'md')}<span class="text-sm text-inksoft">${avg.toFixed(1)} from your friends on Reel</span></div>` : ''}
+        <p class="text-sm text-ink/80 leading-relaxed mt-5 max-w-sm">${esc(show.synopsis)}</p>
+        <div class="w-full max-w-sm mt-8 rounded-2xl border border-line bg-surface p-5">
+          <p class="font-display italic text-xl text-ink mb-1">See what your friends think</p>
+          <p class="text-xs text-inksoft mb-4">Get Reel to read full reviews, track what you're watching, and build your own lists.</p>
           <div class="flex flex-col gap-2">
-            <button class="rounded-full bg-white text-ink text-sm font-semibold py-2.5">Get it on the App Store</button>
-            <button class="rounded-full border border-line text-sm font-semibold py-2.5">Get it on Google Play</button>
+            <button class="rounded-full bg-ink text-bg text-sm font-semibold py-2.5">Get it on the App Store</button>
+            <button class="rounded-full border border-line text-sm font-semibold py-2.5 text-ink">Get it on Google Play</button>
           </div>
-          <a href="#/" class="block text-xs text-accent2 mt-3">Already have Reel? Open the app →</a>
+          <a href="#/" class="block text-xs text-accent mt-3">Already have Reel? Open the app →</a>
         </div>
         ${reviewsHtml}
       </main>
