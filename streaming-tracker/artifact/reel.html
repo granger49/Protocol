@@ -3,431 +3,294 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600&display=swap"
-  rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          bg: 'rgb(var(--bg) / <alpha-value>)',
-          surface: 'rgb(var(--surface) / <alpha-value>)',
-          surface2: 'rgb(var(--surface-2) / <alpha-value>)',
-          line: 'rgb(var(--line) / <alpha-value>)',
-          ink: 'rgb(var(--ink) / <alpha-value>)',
-          inksoft: 'rgb(var(--ink-soft) / <alpha-value>)',
-          accent: 'rgb(var(--accent) / <alpha-value>)',
-          accentsoft: 'rgb(var(--accent-soft) / <alpha-value>)',
-          accentink: 'rgb(var(--accent-ink) / <alpha-value>)',
-          gold: 'rgb(var(--gold) / <alpha-value>)',
-          danger: 'rgb(var(--danger) / <alpha-value>)',
+          ivory: '#F6F4EF',
+          ink: '#24211E',
+          body: '#3A362F',
+          inksoft: '#7A756D',
+          inkfaint: '#ADA89C',
+          line: '#E7E2D9',
+          linesoft: '#EFEBE2',
+          accent: '#43635C',
+          gold: '#B08968',
+          chipbg: '#EFEEE7',
+          sheet: '#2F2C27',
         },
-        fontFamily: { display: ['"Instrument Serif"', 'Georgia', 'serif'] },
-        borderRadius: { xl2: '1.25rem' },
+        fontFamily: { display: ['Fraunces', 'Georgia', 'serif'] },
       },
     },
   }
 </script>
 <style>
-  :root {
-    color-scheme: light dark;
-    --bg: 240 240 241; --surface: 255 255 255; --surface-2: 231 231 232; --line: 219 219 221;
-    --ink: 32 32 34; --ink-soft: 118 117 122; --accent: 91 109 143; --accent-soft: 221 227 235;
-    --accent-ink: 255 255 255; --gold: 176 136 71; --danger: 178 93 83;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: 20 21 23; --surface: 29 30 33; --surface-2: 38 39 43; --line: 54 55 60;
-      --ink: 234 234 232; --ink-soft: 155 154 150; --accent: 148 165 196; --accent-soft: 42 50 63;
-      --accent-ink: 20 21 23; --gold: 210 173 112; --danger: 212 138 128;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: 20 21 23; --surface: 29 30 33; --surface-2: 38 39 43; --line: 54 55 60;
-    --ink: 234 234 232; --ink-soft: 155 154 150; --accent: 148 165 196; --accent-soft: 42 50 63;
-    --accent-ink: 20 21 23; --gold: 210 173 112; --danger: 212 138 128;
-  }
-  html, body { background: rgb(var(--bg)); }
-  body {
-    font-family: 'Work Sans', system-ui, sans-serif;
-    font-size: 16px;
-    color: rgb(var(--ink));
-    min-height: 100%;
-  }
-  .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+  html, body { background: #F6F4EF; }
+  body { font-family: system-ui, -apple-system, sans-serif; color: #24211E; font-size: 16px; min-height: 100%; }
+  .font-display { font-family: Fraunces, Georgia, serif; }
   * { -webkit-tap-highlight-color: transparent; }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-thumb { background: rgb(var(--line)); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb { background: #E7E2D9; border-radius: 999px; }
   .safe-top { padding-top: env(safe-area-inset-top, 0px); }
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
-
-  /* poster "art": muted duotone families + a faint grain so blocks of color read as paper/print, not UI chrome */
-  .poster-0 { background: linear-gradient(160deg, #C98B7A, #3B2E2E); }
-  .poster-1 { background: linear-gradient(160deg, #8FA68E, #2B332C); }
-  .poster-2 { background: linear-gradient(160deg, #6E85A8, #232C3B); }
-  .poster-3 { background: linear-gradient(160deg, #B9775A, #3A2A22); }
-  .poster-4 { background: linear-gradient(160deg, #C9A565, #332A1E); }
-  .poster-5 { background: linear-gradient(160deg, #9C8CA8, #2D2436); }
-  .poster-6 { background: linear-gradient(160deg, #6FA39A, #1E302D); }
-  .poster-7 { background: linear-gradient(160deg, #A89D8E, #2B2825); }
-  .poster-8 { background: linear-gradient(160deg, #C77B72, #3A1F1E); }
-  .poster-9 { background: linear-gradient(160deg, #7E93AE, #22283A); }
-  [class*="poster-"] { position: relative; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08); }
-  .poster-grain::after {
-    content: '';
-    position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: .05;
-    mix-blend-mode: overlay;
-    pointer-events: none;
-  }
-  .avatar-me { background: rgb(var(--accent)); }
-  .avatar-rose { background: #C98B7A; }
-  .avatar-slate { background: #6E85A8; }
-  .avatar-sage { background: #8FA68E; }
-  .avatar-lavender { background: #9C8CA8; }
-
-  @keyframes breathe { 0%, 100% { opacity: .35 } 50% { opacity: .85 } }
-  .animate-scan { animation: breathe 2.4s ease-in-out infinite; }
-  @keyframes pop-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .animate-pop { animation: pop-in 0.35s ease-out both; }
   [hidden] { display: none !important; }
+  @keyframes pop-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-pop { animation: pop-in 0.3s ease-out both; }
+  @keyframes breathe { 0%, 100% { opacity: .35 } 50% { opacity: .85 } }
+  .animate-breathe { animation: breathe 2.4s ease-in-out infinite; }
 </style>
 
 <div id="app" class="min-h-full"></div>
 
 <script>
 /* =========================================================================
-   DATA
+   ICONS (inline SVG, stroke="currentColor" so they take the surrounding
+   text color — ported from the design canvas)
    ========================================================================= */
-const SHOWS = [
-  { id: 's1', slug: 'severance', title: 'Severance', year: 2022, genres: ['Sci-Fi', 'Thriller'], platforms: ['Apple TV+'], synopsis: 'Employees undergo a procedure to split their memories between work and home.', pal: 2, emoji: '🧠' },
-  { id: 's2', slug: 'the-bear', title: 'The Bear', year: 2022, genres: ['Drama', 'Comedy'], platforms: ['Hulu'], synopsis: "A young chef returns home to run his late brother's sandwich shop.", pal: 3, emoji: '🍞' },
-  { id: 's3', slug: 'succession', title: 'Succession', year: 2018, genres: ['Drama'], platforms: ['Max'], synopsis: 'A media dynasty fights over who will take control of the family empire.', pal: 7, emoji: '👑' },
-  { id: 's4', slug: 'stranger-things', title: 'Stranger Things', year: 2016, genres: ['Sci-Fi', 'Horror'], platforms: ['Netflix'], synopsis: 'Kids in a small town uncover supernatural forces and secret experiments.', pal: 8, emoji: '📼' },
-  { id: 's5', slug: 'the-last-of-us', title: 'The Last of Us', year: 2023, genres: ['Drama', 'Horror'], platforms: ['Max'], synopsis: 'A smuggler escorts a girl across a post-pandemic United States.', pal: 1, emoji: '🍄' },
-  { id: 's6', slug: 'fleabag', title: 'Fleabag', year: 2016, genres: ['Comedy', 'Drama'], platforms: ['Prime Video'], synopsis: 'A woman navigates modern life in London while breaking the fourth wall.', pal: 5, emoji: '🍷' },
-  { id: 's7', slug: 'ted-lasso', title: 'Ted Lasso', year: 2020, genres: ['Comedy', 'Sport'], platforms: ['Apple TV+'], synopsis: 'An American football coach takes over an English football club.', pal: 4, emoji: '⚽' },
-  { id: 's8', slug: 'the-crown', title: 'The Crown', year: 2016, genres: ['Drama', 'History'], platforms: ['Netflix'], synopsis: 'The reign of Queen Elizabeth II, from the 1940s to modern times.', pal: 4, emoji: '👑' },
-  { id: 's9', slug: 'abbott-elementary', title: 'Abbott Elementary', year: 2021, genres: ['Comedy'], platforms: ['Hulu'], synopsis: 'A mockumentary about teachers at an underfunded Philadelphia school.', pal: 9, emoji: '🏫' },
-  { id: 's10', slug: 'house-of-the-dragon', title: 'House of the Dragon', year: 2022, genres: ['Fantasy', 'Drama'], platforms: ['Max'], synopsis: 'The Targaryen civil war, two hundred years before Game of Thrones.', pal: 8, emoji: '🐉' },
-  { id: 's11', slug: 'only-murders-in-the-building', title: 'Only Murders in the Building', year: 2021, genres: ['Comedy', 'Mystery'], platforms: ['Hulu'], synopsis: 'Three strangers obsessed with true crime investigate a death in their building.', pal: 3, emoji: '🔎' },
-  { id: 's12', slug: 'the-mandalorian', title: 'The Mandalorian', year: 2019, genres: ['Sci-Fi', 'Action'], platforms: ['Disney+'], synopsis: 'A lone bounty hunter makes his way through the outer reaches of the galaxy.', pal: 7, emoji: '🪐' },
-  { id: 's13', slug: 'reservation-dogs', title: 'Reservation Dogs', year: 2021, genres: ['Comedy', 'Drama'], platforms: ['Hulu'], synopsis: 'Four Indigenous teens in rural Oklahoma navigate life and loss.', pal: 3, emoji: '🌵' },
-  { id: 's14', slug: 'yellowjackets', title: 'Yellowjackets', year: 2021, genres: ['Horror', 'Mystery'], platforms: ['Paramount+'], synopsis: "A girls' soccer team survives a plane crash in the wilderness — with consequences.", pal: 1, emoji: '🏕️' },
-  { id: 's15', slug: 'the-white-lotus', title: 'The White Lotus', year: 2021, genres: ['Drama', 'Satire'], platforms: ['Max'], synopsis: 'Guests and staff at a luxury resort unravel over the course of a week.', pal: 6, emoji: '🌺' },
-  { id: 's16', slug: 'slow-horses', title: 'Slow Horses', year: 2022, genres: ['Spy', 'Thriller'], platforms: ['Apple TV+'], synopsis: 'MI5 rejects investigate a case from the bottom rung of the service.', pal: 2, emoji: '🐎' },
-  { id: 's17', slug: 'atlanta', title: 'Atlanta', year: 2016, genres: ['Comedy', 'Surreal'], platforms: ['Hulu'], synopsis: 'Two cousins navigate the Atlanta rap scene and everyday absurdity.', pal: 5, emoji: '🎤' },
-  { id: 's18', slug: 'poker-face', title: 'Poker Face', year: 2023, genres: ['Mystery', 'Comedy'], platforms: ['Peacock'], synopsis: 'A woman with a natural lie-detecting ability solves a new mystery each week.', pal: 4, emoji: '🃏' },
-  { id: 's19', slug: 'shogun', title: 'Shōgun', year: 2024, genres: ['Drama', 'History'], platforms: ['Hulu', 'FX'], synopsis: "A shipwrecked English sailor gets caught up in feudal Japan's power struggle.", pal: 8, emoji: '⚔️' },
-  { id: 's20', slug: 'better-call-saul', title: 'Better Call Saul', year: 2015, genres: ['Crime', 'Drama'], platforms: ['AMC', 'Netflix'], synopsis: 'The transformation of a small-time lawyer into the man known as Saul Goodman.', pal: 7, emoji: '⚖️' },
-  { id: 's21', slug: 'the-boys', title: 'The Boys', year: 2019, genres: ['Superhero', 'Satire'], platforms: ['Prime Video'], synopsis: 'Vigilantes take on corrupt superheroes secretly controlled by a corporation.', pal: 8, emoji: '🦸' },
-  { id: 's22', slug: 'loki', title: 'Loki', year: 2021, genres: ['Sci-Fi', 'Fantasy'], platforms: ['Disney+'], synopsis: 'The God of Mischief is recruited by a mysterious bureaucratic organization.', pal: 1, emoji: '🐍' },
-  { id: 's23', slug: 'girls5eva', title: 'Girls5eva', year: 2021, genres: ['Comedy', 'Musical'], platforms: ['Netflix'], synopsis: 'A one-hit-wonder girl group gets a shot at a comeback.', pal: 5, emoji: '🎶' },
-  { id: 's24', slug: 'true-detective', title: 'True Detective', year: 2014, genres: ['Crime', 'Anthology'], platforms: ['Max'], synopsis: 'An anthology series following detectives entangled in dark, layered investigations.', pal: 2, emoji: '🔦' },
-]
-
-const FRIENDS = [
-  { id: 'f1', name: 'Priya Shah', handle: 'priyawatches', avatarClass: 'avatar-rose', bio: 'Prestige drama enjoyer. Currently obsessed with anything A24-adjacent.' },
-  { id: 'f2', name: 'Marcus Webb', handle: 'marcusw', avatarClass: 'avatar-slate', bio: 'Sci-fi and true crime. Will not shut up about Severance.' },
-  { id: 'f3', name: 'Dana Okafor', handle: 'danao', avatarClass: 'avatar-lavender', bio: 'Comfort comedy rewatcher. Ask me about The Bear.' },
-  { id: 'f4', name: 'Leo Fontaine', handle: 'leofontaine', avatarClass: 'avatar-sage', bio: 'Horror and mystery. Yellowjackets truther.' },
-]
-
-const FRIENDS_NOW = Date.now()
-const fHoursAgo = (h) => new Date(FRIENDS_NOW - h * 3600e3).toISOString()
-
-const FRIEND_LISTS = [
-  { id: 'f1-watching', ownerId: 'f1', name: 'Watching', kind: 'watching', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f1-finished', ownerId: 'f1', name: 'Finished', kind: 'finished', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f1-custom', ownerId: 'f1', name: 'A24-core', kind: 'custom', visibility: 'friends', createdAt: fHoursAgo(200) },
-  { id: 'f2-watching', ownerId: 'f2', name: 'Watching', kind: 'watching', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f2-finished', ownerId: 'f2', name: 'Finished', kind: 'finished', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f2-custom', ownerId: 'f2', name: 'Puzzle-box shows', kind: 'custom', visibility: 'friends', createdAt: fHoursAgo(180) },
-  { id: 'f3-watching', ownerId: 'f3', name: 'Watching', kind: 'watching', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f3-want', ownerId: 'f3', name: 'Want to Watch', kind: 'want', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f3-custom', ownerId: 'f3', name: 'Comfort rewatches', kind: 'custom', visibility: 'friends', createdAt: fHoursAgo(220) },
-  { id: 'f4-watching', ownerId: 'f4', name: 'Watching', kind: 'watching', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f4-finished', ownerId: 'f4', name: 'Finished', kind: 'finished', visibility: 'friends', createdAt: fHoursAgo(400) },
-  { id: 'f4-custom', ownerId: 'f4', name: 'Horror & mystery', kind: 'custom', visibility: 'friends', createdAt: fHoursAgo(160) },
-]
-
-const FRIEND_LIST_ITEMS = [
-  { id: 'fi1', listId: 'f1-watching', showId: 's1', photo: null, note: 'Episode 6 broke me. The elevator scene lives in my head rent free.', addedAt: fHoursAgo(2) },
-  { id: 'fi2', listId: 'f1-finished', showId: 's15', photo: null, note: 'Season 3 casting is so good it should be illegal.', addedAt: fHoursAgo(30) },
-  { id: 'fi3', listId: 'f1-custom', showId: 's6', photo: null, note: '', addedAt: fHoursAgo(150) },
-  { id: 'fi4', listId: 'f1-custom', showId: 's3', photo: null, note: '', addedAt: fHoursAgo(151) },
-  { id: 'fi5', listId: 'f2-watching', showId: 's5', photo: null, note: 'Finally caught up. That was not a video game adaptation, that was just grief.', addedAt: fHoursAgo(5) },
-  { id: 'fi6', listId: 'f2-finished', showId: 's16', photo: null, note: 'Gary Oldman deserves every award that exists for this.', addedAt: fHoursAgo(48) },
-  { id: 'fi7', listId: 'f2-custom', showId: 's1', photo: null, note: '', addedAt: fHoursAgo(130) },
-  { id: 'fi8', listId: 'f3-watching', showId: 's2', photo: null, note: 'Rewatching for the fourth time. "Every second counts" hits different at 11pm.', addedAt: fHoursAgo(9) },
-  { id: 'fi9', listId: 'f3-want', showId: 's19', photo: null, note: '', addedAt: fHoursAgo(60) },
-  { id: 'fi10', listId: 'f3-custom', showId: 's9', photo: null, note: '', addedAt: fHoursAgo(190) },
-  { id: 'fi11', listId: 'f3-custom', showId: 's7', photo: null, note: '', addedAt: fHoursAgo(191) },
-  { id: 'fi12', listId: 'f4-watching', showId: 's14', photo: null, note: 'The 90s timeline is unhinged and I respect it fully.', addedAt: fHoursAgo(20) },
-  { id: 'fi13', listId: 'f4-finished', showId: 's24', photo: null, note: '', addedAt: fHoursAgo(80) },
-  { id: 'fi14', listId: 'f4-custom', showId: 's14', photo: null, note: '', addedAt: fHoursAgo(140) },
-]
-
-const FRIEND_REVIEWS = [
-  { id: 'r1', showId: 's1', authorId: 'f1', rating: 5, text: 'Best cold open of any show in the last decade. Unsettling in the best way.', createdAt: fHoursAgo(3) },
-  { id: 'r2', showId: 's2', authorId: 'f3', rating: 5, text: 'The kitchen chaos is filmed like a horror movie and I mean that as a compliment.', createdAt: fHoursAgo(11) },
-  { id: 'r3', showId: 's5', authorId: 'f2', rating: 5, text: 'Episode 3 is basically a standalone film. Devastating.', createdAt: fHoursAgo(6) },
-  { id: 'r4', showId: 's7', authorId: 'f3', rating: 4, text: 'Started as a joke premise, ended as genuine comfort watching.', createdAt: fHoursAgo(60) },
-  { id: 'r5', showId: 's14', authorId: 'f4', rating: 4, text: 'Somehow both a survival thriller and a workplace-drama-in-the-woods.', createdAt: fHoursAgo(22) },
-]
-
-const DEFAULT_LISTS = [
-  { kind: 'watching', name: 'Watching', visibility: 'friends' },
-  { kind: 'want', name: 'Want to Watch', visibility: 'friends' },
-  { kind: 'finished', name: 'Finished', visibility: 'friends' },
-  { kind: 'dropped', name: 'Dropped', visibility: 'private' },
-]
-
-/* =========================================================================
-   STORAGE
-   ========================================================================= */
-const KEYS = { user: 'reel.user', lists: 'reel.lists', listItems: 'reel.listItems', reviews: 'reel.reviews' }
-
-function uid(prefix) { return prefix + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8) }
-
-function readKey(key, fallback) {
-  try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback } catch (e) { return fallback }
+const ICONS = {
+  home: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>',
+  lists: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+  discover: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-4-2 2-6z"/></svg>',
+  plus: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  back: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  close: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>',
+  share: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>',
+  search: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ADA89C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>',
+  chevron: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ADA89C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  flash: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>',
+  flip: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a8 8 0 0 1 13.5-4.5L20 7"/><path d="M20 15a8 8 0 0 1-13.5 4.5L4 17"/><path d="M17 2v5h-5M7 22v-5h5"/></svg>',
+  addlist: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16l-6-4-6 4z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="10" y1="10" x2="14" y2="10"/></svg>',
+  comment: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-4 3.5V6z"/></svg>',
+  heart: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.7-9.8-9.2C.6 7.8 2 4.5 5.3 3.7c2-.5 4 .3 5.2 2.1 1.2-1.8 3.2-2.6 5.2-2.1 3.3.8 4.7 4.1 3.1 7.6-2.3 4.5-9.8 9.2-9.8 9.2z"/></svg>',
+  heartFill: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#43635C" stroke="#43635C" stroke-width="1.75"><path d="M12 20.5s-7.5-4.7-9.8-9.2C.6 7.8 2 4.5 5.3 3.7c2-.5 4 .3 5.2 2.1 1.2-1.8 3.2-2.6 5.2-2.1 3.3.8 4.7 4.1 3.1 7.6-2.3 4.5-9.8 9.2-9.8 9.2z"/></svg>',
+  follow: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  check: '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  settings: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V19a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 17.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 13a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 6.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 2.6a1.7 1.7 0 0 0 1.04-1.56V1a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.04 2.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V7a1.7 1.7 0 0 0 1.56 1h.09a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1z"/></svg>',
+  sparkle: '<svg width="13" height="13" viewBox="0 0 24 24" fill="#B08968" stroke="none"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"/></svg>',
+  star: '<svg width="11" height="11" viewBox="0 0 24 24" fill="#B08968" stroke="none"><path d="M12 2.5l2.9 6 6.6.6-5 4.4 1.5 6.5L12 16.9l-5.9 3.1L7.6 13.5l-5-4.4 6.6-.6z"/></svg>',
+  starEmpty: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E7E2D9" stroke-width="1.3"><path d="M12 2.5l2.9 6 6.6.6-5 4.4 1.5 6.5L12 16.9l-5.9 3.1L7.6 13.5l-5-4.4 6.6-.6z"/></svg>',
+  mail: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6 8 7 8-7"/></svg>',
+  more: '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
+  lock: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#24211E" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  camera: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.2l1-1.6A1.5 1.5 0 0 1 9.5 3.5h5a1.5 1.5 0 0 1 1.3.8L17 6h1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>',
 }
-function writeKey(key, value) {
-  try { localStorage.setItem(key, JSON.stringify(value)) } catch (e) { /* storage unavailable, session still works in-memory */ }
+function starRow(value, size) {
+  const s = size || 11
+  let out = ''
+  for (let i = 1; i <= 5; i++) out += (i <= value ? ICONS.star : ICONS.starEmpty).replace(/width="11" height="11"/, `width="${s}" height="${s}"`)
+  return `<div style="display:flex;gap:1px">${out}</div>`
 }
-
-function getUser() { return readKey(KEYS.user, { id: 'me', name: 'You', handle: 'you' }) }
-function saveUser(u) { writeKey(KEYS.user, u) }
-
-function ensureDefaultLists() {
-  const user = getUser()
-  const lists = DEFAULT_LISTS.map((d) => ({ id: uid('list'), ownerId: user.id, name: d.name, kind: d.kind, visibility: d.visibility, createdAt: new Date().toISOString() }))
-  writeKey(KEYS.lists, lists)
-  return lists
-}
-function getLists() {
-  const lists = readKey(KEYS.lists, [])
-  return lists.length === 0 ? ensureDefaultLists() : lists
-}
-function createList(name, visibility) {
-  const user = getUser()
-  const list = { id: uid('list'), ownerId: user.id, name, kind: 'custom', visibility, createdAt: new Date().toISOString() }
-  const next = [...getLists(), list]
-  writeKey(KEYS.lists, next)
-  return { lists: next, list }
-}
-function updateListVisibility(listId, visibility) {
-  const next = getLists().map((l) => (l.id === listId ? { ...l, visibility } : l))
-  writeKey(KEYS.lists, next)
-  return next
-}
-function renameList(listId, name) {
-  const next = getLists().map((l) => (l.id === listId ? { ...l, name } : l))
-  writeKey(KEYS.lists, next)
-  return next
-}
-function deleteList(listId) {
-  writeKey(KEYS.lists, getLists().filter((l) => l.id !== listId))
-  writeKey(KEYS.listItems, getListItems().filter((i) => i.listId !== listId))
-}
-function getListItems() { return readKey(KEYS.listItems, []) }
-function addToList(listId, showId, extra) {
-  extra = extra || {}
-  const filtered = getListItems().filter((i) => !(i.listId === listId && i.showId === showId))
-  const item = { id: uid('item'), listId, showId, photo: extra.photo || null, note: extra.note || '', addedAt: new Date().toISOString() }
-  const next = [item, ...filtered]
-  writeKey(KEYS.listItems, next)
-  return next
-}
-function moveToDefaultList(showId, kind, extra) {
-  extra = extra || {}
-  const lists = getLists()
-  const defaultIds = new Set(lists.filter((l) => l.kind !== 'custom').map((l) => l.id))
-  const target = lists.find((l) => l.kind === kind)
-  if (!target) return getListItems()
-  const items = getListItems().filter((i) => !(defaultIds.has(i.listId) && i.showId === showId))
-  const item = { id: uid('item'), listId: target.id, showId, photo: extra.photo || null, note: extra.note || '', addedAt: new Date().toISOString() }
-  const next = [item, ...items]
-  writeKey(KEYS.listItems, next)
-  return next
-}
-function removeFromList(listId, showId) {
-  const next = getListItems().filter((i) => !(i.listId === listId && i.showId === showId))
-  writeKey(KEYS.listItems, next)
-  return next
-}
-function getReviews() { return readKey(KEYS.reviews, []) }
-function addReview(review) {
-  const next = [review, ...getReviews().filter((r) => !(r.showId === review.showId && r.authorId === review.authorId))]
-  writeKey(KEYS.reviews, next)
-  return next
-}
-function exportData() {
-  return JSON.stringify({ user: getUser(), lists: getLists(), listItems: getListItems(), reviews: getReviews(), exportedAt: new Date().toISOString() }, null, 2)
-}
-function importData(json) {
-  const data = JSON.parse(json)
-  if (data.user) writeKey(KEYS.user, data.user)
-  if (data.lists) writeKey(KEYS.lists, data.lists)
-  if (data.listItems) writeKey(KEYS.listItems, data.listItems)
-  if (data.reviews) writeKey(KEYS.reviews, data.reviews)
-}
-function clearAllData() { Object.values(KEYS).forEach((k) => localStorage.removeItem(k)) }
-
-/* =========================================================================
-   HELPERS
-   ========================================================================= */
-function esc(str) {
-  return String(str == null ? '' : str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
-}
-function findShowBySlug(slug) { return SHOWS.find((s) => s.slug === slug) }
-function findShowById(id) { return SHOWS.find((s) => s.id === id) }
-function timeAgo(iso) {
-  const hrs = Math.floor((Date.now() - new Date(iso).getTime()) / 3600e3)
-  if (hrs < 1) return 'just now'
-  if (hrs < 24) return hrs + 'h ago'
-  return Math.floor(hrs / 24) + 'd ago'
-}
-const VIS_ICON = { public: '🌐', friends: '👥', private: '🔒' }
-const VIS_LABEL = { public: '🌐 Public', friends: '👥 Friends', private: '🔒 Only me' }
-const STATUS_LABELS = { watching: 'Watching', want: 'Want to watch', finished: 'Finished', dropped: 'Dropped' }
-
-function platformBadges(platforms) {
-  return platforms.map((p) => `<span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full border border-line text-inksoft">${esc(p)}</span>`).join('')
-}
-
-/* Compact poster thumbnail (lists, pickers, search results). */
-function posterHtml(show, size) {
-  const sizeClass = size === 'sm' ? 'w-12 h-16 rounded-lg' : size === 'lg' ? 'w-full aspect-[2/3] rounded-2xl' : 'w-20 h-28 rounded-xl'
-  const emojiSize = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-3xl' : 'text-lg'
-  return `<div class="poster-grain flex-shrink-0 overflow-hidden ${sizeClass} poster-${show.pal} select-none">
-    <span class="absolute left-1.5 bottom-1.5 ${emojiSize} opacity-80">${show.emoji}</span>
-  </div>`
-}
-/* Large poster "art" used as the feed/hero image when there's no captured photo — the movie-poster treatment. */
-function posterHero(show) {
-  return `<div class="poster-grain w-full aspect-[4/5] overflow-hidden rounded-2xl poster-${show.pal}">
-    <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-black/5"></div>
-    <span class="absolute right-3.5 top-3.5 text-[10px] tracking-[0.2em] uppercase text-white/75">${show.year}</span>
-    <span class="absolute left-3.5 top-3.5 text-lg opacity-80">${show.emoji}</span>
-    <p class="absolute left-4 right-4 bottom-4 font-display italic text-[1.7rem] leading-[1.15] text-white" style="text-wrap:balance">${esc(show.title)}</p>
-  </div>`
-}
-function starsReadOnly(value, size) {
-  const cls = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl' : 'text-base'
-  let out = `<div class="flex gap-0.5 ${cls}">`
-  for (let i = 1; i <= 5; i++) out += `<span class="${i <= value ? 'text-gold' : 'text-inksoft/30'}">★</span>`
-  return out + '</div>'
-}
-function starsInteractive(groupId, value, size) {
-  const cls = size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl' : 'text-base'
-  let out = `<div id="${groupId}" data-value="${value}" class="flex gap-0.5 ${cls}">`
+function starRowInteractive(groupId, value, size) {
+  const s = size || 14
+  let out = `<div id="${groupId}" data-value="${value}" style="display:flex;gap:3px">`
   for (let i = 1; i <= 5; i++) {
-    out += `<button type="button" onclick="setStars('${groupId}', ${i})" class="leading-none cursor-pointer active:scale-90 transition-transform ${i <= value ? 'text-gold' : 'text-inksoft/30'}" aria-label="${i} star">★</button>`
+    const icon = (i <= value ? ICONS.star : ICONS.starEmpty).replace(/width="11" height="11"/, `width="${s}" height="${s}"`)
+    out += `<button type="button" onclick="setStarRow('${groupId}',${i})" style="line-height:0;cursor:pointer" aria-label="${i} star">${icon}</button>`
   }
   return out + '</div>'
 }
-function setStars(groupId, value) {
+function setStarRow(groupId, value) {
   const el = document.getElementById(groupId)
   if (!el) return
   el.dataset.value = String(value)
-  Array.from(el.children).forEach((btn, idx) => {
-    btn.className = btn.className.replace(/text-(gold|inksoft\/30)/, (idx + 1) <= value ? 'text-gold' : 'text-inksoft/30')
-  })
+  const size = (el.querySelector('svg') || {}).getAttribute ? el.querySelector('svg').getAttribute('width') : 14
+  let html = ''
+  for (let i = 1; i <= 5; i++) html += `<button type="button" onclick="setStarRow('${groupId}',${i})" style="line-height:0;cursor:pointer" aria-label="${i} star">${(i <= value ? ICONS.star : ICONS.starEmpty).replace(/width="11" height="11"/, `width="${size}" height="${size}"`)}</button>`
+  el.innerHTML = html
 }
-function getStars(groupId) {
+function getStarRow(groupId) {
   const el = document.getElementById(groupId)
   return el ? Number(el.dataset.value || 0) : 0
 }
 
 /* =========================================================================
-   RECOGNITION (simulated — see the "About this build" note on the Profile
-   page for what a real version would call instead)
+   DATA — movie catalog (illustrative demo data, not live TMDB)
    ========================================================================= */
-function hashString(str) {
-  let hash = 0
-  for (let i = 0; i < str.length; i++) { hash = (hash << 5) - hash + str.charCodeAt(i); hash |= 0 }
-  return hash >>> 0
+const MOVIES = [
+  { id: 'm1', slug: 'past-lives', title: 'Past Lives', year: 2023, genre: 'Drama', moods: ['Slow cinema', 'Character study', 'Quiet grief', 'Romance'], director: 'Celine Song', writer: 'Celine Song', cinematographer: 'Shabier Kirchner', actors: ['Greta Lee', 'Teo Yoo'], gradFrom: '#2F4858', gradTo: '#3F5D55' },
+  { id: 'm2', slug: 'perfect-days', title: 'Perfect Days', year: 2023, genre: 'Drama', moods: ['Slow cinema', 'Character study'], director: 'Wim Wenders', writer: 'Wim Wenders', cinematographer: 'Franz Lustig', actors: ['Kōji Yakusho', 'Tokio Emoto'], gradFrom: '#5C6B4F', gradTo: '#7C8A6A' },
+  { id: 'm3', slug: 'aftersun', title: 'Aftersun', year: 2022, genre: 'Drama', moods: ['Character study', 'Quiet grief', 'Coming-of-age'], director: 'Charlotte Wells', writer: 'Charlotte Wells', cinematographer: 'Gregory Oke', actors: ['Paul Mescal', 'Frankie Corio'], gradFrom: '#3A4A52', gradTo: '#58707A' },
+  { id: 'm4', slug: 'the-taste-of-things', title: 'The Taste of Things', year: 2023, genre: 'Romance', moods: ['Slow cinema', 'Romance'], director: 'Trần Anh Hùng', writer: 'Trần Anh Hùng', cinematographer: 'Jonathan Ricquebourg', actors: ['Juliette Binoche', 'Benoît Magimel'], gradFrom: '#6B4A3A', gradTo: '#8A6A52' },
+  { id: 'm5', slug: 'all-of-us-strangers', title: 'All of Us Strangers', year: 2023, genre: 'Romance', moods: ['Quiet grief', 'Character study', 'Romance'], director: 'Andrew Haigh', writer: 'Andrew Haigh', cinematographer: 'Jamie Ramsay', actors: ['Andrew Scott', 'Paul Mescal'], gradFrom: '#4A3A52', gradTo: '#6A5278' },
+  { id: 'm6', slug: 'drive-my-car', title: 'Drive My Car', year: 2021, genre: 'Drama', moods: ['Slow cinema', 'Character study', 'Quiet grief'], director: 'Ryūsuke Hamaguchi', writer: 'Ryūsuke Hamaguchi', cinematographer: 'Hidetoshi Shinomiya', actors: ['Hidetoshi Nishijima', 'Tōko Miura'], gradFrom: '#4A4038', gradTo: '#6B5A48' },
+  { id: 'm7', slug: 'columbus', title: 'Columbus', year: 2017, genre: 'Drama', moods: ['Slow cinema', 'Character study'], director: 'Kogonada', writer: 'Kogonada', cinematographer: 'Elisha Christian', actors: ['John Cho', 'Haley Lu Richardson'], gradFrom: '#2F4858', gradTo: '#58707A' },
+  { id: 'm8', slug: 'amour', title: 'Amour', year: 2012, genre: 'Drama', moods: ['Quiet grief', 'Slow cinema', 'Romance'], director: 'Michael Haneke', writer: 'Michael Haneke', cinematographer: 'Darius Khondji', actors: ['Jean-Louis Trintignant', 'Emmanuelle Riva'], gradFrom: '#5C6B4F', gradTo: '#3F5D55' },
+  { id: 'm9', slug: 'tokyo-story', title: 'Tokyo Story', year: 1953, genre: 'Drama', moods: ['Slow cinema', 'Quiet grief', 'Character study'], director: 'Yasujirō Ozu', writer: 'Yasujirō Ozu', cinematographer: 'Yūharu Atsuta', actors: ['Chishū Ryū', 'Chieko Higashiyama'], gradFrom: '#8A6A52', gradTo: '#4A4038' },
+  { id: 'm10', slug: 'moonlight', title: 'Moonlight', year: 2016, genre: 'Drama', moods: ['Character study', 'Coming-of-age', 'Quiet grief'], director: 'Barry Jenkins', writer: 'Barry Jenkins', cinematographer: 'James Laxton', actors: ['Trevante Rhodes', 'André Holland'], gradFrom: '#2F4858', gradTo: '#4A3A52' },
+  { id: 'm11', slug: 'portrait-of-a-lady-on-fire', title: 'Portrait of a Lady on Fire', year: 2019, genre: 'Romance', moods: ['Slow cinema', 'Romance', 'Character study'], director: 'Céline Sciamma', writer: 'Céline Sciamma', cinematographer: 'Claire Mathon', actors: ['Noémie Merlant', 'Adèle Haenel'], gradFrom: '#3F5D55', gradTo: '#5C6B4F' },
+  { id: 'm12', slug: 'the-zone-of-interest', title: 'The Zone of Interest', year: 2023, genre: 'History', moods: ['Slow cinema', 'Epic scale'], director: 'Jonathan Glazer', writer: 'Jonathan Glazer', cinematographer: 'Łukasz Żal', actors: ['Christian Friedel', 'Sandra Hüller'], gradFrom: '#4A4038', gradTo: '#2F4858' },
+  { id: 'm13', slug: 'anatomy-of-a-fall', title: 'Anatomy of a Fall', year: 2023, genre: 'Mystery', moods: ['Courtroom drama', 'Character study'], director: 'Justine Triet', writer: 'Justine Triet', cinematographer: 'Simon Beaufils', actors: ['Sandra Hüller', 'Swann Arlaud'], gradFrom: '#6A5278', gradTo: '#4A3A52' },
+  { id: 'm14', slug: 'nomadland', title: 'Nomadland', year: 2020, genre: 'Drama', moods: ['Slow cinema', 'Character study', 'Epic scale'], director: 'Chloé Zhao', writer: 'Chloé Zhao', cinematographer: 'Joshua James Richards', actors: ['Frances McDormand', 'David Strathairn'], gradFrom: '#8A6A52', gradTo: '#6B4A3A' },
+  { id: 'm15', slug: 'the-worst-person-in-the-world', title: 'The Worst Person in the World', year: 2021, genre: 'Comedy', moods: ['Character study', 'Coming-of-age', 'Romance'], director: 'Joachim Trier', writer: 'Eskil Vogt', cinematographer: 'Kasper Tuxen', actors: ['Renate Reinsve', 'Anders Danielsen Lie'], gradFrom: '#7C8A6A', gradTo: '#5C6B4F' },
+  { id: 'm16', slug: 'first-cow', title: 'First Cow', year: 2019, genre: 'Drama', moods: ['Slow cinema', 'Quiet grief'], director: 'Kelly Reichardt', writer: 'Jonathan Raymond', cinematographer: 'Christopher Blauvelt', actors: ['John Magaro', 'Orion Lee'], gradFrom: '#6B5A48', gradTo: '#4A4038' },
+  { id: 'm17', slug: 'minari', title: 'Minari', year: 2020, genre: 'Drama', moods: ['Character study', 'Coming-of-age', 'Quiet grief'], director: 'Lee Isaac Chung', writer: 'Lee Isaac Chung', cinematographer: 'Lachlan Milne', actors: ['Steven Yeun', 'Yeri Han'], gradFrom: '#58707A', gradTo: '#3A4A52' },
+  { id: 'm18', slug: 'good-time', title: 'Good Time', year: 2017, genre: 'Crime', moods: ['Heist', 'Neo-noir', 'Epic scale'], director: 'Benny Safdie', writer: 'Josh Safdie', cinematographer: 'Sean Price Williams', actors: ['Robert Pattinson', 'Benny Safdie'], gradFrom: '#2B2620', gradTo: '#4A4038' },
+]
+const MOOD_CHIPS = ['Slow cinema', 'Heist', 'Character study', 'Coming-of-age', 'Neo-noir', 'Quiet grief', 'Courtroom drama', 'Body horror', 'Epic scale', 'Absurdist comedy', 'Docu-fiction', 'Romance']
+
+const FRIENDS = [
+  { id: 'f1', name: 'Maya Chen', color: '#B08968' },
+  { id: 'f2', name: 'Theo Nakamura', color: '#6B5A48' },
+  { id: 'f3', name: 'Ravi Sharma', color: '#5C6B4F' },
+]
+const FNOW = Date.now()
+const fAgo = (h) => new Date(FNOW - h * 3600e3).toISOString()
+const FRIEND_MOODS = { f1: ['Slow cinema', 'Character study', 'Quiet grief', 'Romance'], f2: ['Slow cinema', 'Character study'], f3: ['Slow cinema', 'Character study', 'Quiet grief'] }
+const FRIEND_POSTS = [
+  { id: 'fp1', authorId: 'f1', movieId: 'm1', photo: null, ratings: { writing: 5, cinematography: 4, directing: 5 }, actingRatings: [{ actor: 'Greta Lee', rating: 4 }, { actor: 'Teo Yoo', rating: 4 }], caption: "Quietly devastating — that ferry scene undid me.", listId: null, createdAt: fAgo(2) },
+  { id: 'fp2', authorId: 'f2', movieId: 'm2', photo: null, ratings: { writing: 4, cinematography: 4, directing: 4 }, actingRatings: [{ actor: 'Kōji Yakusho', rating: 5 }, { actor: 'Tokio Emoto', rating: 3 }], caption: 'A whole philosophy of contentment in 2 hours.', listId: null, createdAt: fAgo(26) },
+  { id: 'fp3', authorId: 'f3', movieId: 'm6', photo: null, ratings: { writing: 5, cinematography: 5, directing: 5 }, actingRatings: [{ actor: 'Hidetoshi Nishijima', rating: 5 }, { actor: 'Tōko Miura', rating: 4 }], caption: 'Three hours and I wanted more.', listId: null, createdAt: fAgo(60) },
+]
+const FRIEND_COMMENTS = [
+  { id: 'fc1', postId: 'fp1', authorId: 'f2', forFriend: 'Guy', text: "Those static long takes in the ferry scene are exactly the slow-cinema thing you're always chasing.", createdAt: fAgo(1) },
+  { id: 'fc2', postId: 'fp1', authorId: 'f3', forFriend: 'Guy', text: "Greta Lee underplays everything — same restraint you loved in Past Lives' script.", createdAt: fAgo(1.5) },
+]
+
+/* =========================================================================
+   STORAGE
+   ========================================================================= */
+const KEYS = { user: 'reel.user', posts: 'reel.posts', lists: 'reel.lists', comments: 'reel.comments', likes: 'reel.likes', dismissed: 'reel.dismissed' }
+function uid(p) { return p + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8) }
+function readKey(k, fb) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : fb } catch (e) { return fb } }
+function writeKey(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) {} }
+
+function getUser() { return readKey(KEYS.user, { id: 'me', name: 'Guy', onboarded: false, genres: [], lovedMovieIds: [], followedPeople: [] }) }
+function saveUser(u) { writeKey(KEYS.user, u) }
+function getPosts() { return readKey(KEYS.posts, []) }
+function addPost(p) { const next = [p, ...getPosts()]; writeKey(KEYS.posts, next); return next }
+function getLists() { return readKey(KEYS.lists, []) }
+function createList(name) { const l = { id: uid('list'), name, createdAt: new Date().toISOString() }; writeKey(KEYS.lists, [...getLists(), l]); return l }
+function deleteList(id) { writeKey(KEYS.lists, getLists().filter((l) => l.id !== id)) }
+function getComments() { return readKey(KEYS.comments, []) }
+function addComment(c) { const next = [...getComments(), c]; writeKey(KEYS.comments, next); return next }
+function getLikes() { return readKey(KEYS.likes, {}) }
+function toggleLike(postId) { const likes = getLikes(); likes[postId] = !likes[postId]; writeKey(KEYS.likes, likes); return likes }
+function getDismissed() { return readKey(KEYS.dismissed, []) }
+function dismissMovie(id) { const d = getDismissed(); if (!d.includes(id)) d.push(id); writeKey(KEYS.dismissed, d); return d }
+
+function exportData() { return JSON.stringify({ user: getUser(), posts: getPosts(), lists: getLists(), comments: getComments(), exportedAt: new Date().toISOString() }, null, 2) }
+function importData(json) { const d = JSON.parse(json); if (d.user) writeKey(KEYS.user, d.user); if (d.posts) writeKey(KEYS.posts, d.posts); if (d.lists) writeKey(KEYS.lists, d.lists); if (d.comments) writeKey(KEYS.comments, d.comments) }
+function clearAllData() { Object.values(KEYS).forEach((k) => localStorage.removeItem(k)) }
+
+/* =========================================================================
+   HELPERS
+   ========================================================================= */
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])) }
+function findMovie(id) { return MOVIES.find((m) => m.id === id) }
+function findMovieBySlug(slug) { return MOVIES.find((m) => m.slug === slug) }
+function timeAgo(iso) {
+  const hrs = Math.floor((Date.now() - new Date(iso).getTime()) / 3600e3)
+  if (hrs < 1) return 'just now'
+  if (hrs < 24) return hrs + 'h ago'
+  const days = Math.floor(hrs / 24)
+  return days === 1 ? 'yesterday' : days + 'd ago'
 }
-function mulberry32(a) {
-  return function () {
-    a |= 0; a = (a + 0x6d2b79f5) | 0
-    let t = Math.imul(a ^ (a >>> 15), 1 | a)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
+function avatarHtml(name, color, size) {
+  const s = size || 28
+  const fs = Math.round(s * 0.43)
+  return `<div style="width:${s}px;height:${s}px;border-radius:999px;background:${color};color:#FFFFFF;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:${fs}px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${esc((name || '?')[0].toUpperCase())}</div>`
 }
+function overallRating(post) {
+  const acting = post.actingRatings && post.actingRatings.length ? post.actingRatings.reduce((s, a) => s + a.rating, 0) / post.actingRatings.length : 0
+  const vals = [post.ratings.writing, post.ratings.cinematography, post.ratings.directing, acting].filter((v) => v > 0)
+  if (!vals.length) return 0
+  return vals.reduce((a, b) => a + b, 0) / vals.length
+}
+function ratingBadge(value) {
+  return `<div style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.92);border-radius:6px;padding:3px 7px;display:flex;align-items:center;gap:3px;">${ICONS.star}<span style="font-size:12px;font-weight:600;color:#24211E;">${value.toFixed(1)}</span></div>`
+}
+function posterStill(movie, opts) {
+  opts = opts || {}
+  const h = opts.height || 300
+  const showBadge = opts.rating != null
+  const flipHref = opts.flipHref
+  return `<div style="position:relative;width:100%;height:${h}px;border-radius:14px;overflow:hidden;background:linear-gradient(160deg, ${movie.gradFrom}, ${movie.gradTo});box-sizing:border-box;">
+    ${showBadge ? ratingBadge(opts.rating) : ''}
+    <div style="position:absolute;bottom:12px;left:14px;color:#FFFFFF;">
+      <div class="font-display" style="font-size:19px;font-weight:600;">${esc(movie.title)}</div>
+      <div style="font-size:12px;opacity:0.85;">${movie.year} · ${esc(movie.genre)}</div>
+    </div>
+    ${flipHref ? `<a href="${flipHref}" aria-label="See ratings" style="position:absolute;bottom:10px;right:10px;width:30px;height:30px;border-radius:999px;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;color:#24211E;">${ICONS.flip}</a>` : ''}
+  </div>`
+}
+function posterThumb(movie, w, h) {
+  w = w || 52; h = h || 76
+  return `<div style="width:${w}px;height:${h}px;border-radius:6px;background:linear-gradient(160deg, ${movie.gradFrom}, ${movie.gradTo});flex-shrink:0;"></div>`
+}
+
+/* =========================================================================
+   RECOGNITION (simulated — see Settings → About this build)
+   ========================================================================= */
+function hashStr(str) { let h = 0; for (let i = 0; i < str.length; i++) { h = (h << 5) - h + str.charCodeAt(i); h |= 0 } return h >>> 0 }
 function recognizeFromPhoto(dataUrl) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const seed = hashString(dataUrl.slice(-2000))
-      const rand = mulberry32(seed)
-      const shuffled = [...SHOWS].sort(() => rand() - 0.5)
-      const top = shuffled.slice(0, 3)
-      const confidences = [0.7 + rand() * 0.25, 0.35 + rand() * 0.25, 0.15 + rand() * 0.15].sort((a, b) => b - a)
-      resolve(top.map((show, i) => ({ show, confidence: Math.min(0.98, confidences[i]) })))
-    }, 900 + Math.random() * 700)
+      const h = hashStr(dataUrl.slice(-2000))
+      resolve(MOVIES[h % MOVIES.length])
+    }, 700 + Math.random() * 500)
   })
 }
-function searchShows(query) {
-  const q = query.trim().toLowerCase()
+function searchMovies(q) {
+  q = q.trim().toLowerCase()
   if (!q) return []
-  return SHOWS.filter((s) => s.title.toLowerCase().includes(q) || s.genres.some((g) => g.toLowerCase().includes(q)) || s.platforms.some((p) => p.toLowerCase().includes(q))).slice(0, 8)
+  return MOVIES.filter((m) => m.title.toLowerCase().includes(q) || m.genre.toLowerCase().includes(q) || m.moods.some((x) => x.toLowerCase().includes(q))).slice(0, 8)
 }
 
 /* =========================================================================
    QR
    ========================================================================= */
-function publicShowUrl(slug) {
-  return location.href.split('#')[0] + '#/s/' + slug
-}
-function makeQrDataUrl(text) {
+function publicPostUrl(id) { return location.href.split('#')[0] + '#/p/' + id }
+function makeQr(text) {
   return new Promise((resolve, reject) => {
-    QRCode.toDataURL(text, { margin: 1, width: 480, color: { dark: '#202022ff', light: '#ffffffff' } }, (err, url) => {
-      if (err) reject(err); else resolve(url)
-    })
+    QRCode.toDataURL(text, { margin: 1, width: 420, color: { dark: '#24211Eff', light: '#ffffffff' } }, (err, url) => err ? reject(err) : resolve(url))
   })
 }
 
 /* =========================================================================
-   CHROME
+   CHROME (Feed / Lists / Discover share this shell)
    ========================================================================= */
-function topBarHtml(title, backHash) {
-  const back = backHash ? `<a href="${backHash}" class="text-inksoft text-xl leading-none px-1 -ml-1">‹</a>` : `<span class="text-lg">🎞️</span>`
-  return `<header class="sticky z-20 border-b border-line bg-bg/90 backdrop-blur px-4 py-3 flex items-center gap-3" style="top:env(safe-area-inset-top,0px)">
-    ${back}
-    <h1 class="font-display italic text-xl tracking-tight text-ink">${esc(title)}</h1>
-  </header>`
+function topBar(title, opts) {
+  opts = opts || {}
+  const left = opts.left !== undefined ? opts.left : (opts.back
+    ? `<a href="${opts.back}" aria-label="Back" style="width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#24211E;">${ICONS.back}</a>`
+    : `<a href="#/profile" aria-label="Open your profile" style="width:32px;height:32px;border-radius:999px;background:#43635C;color:#F6F4EF;display:flex;align-items:center;justify-content:center;">${avatarInitial()}</a>`)
+  const right = opts.right || `<span style="width:32px;height:32px;"></span>`
+  return `<div style="height:56px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E7E2D9;" class="safe-top">
+    ${left}
+    <div class="font-display" style="font-size:19px;font-weight:600;">${esc(title)}</div>
+    ${right}
+  </div>`
 }
-const NAV_ITEMS = [
-  { hash: '#/', label: 'Home', icon: '⌂' },
-  { hash: '#/lists', label: 'Lists', icon: '▦' },
-  { hash: '#/capture', label: 'Capture', icon: '◉', primary: true },
-  { hash: '#/friends', label: 'Friends', icon: '◎' },
-  { hash: '#/profile', label: 'Profile', icon: '⚙' },
+function avatarInitial() {
+  const u = getUser()
+  return `<span class="font-display" style="font-weight:600;font-size:14px;">${esc((u.name || '?')[0].toUpperCase())}</span>`
+}
+const TABS = [
+  { hash: '#/', label: 'Feed', icon: ICONS.home },
+  { hash: '#/lists', label: 'Lists', icon: ICONS.lists },
+  { hash: '#/discover', label: 'Discover', icon: ICONS.discover },
 ]
-function bottomNavHtml(activeHash) {
-  const items = NAV_ITEMS.map((item) => {
-    const isActive = item.hash === activeHash
-    if (item.primary) {
-      return `<a href="${item.hash}" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5">
-        <span class="flex h-9 w-9 items-center justify-center rounded-full border text-base transition-colors ${isActive ? 'border-accent text-accent bg-accentsoft' : 'border-line text-inksoft'}">${item.icon}</span>
-      </a>`
-    }
-    return `<a href="${item.hash}" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-[11px] font-medium ${isActive ? 'text-accent' : 'text-inksoft'}">
-      <span class="text-base leading-none">${item.icon}</span><span>${item.label}</span>
+function bottomNav(active) {
+  const items = TABS.map((t) => {
+    const on = t.hash === active
+    return `<a href="${t.hash}" style="display:flex;flex-direction:column;align-items:center;gap:4px;color:${on ? '#24211E' : '#ADA89C'};">
+      ${t.icon}<span style="font-size:11px;font-weight:${on ? 600 : 500};">${t.label}</span>
     </a>`
   }).join('')
-  return `<nav class="fixed bottom-0 left-0 right-0 z-30 border-t border-line bg-surface/95 backdrop-blur safe-bottom">
-    <div class="mx-auto max-w-lg flex items-stretch justify-between px-2">${items}</div>
-  </nav>`
+  return `<div style="height:78px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;justify-content:space-around;padding:0 8px 18px;border-top:1px solid #E7E2D9;background:#FFFFFF;" class="safe-bottom">${items}</div>`
 }
-function shell(activeHash, title, backHash, innerHtml) {
-  return `<div class="min-h-full pb-24"><div class="mx-auto max-w-lg">${topBarHtml(title, backHash)}${innerHtml}</div>${bottomNavHtml(activeHash)}</div>`
+function fab() {
+  return `<a href="#/capture" aria-label="Create a new post" style="position:absolute;right:16px;bottom:90px;width:56px;height:56px;border-radius:999px;background:#24211E;color:#F6F4EF;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(36,33,30,0.28);">${ICONS.plus}</a>`
+}
+function tabShell(active, title, headerRight, innerHtml) {
+  return `<div style="min-height:100%;display:flex;flex-direction:column;position:relative;">
+    ${topBar(title, { right: headerRight })}
+    <div style="flex:1;">${innerHtml}</div>
+    ${bottomNav(active)}
+    ${fab()}
+  </div>`
 }
 
 /* =========================================================================
@@ -435,488 +298,422 @@ function shell(activeHash, title, backHash, innerHtml) {
    ========================================================================= */
 function parseHash() {
   const h = (location.hash || '#/').replace(/^#/, '') || '/'
-  const parts = h.split('/').filter(Boolean)
-  return parts
+  return h.split('/').filter(Boolean)
 }
-function navigate(hash) { location.hash = hash }
-
+function navigate(h) { location.hash = h }
 function renderRoute() {
   stopCamera()
+  const user = getUser()
   const parts = parseHash()
   const app = document.getElementById('app')
-  try {
-    if (parts.length === 0) { app.innerHTML = renderHome(); return }
-    if (parts[0] === 'lists' && parts.length === 1) { app.innerHTML = renderLists(); return }
-    if (parts[0] === 'lists' && parts.length === 2) { app.innerHTML = renderListDetail(parts[1]); return }
-    if (parts[0] === 'capture') { app.innerHTML = renderCapture(); return }
-    if (parts[0] === 'friends' && parts.length === 1) { app.innerHTML = renderFriends(); return }
-    if (parts[0] === 'friends' && parts.length === 2) { app.innerHTML = renderFriendProfile(parts[1]); return }
-    if (parts[0] === 'friends' && parts.length === 4 && parts[2] === 'lists') { app.innerHTML = renderFriendListDetail(parts[1], parts[3]); return }
-    if (parts[0] === 'show' && parts.length === 2) { app.innerHTML = renderShowDetail(parts[1]); return }
-    if (parts[0] === 'profile') { app.innerHTML = renderProfile(); return }
-    if (parts[0] === 's' && parts.length === 2) { app.innerHTML = renderPublicShow(parts[1]); return }
-    app.innerHTML = renderHome()
-  } finally {
-    afterRender()
-  }
+  let html
+  if (!user.onboarded && parts[0] !== 'onboarding') html = renderOnboarding()
+  else if (parts.length === 0) html = renderFeed()
+  else if (parts[0] === 'onboarding') html = renderOnboarding()
+  else if (parts[0] === 'lists' && parts.length === 1) html = renderLists()
+  else if (parts[0] === 'lists' && parts.length === 2) html = renderListDetail(parts[1])
+  else if (parts[0] === 'discover') html = renderDiscover()
+  else if (parts[0] === 'profile') html = renderProfile()
+  else if (parts[0] === 'capture') html = renderCamera()
+  else if (parts[0] === 'confirm') html = renderConfirm()
+  else if (parts[0] === 'rate') html = renderRate()
+  else if (parts[0] === 'post' && parts.length === 2) html = renderPostDetail(parts[1])
+  else if (parts[0] === 'share' && parts.length === 2) html = renderShareSheet(parts[1])
+  else if (parts[0] === 'p' && parts.length === 2) html = renderWebListing(parts[1])
+  else html = renderFeed()
+  app.innerHTML = html
+  afterRender()
 }
 let pendingAfterRender = null
-function afterRender() {
-  if (pendingAfterRender) { const fn = pendingAfterRender; pendingAfterRender = null; fn() }
+function afterRender() { if (pendingAfterRender) { const fn = pendingAfterRender; pendingAfterRender = null; fn() } }
+
+/* =========================================================================
+   ONBOARDING
+   ========================================================================= */
+let onboardState = { step: 1, genres: [], loved: [], followed: [] }
+function resetOnboardState() { onboardState = { step: 1, genres: [], loved: [], followed: [] } }
+function dots(step) {
+  let out = '<div style="display:flex;gap:6px;">'
+  for (let i = 1; i <= 3; i++) out += `<span style="width:22px;height:4px;border-radius:999px;background:${i <= step ? '#24211E' : '#E7E2D9'};"></span>`
+  return out + '</div>'
+}
+function renderOnboarding() {
+  if (onboardState.step === 1) {
+    const chips = MOOD_CHIPS.map((g) => {
+      const on = onboardState.genres.includes(g)
+      return `<button onclick="toggleOnboardGenre('${g}')" style="height:38px;padding:0 16px;border-radius:10px;border:1.5px solid ${on ? '#43635C' : '#E7E2D9'};background:${on ? '#43635C' : '#FFFFFF'};color:${on ? '#F6F4EF' : '#24211E'};font-size:14px;font-weight:${on ? 600 : 500};">${esc(g)}</button>`
+    }).join('')
+    const n = onboardState.genres.length
+    const canContinue = n >= 3
+    return `<div style="min-height:100%;display:flex;flex-direction:column;" class="safe-top safe-bottom">
+      <div style="height:56px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;padding:0 16px;">${dots(1)}</div>
+      <div style="flex:1;box-sizing:border-box;padding:12px 20px 0;display:flex;flex-direction:column;gap:22px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="font-display" style="font-size:26px;font-weight:600;line-height:1.2;">What do you like?</div>
+          <div style="font-size:13px;color:#7A756D;line-height:1.5;">Pick a few to get started — your taste DNA fills in as you rate more.</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">${chips}</div>
+        <div style="font-size:12px;color:#ADA89C;">${n} selected · pick at least 3 to continue</div>
+      </div>
+      <div style="flex-shrink:0;box-sizing:border-box;padding:16px 20px 28px;">
+        <button onclick="onboardNext1()" ${canContinue ? '' : 'disabled'} style="width:100%;height:50px;border-radius:12px;background:${canContinue ? '#24211E' : '#E7E2D9'};color:${canContinue ? '#F6F4EF' : '#ADA89C'};font-size:15px;font-weight:600;border:none;">Continue</button>
+      </div>
+    </div>`
+  }
+  if (onboardState.step === 2) {
+    const candidates = MOVIES.filter((m) => m.moods.some((x) => onboardState.genres.includes(x))).slice(0, 9)
+    const grid = candidates.map((m) => {
+      const on = onboardState.loved.includes(m.id)
+      return `<button onclick="toggleOnboardLoved('${m.id}')" style="position:relative;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:linear-gradient(160deg, ${m.gradFrom}, ${m.gradTo});border:3px solid ${on ? '#43635C' : 'transparent'};box-sizing:border-box;text-align:left;padding:0;">
+        ${on ? `<span style="position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:999px;background:#43635C;display:flex;align-items:center;justify-content:center;">${ICONS.check}</span>` : ''}
+        <span style="position:absolute;bottom:6px;left:7px;right:7px;color:#FFFFFF;font-size:11px;font-weight:600;line-height:1.2;">${esc(m.title)}</span>
+      </button>`
+    }).join('')
+    return `<div style="min-height:100%;display:flex;flex-direction:column;" class="safe-top safe-bottom">
+      <div style="height:56px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 16px;">${dots(2)}<a href="javascript:void(0)" onclick="onboardSkipTo(3)" style="font-size:13px;color:#7A756D;font-weight:500;">Skip</a></div>
+      <div style="flex:1;box-sizing:border-box;padding:12px 16px 0;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="font-display" style="font-size:24px;font-weight:600;line-height:1.2;">Seen any of these?</div>
+          <div style="font-size:13px;color:#7A756D;line-height:1.5;">Based on ${esc(onboardState.genres.slice(0, 3).join(', '))} — tap the ones you loved.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">${grid}</div>
+        <div style="font-size:12px;color:#ADA89C;padding-bottom:4px;">${onboardState.loved.length} selected</div>
+      </div>
+      <div style="flex-shrink:0;box-sizing:border-box;padding:16px 20px 28px;">
+        <button onclick="onboardSkipTo(3)" style="width:100%;height:50px;border-radius:12px;background:#24211E;color:#F6F4EF;font-size:15px;font-weight:600;border:none;">Continue</button>
+      </div>
+    </div>`
+  }
+  // step 3
+  const lovedMovies = MOVIES.filter((m) => onboardState.loved.includes(m.id))
+  const peoplePool = []
+  lovedMovies.forEach((m) => { peoplePool.push({ name: m.director, role: 'Director', color: m.gradFrom }); m.actors.forEach((a) => peoplePool.push({ name: a, role: 'Actor', color: m.gradTo })) })
+  const seen = new Set()
+  const people = peoplePool.filter((p) => { if (seen.has(p.name)) return false; seen.add(p.name); return true }).slice(0, 9)
+  const peopleHtml = people.length ? people.map((p) => {
+    const on = onboardState.followed.includes(p.name)
+    return `<button onclick="toggleOnboardFollow('${esc(p.name).replace(/'/g, "\\'")}')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;">
+      <div style="position:relative;width:62px;height:62px;">
+        <div style="width:62px;height:62px;border-radius:999px;background:${p.color};border:3px solid ${on ? '#43635C' : 'transparent'};box-sizing:border-box;"></div>
+        ${on ? `<span style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:999px;background:#43635C;border:2px solid #F6F4EF;display:flex;align-items:center;justify-content:center;">${ICONS.check}</span>` : ''}
+      </div>
+      <span style="font-size:12px;font-weight:600;text-align:center;">${esc(p.name)}</span>
+      <span style="font-size:10px;color:#ADA89C;">${p.role}</span>
+    </button>`
+  }).join('') : `<p style="grid-column:1/-1;font-size:13px;color:#7A756D;">Pick a few movies in the last step to see people here.</p>`
+  return `<div style="min-height:100%;display:flex;flex-direction:column;" class="safe-top safe-bottom">
+    <div style="height:56px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 16px;">${dots(3)}<a href="javascript:void(0)" onclick="finishOnboarding()" style="font-size:13px;color:#7A756D;font-weight:500;">Skip</a></div>
+    <div style="flex:1;box-sizing:border-box;padding:12px 16px 0;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="font-display" style="font-size:24px;font-weight:600;line-height:1.2;">Any favorites?</div>
+        <div style="font-size:13px;color:#7A756D;line-height:1.5;">From the people behind what you just picked — totally optional.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px 8px;">${peopleHtml}</div>
+      <div style="font-size:12px;color:#ADA89C;padding-bottom:4px;">${onboardState.followed.length} selected · this and later steps are all optional</div>
+    </div>
+    <div style="flex-shrink:0;box-sizing:border-box;padding:16px 20px 28px;">
+      <button onclick="finishOnboarding()" style="width:100%;height:50px;border-radius:12px;background:#24211E;color:#F6F4EF;font-size:15px;font-weight:600;border:none;">Finish</button>
+    </div>
+  </div>`
+}
+function toggleOnboardGenre(g) { const i = onboardState.genres.indexOf(g); if (i >= 0) onboardState.genres.splice(i, 1); else onboardState.genres.push(g); renderRoute() }
+function toggleOnboardLoved(id) { const i = onboardState.loved.indexOf(id); if (i >= 0) onboardState.loved.splice(i, 1); else onboardState.loved.push(id); renderRoute() }
+function toggleOnboardFollow(name) { const i = onboardState.followed.indexOf(name); if (i >= 0) onboardState.followed.splice(i, 1); else onboardState.followed.push(name); renderRoute() }
+function onboardNext1() { if (onboardState.genres.length < 3) return; onboardState.step = 2; renderRoute() }
+function onboardSkipTo(step) { onboardState.step = step; renderRoute() }
+function finishOnboarding() {
+  const u = getUser()
+  u.onboarded = true
+  u.genres = onboardState.genres
+  u.lovedMovieIds = onboardState.loved
+  u.followedPeople = onboardState.followed
+  saveUser(u)
+  resetOnboardState()
+  navigate('#/')
 }
 
 /* =========================================================================
-   PAGE: HOME
+   FEED
    ========================================================================= */
-let homeTab = 'all'
-function renderHome() {
+let feedTab = 'Mine'
+function allPostsWithMeta() {
   const user = getUser()
-  const lists = getLists()
-  const myItems = getListItems()
-
-  let activity = myItems.map((item) => {
-    const list = lists.find((l) => l.id === item.listId)
-    return { item, listName: list ? list.name : 'a list', authorId: user.id, authorName: 'You', avatarClass: 'avatar-me', mine: true }
-  })
-  if (homeTab === 'all') {
-    FRIEND_LIST_ITEMS.forEach((item) => {
-      const list = FRIEND_LISTS.find((l) => l.id === item.listId)
-      if (!list || list.visibility === 'private') return
-      const friend = FRIENDS.find((f) => f.id === list.ownerId)
-      if (!friend) return
-      activity.push({ item, listName: list.name, authorId: friend.id, authorName: friend.name, avatarClass: friend.avatarClass, mine: false })
-    })
-  }
-  activity.sort((a, b) => new Date(b.item.addedAt).getTime() - new Date(a.item.addedAt).getTime())
-
-  const activityHtml = activity.length === 0
-    ? `<div class="text-center py-24">
-        <p class="font-display italic text-3xl text-ink mb-2">Nothing here yet</p>
-        <p class="text-inksoft text-sm mb-6">Point your phone at what you're watching, and it'll land here.</p>
-        <a href="#/capture" class="inline-block border border-accent text-accent text-sm font-medium px-5 py-2 rounded-full">Capture a show</a>
+  const mine = getPosts().map((p) => ({ post: p, authorId: user.id, authorName: user.name, color: '#43635C' }))
+  const friends = FRIEND_POSTS.map((p) => { const f = FRIENDS.find((x) => x.id === p.authorId); return { post: p, authorId: p.authorId, authorName: f.name, color: f.color } })
+  return [...mine, ...friends].sort((a, b) => new Date(b.post.createdAt) - new Date(a.post.createdAt))
+}
+function renderFeed() {
+  const user = getUser()
+  let items = allPostsWithMeta()
+  if (feedTab === 'Mine') items = items.filter((x) => x.authorId === user.id)
+  else if (feedTab === 'Friends') items = items.filter((x) => x.authorId !== user.id)
+  const filterRow = `<div style="height:44px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;gap:8px;padding:8px 16px;">
+    ${['Mine', 'Friends', 'Everyone'].map((t) => `<button onclick="setFeedTab('${t}')" style="height:30px;padding:0 14px;border-radius:8px;border:${feedTab === t ? 'none' : '1px solid #E7E2D9'};background:${feedTab === t ? '#24211E' : 'transparent'};color:${feedTab === t ? '#F6F4EF' : '#7A756D'};font-size:13px;font-weight:${feedTab === t ? 600 : 500};">${t}</button>`).join('')}
+  </div>`
+  const body = items.length === 0
+    ? `<div style="text-align:center;padding:60px 24px;">
+        <p class="font-display" style="font-size:22px;font-weight:600;margin-bottom:6px;">Nothing here yet</p>
+        <p style="font-size:13px;color:#7A756D;margin-bottom:16px;">Snap a detail page from your streaming app to log your first film.</p>
+        <a href="#/capture" style="display:inline-block;background:#24211E;color:#F6F4EF;font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;">Capture a film</a>
       </div>`
-    : `<div class="flex flex-col gap-9 pb-6">${activity.map((a) => activityRow(a.item, a.authorName, a.avatarClass, a.listName, a.mine ? `homeRemoveItem('${a.item.listId}','${a.item.showId}')` : null)).join('')}</div>`
-
-  return shell('#/', 'Reel', null, `
-    <div class="px-4 pt-3">
-      <div class="flex items-center justify-between mb-3">
-        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft">Your lists</p>
-        <a href="#/lists" class="text-xs text-accent">Manage</a>
-      </div>
-      <div class="flex gap-2.5 overflow-x-auto pb-1 mb-7 -mx-4 px-4">${lists.map((l) => `<div class="w-36 flex-shrink-0">${listSummaryCard(l, myItems.filter((i) => i.listId === l.id), '#/lists/' + l.id)}</div>`).join('')}</div>
-
-      <div class="flex gap-2 mb-6">
-        <button onclick="setHomeTab('all')" class="text-xs px-3 py-1.5 rounded-full border transition-colors ${homeTab === 'all' ? 'border-accent text-accent bg-accentsoft' : 'border-line text-inksoft'}">Everyone</button>
-        <button onclick="setHomeTab('mine')" class="text-xs px-3 py-1.5 rounded-full border transition-colors ${homeTab === 'mine' ? 'border-accent text-accent bg-accentsoft' : 'border-line text-inksoft'}">Just me</button>
-      </div>
-
-      ${activityHtml}
-    </div>
-  `)
+    : `<div style="box-sizing:border-box;padding:4px 16px 24px;display:flex;flex-direction:column;gap:24px;">${items.map((x) => feedCard(x)).join('')}</div>`
+  return tabShell('#/', 'Reel', null, filterRow + body)
 }
-function setHomeTab(tab) { homeTab = tab; renderRoute() }
-function homeRemoveItem(listId, showId) { removeFromList(listId, showId); renderRoute() }
-
-function listSummaryCard(list, items, href) {
-  const posters = items.slice(0, 3).map((i) => findShowById(i.showId)).filter(Boolean)
-  const posterHtmlStr = posters.length
-    ? `<div class="flex -space-x-4">${posters.map((s) => `<span class="h-14 w-10 rounded-md poster-${s.pal} ring-2 ring-surface"></span>`).join('')}${items.length > 3 ? `<span class="h-14 w-10 rounded-md bg-surface2 ring-2 ring-surface flex items-center justify-center text-[10px] text-inksoft">+${items.length - 3}</span>` : ''}</div>`
-    : `<div class="h-14 w-10 rounded-md bg-surface2"></div>`
-  return `<a href="${href}" class="block rounded-2xl border border-line bg-surface p-3">
-    <p class="text-sm font-medium text-ink truncate mb-2.5">${esc(list.name)}</p>
-    ${posterHtmlStr}
-    <p class="text-[11px] text-inksoft mt-2.5">${VIS_LABEL[list.visibility]} · ${items.length}</p>
-  </a>`
-}
-
-function activityRow(item, authorName, avatarClass, listName, onRemoveJs) {
-  const show = findShowById(item.showId)
-  if (!show) return ''
-  const removeBtn = onRemoveJs ? `<button onclick="${onRemoveJs}" class="ml-auto text-inksoft hover:text-ink text-sm px-1">✕</button>` : ''
-  const media = item.photo
-    ? `<img src="${item.photo}" alt="${esc(show.title)}" class="w-full aspect-[4/5] object-cover rounded-2xl" />`
-    : posterHero(show)
-  return `<article class="animate-pop">
-    <div class="flex items-center gap-2.5 mb-2.5">
-      <span class="h-8 w-8 rounded-full ${avatarClass} flex-shrink-0"></span>
-      <div class="min-w-0">
-        <p class="text-sm text-ink"><span class="font-medium">${esc(authorName)}</span> <span class="text-inksoft">added to</span> <span class="font-medium">${esc(listName)}</span></p>
-        <p class="text-xs text-inksoft">${timeAgo(item.addedAt)}</p>
+function setFeedTab(t) { feedTab = t; renderRoute() }
+function feedCard(x) {
+  const movie = findMovie(x.post.movieId)
+  if (!movie) return ''
+  const comments = getComments().filter((c) => c.postId === x.post.id).length + FRIEND_COMMENTS.filter((c) => c.postId === x.post.id).length
+  const liked = !!getLikes()[x.post.id]
+  const rating = overallRating(x.post)
+  return `<article style="display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      ${avatarHtml(x.authorName, x.color)}
+      <div style="display:flex;flex-direction:column;">
+        <span style="font-size:13px;font-weight:600;">${esc(x.authorName)}</span>
+        <span style="font-size:12px;color:#7A756D;">watched · ${timeAgo(x.post.createdAt)}</span>
       </div>
-      ${removeBtn}
     </div>
-    <a href="#/show/${show.slug}" class="block">${media}</a>
-    <div class="mt-2.5">
-      <a href="#/show/${show.slug}" class="font-display italic text-lg text-ink hover:text-accent transition-colors">${esc(show.title)}</a>
-      <div class="flex flex-wrap gap-1.5 mt-1.5">${platformBadges(show.platforms)}</div>
-      ${item.note ? `<p class="text-sm text-ink/80 mt-2.5 leading-relaxed">${esc(item.note)}</p>` : ''}
+    ${posterStill(movie, { rating: rating, flipHref: `#/post/${x.post.id}` })}
+    ${x.post.caption ? `<p style="margin:0;font-size:14px;line-height:1.5;color:#3A362F;">${esc(x.post.caption)}</p>` : ''}
+    <div style="display:flex;align-items:center;gap:18px;">
+      <a href="#/post/${x.post.id}" style="display:flex;align-items:center;gap:5px;color:#7A756D;">${ICONS.comment}<span style="font-size:13px;">${comments}</span></a>
+      <button onclick="feedToggleLike('${x.post.id}')" style="display:flex;align-items:center;gap:5px;background:none;border:none;padding:4px 0;color:${liked ? '#43635C' : '#7A756D'};">${liked ? ICONS.heartFill : ICONS.heart}</button>
+      <div style="flex:1;"></div>
+      <button onclick="openAddToListPicker('${x.post.id}')" aria-label="Add to list" style="width:32px;height:32px;border-radius:8px;border:1px solid #E7E2D9;background:#FFFFFF;color:#43635C;display:flex;align-items:center;justify-content:center;">${ICONS.addlist}</button>
     </div>
   </article>`
 }
+function feedToggleLike(id) { toggleLike(id); renderRoute() }
+
+function openAddToListPicker(postId) {
+  const lists = getLists()
+  const root = document.createElement('div')
+  root.id = 'quick-list-modal'
+  const chips = lists.map((l) => `<button onclick="quickAssignList('${postId}','${l.id}')" style="height:34px;padding:0 14px;border-radius:9px;border:1.5px solid #E7E2D9;background:#FFFFFF;color:#24211E;font-size:13px;font-weight:500;">${esc(l.name)}</button>`).join('')
+  root.innerHTML = `<div class="animate-pop" style="position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.4);" onclick="closeQuickListModal(event)">
+    <div style="width:100%;max-width:420px;background:#FFFFFF;border-radius:22px 22px 0 0;box-sizing:border-box;padding:16px 20px 32px;" onclick="event.stopPropagation()">
+      <div class="font-display" style="font-size:17px;font-weight:600;margin-bottom:10px;">Add to a list</div>
+      ${lists.length ? `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">${chips}</div>` : `<p style="font-size:13px;color:#7A756D;margin-bottom:10px;">You don't have any lists yet.</p>`}
+      <button onclick="quickCreateListPrompt('${postId}')" style="width:100%;height:40px;border-radius:9px;border:1px dashed #ADA89C;background:transparent;color:#7A756D;font-size:13px;font-weight:500;">+ New list</button>
+    </div>
+  </div>`
+  document.body.appendChild(root)
+}
+function closeQuickListModal(e) { if (e && e.target !== e.currentTarget) return; const el = document.getElementById('quick-list-modal'); if (el) el.remove() }
+function quickAssignList(postId, listId) {
+  const posts = getPosts().map((p) => p.id === postId ? { ...p, listId } : p)
+  writeKey(KEYS.posts, posts)
+  closeQuickListModal()
+  renderRoute()
+}
+function quickCreateListPrompt(postId) {
+  const name = prompt('Name this list')
+  if (!name || !name.trim()) return
+  const l = createList(name.trim())
+  quickAssignList(postId, l.id)
+}
 
 /* =========================================================================
-   PAGE: LISTS
+   LISTS
    ========================================================================= */
+let listsSearch = ''
 function renderLists() {
   const lists = getLists()
-  const items = getListItems()
-  const defaultLists = lists.filter((l) => l.kind !== 'custom')
-  const customLists = lists.filter((l) => l.kind === 'custom')
-
-  const customSection = customLists.length
-    ? `<p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Your custom lists</p>
-       <div class="grid grid-cols-2 gap-2.5 mb-7">${customLists.map((l) => listSummaryCard(l, items.filter((i) => i.listId === l.id), '#/lists/' + l.id)).join('')}</div>`
-    : ''
-
-  return shell('#/lists', 'Your Lists', null, `
-    <div class="px-4 pt-3 pb-8">
-      <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Default lists</p>
-      <div class="grid grid-cols-2 gap-2.5 mb-7">${defaultLists.map((l) => listSummaryCard(l, items.filter((i) => i.listId === l.id), '#/lists/' + l.id)).join('')}</div>
-      ${customSection}
-      <div id="new-list-toggle">
-        <button onclick="document.getElementById('new-list-toggle').hidden=true; document.getElementById('new-list-form').hidden=false; document.getElementById('new-list-name').focus()" class="w-full rounded-full border border-dashed border-line py-2.5 text-sm text-inksoft">+ New list</button>
+  const posts = getPosts()
+  const filtered = lists.filter((l) => l.name.toLowerCase().includes(listsSearch.toLowerCase()))
+  const rows = filtered.map((l) => {
+    const items = posts.filter((p) => p.listId === l.id)
+    const movies = items.slice(0, 4).map((p) => findMovie(p.movieId)).filter(Boolean)
+    const swatches = movies.length
+      ? movies.map((m) => `<div style="background:${m.gradFrom};"></div>`).join('') + Array(4 - movies.length).fill('<div style="background:#EFEBE2;"></div>').join('')
+      : Array(4).fill('<div style="background:#EFEBE2;"></div>').join('')
+    const lastUpdated = items.length ? timeAgo(items.map((p) => p.createdAt).sort().reverse()[0]) : null
+    return `<a href="#/lists/${l.id}" style="display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid #EFEBE2;">
+      <div style="width:56px;height:40px;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;flex-shrink:0;">${swatches}</div>
+      <div style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;">
+        <span class="font-display" style="font-size:16px;font-weight:600;">${esc(l.name)}</span>
+        <span style="font-size:12px;color:#7A756D;">${items.length} film${items.length === 1 ? '' : 's'}${lastUpdated ? ' · updated ' + lastUpdated : ''}</span>
       </div>
-      <div id="new-list-form" hidden class="rounded-2xl border border-line bg-surface p-4 flex flex-col gap-3 animate-pop">
-        <input id="new-list-name" placeholder="e.g. Oscar contenders, Date night" class="w-full bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" />
-        <div id="new-list-vis" data-value="friends" class="flex gap-2">
-          ${['public', 'friends', 'private'].map((v) => `<button type="button" onclick="chipSelect('new-list-vis', '${v}')" data-value="${v}" class="flex-1 text-xs rounded-full border py-1.5 transition-colors ${v === 'friends' ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft'}">${VIS_LABEL[v]}</button>`).join('')}
-        </div>
-        <div class="flex gap-2">
-          <button onclick="document.getElementById('new-list-toggle').hidden=false; document.getElementById('new-list-form').hidden=true" class="flex-1 rounded-full border border-line py-2 text-sm text-inksoft">Cancel</button>
-          <button onclick="submitNewList()" class="flex-1 rounded-full bg-accent text-accentink py-2 text-sm font-medium">Create</button>
-        </div>
+      ${ICONS.chevron}
+    </a>`
+  }).join('')
+  const body = `
+    <div style="flex-shrink:0;box-sizing:border-box;padding:12px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;background:#FFFFFF;border:1px solid #E7E2D9;border-radius:10px;padding:10px 12px;">
+        ${ICONS.search}
+        <input id="lists-search" oninput="setListsSearch(this.value)" value="${esc(listsSearch)}" placeholder="Search your lists" style="border:none;outline:none;font-size:14px;flex:1;background:transparent;color:#24211E;" />
       </div>
     </div>
-  `)
+    <div style="box-sizing:border-box;padding:0 16px;">
+      ${lists.length === 0
+        ? `<p style="font-size:13px;color:#7A756D;text-align:center;padding:40px 10px;">No lists yet — create one from a post, or start one here.</p>`
+        : filtered.length === 0 ? `<p style="font-size:13px;color:#7A756D;text-align:center;padding:40px 10px;">No lists match "${esc(listsSearch)}".</p>` : rows}
+      <button onclick="createListPrompt()" style="width:100%;margin-top:14px;height:42px;border-radius:10px;border:1px dashed #ADA89C;background:transparent;color:#7A756D;font-size:13px;font-weight:500;">+ New list</button>
+    </div>`
+  return tabShell('#/lists', 'Lists', `<button aria-label="Create a new list" onclick="createListPrompt()" style="width:32px;height:32px;border-radius:999px;border:1px solid #E7E2D9;background:#FFFFFF;color:#24211E;display:flex;align-items:center;justify-content:center;">${ICONS.plus.replace('width="24" height="24"', 'width="16" height="16"')}</button>`, body)
 }
-function chipSelect(containerId, value) {
-  const el = document.getElementById(containerId)
-  if (!el) return
-  el.dataset.value = value
-  Array.from(el.children).forEach((btn) => {
-    const active = btn.dataset.value === value
-    btn.className = 'flex-1 text-xs rounded-full border py-1.5 transition-colors ' + (active ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft')
-  })
+function setListsSearch(v) {
+  listsSearch = v
+  renderRoute()
+  const input = document.getElementById('lists-search')
+  if (input) { input.focus(); input.selectionStart = input.selectionEnd = input.value.length }
 }
-function submitNewList() {
-  const name = document.getElementById('new-list-name').value.trim()
-  if (!name) return
-  const visibility = document.getElementById('new-list-vis').dataset.value || 'friends'
-  createList(name, visibility)
+function createListPrompt() {
+  const name = prompt('Name this list')
+  if (!name || !name.trim()) return
+  createList(name.trim())
   renderRoute()
 }
-
-/* =========================================================================
-   PAGE: LIST DETAIL
-   ========================================================================= */
 function renderListDetail(id) {
-  const lists = getLists()
-  const list = lists.find((l) => l.id === id)
-  if (!list) return shell('#/lists', 'Not found', '#/lists', `<p class="px-4 py-8 text-sm text-inksoft">That list doesn't exist.</p>`)
-  const items = getListItems().filter((i) => i.listId === id).sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
-
-  const itemsHtml = items.length === 0
-    ? `<p class="text-sm text-inksoft text-center py-10">Nothing here yet — add shows from the Capture tab or a show's page.</p>`
-    : `<div class="flex flex-col gap-9">${items.map((item) => activityRow(item, 'You', 'avatar-me', list.name, `listDetailRemoveItem('${list.id}','${item.showId}')`)).join('')}</div>`
-
-  const deleteBtn = list.kind === 'custom' ? `<button onclick="listDetailDelete('${list.id}')" class="w-full mt-8 rounded-full border border-danger/40 text-danger py-2.5 text-sm">Delete list</button>` : ''
-
-  return shell('#/lists', list.name, '#/lists', `
-    <div class="px-4 pt-4 pb-8">
-      <div class="flex items-center gap-2 mb-1">
-        <h2 id="list-detail-title" class="font-display italic text-2xl text-ink">${esc(list.name)}</h2>
-        <button onclick="listDetailRename('${list.id}')" class="text-xs text-inksoft underline">rename</button>
-      </div>
-      <p class="text-xs text-inksoft mb-5">${items.length} show${items.length === 1 ? '' : 's'}</p>
-
-      <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Who can see this list</p>
-      <div id="list-detail-vis" data-value="${list.visibility}" data-list-id="${list.id}" class="flex gap-2 mb-7">
-        ${['public', 'friends', 'private'].map((v) => `<button type="button" onclick="listDetailVisibility('${v}')" data-value="${v}" class="flex-1 text-xs rounded-full border py-1.5 transition-colors ${v === list.visibility ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft'}">${VIS_LABEL[v]}</button>`).join('')}
-      </div>
-
-      ${itemsHtml}
-
-      ${deleteBtn}
+  const list = getLists().find((l) => l.id === id)
+  if (!list) return tabShell('#/lists', 'Not found', null, `<p style="padding:24px;font-size:13px;color:#7A756D;">That list doesn't exist.</p>`)
+  const items = getPosts().filter((p) => p.listId === id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  const grid = items.map((p) => {
+    const m = findMovie(p.movieId)
+    return `<a href="#/post/${p.id}" style="display:block;">${posterThumb(m, 112, 160)}</a>`
+  }).join('')
+  return `<div style="min-height:100%;display:flex;flex-direction:column;">
+    ${topBar(list.name, { back: '#/lists', right: `<button onclick="deleteListConfirm('${list.id}')" aria-label="Delete list" style="width:32px;height:32px;border-radius:999px;border:none;background:transparent;color:#7A756D;display:flex;align-items:center;justify-content:center;">${ICONS.close}</button>` })}
+    <div style="flex:1;box-sizing:border-box;padding:16px;">
+      <p style="font-size:12px;color:#7A756D;margin-bottom:14px;">${items.length} film${items.length === 1 ? '' : 's'}</p>
+      ${items.length === 0 ? `<p style="font-size:13px;color:#7A756D;text-align:center;padding:30px 10px;">Nothing here yet — add a film to this list from Confirm or a post's add-to-list button.</p>` : `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">${grid}</div>`}
     </div>
-  `)
+  </div>`
 }
-function listDetailVisibility(v) {
-  const el = document.getElementById('list-detail-vis')
-  const listId = el.dataset.listId
-  updateListVisibility(listId, v)
-  renderRoute()
-}
-function listDetailRename(listId) {
-  const name = prompt('Rename this list', getLists().find((l) => l.id === listId)?.name || '')
-  if (name && name.trim()) { renameList(listId, name.trim()); renderRoute() }
-}
-function listDetailDelete(listId) {
-  const list = getLists().find((l) => l.id === listId)
-  if (!confirm(`Delete "${list ? list.name : 'this list'}"? This removes the list but not the shows in it.`)) return
-  deleteList(listId)
+function deleteListConfirm(id) {
+  const list = getLists().find((l) => l.id === id)
+  if (!confirm(`Delete "${list ? list.name : 'this list'}"? Films stay logged, just unassigned from this list.`)) return
+  const posts = getPosts().map((p) => p.listId === id ? { ...p, listId: null } : p)
+  writeKey(KEYS.posts, posts)
+  deleteList(id)
   navigate('#/lists')
 }
-function listDetailRemoveItem(listId, showId) { removeFromList(listId, showId); renderRoute() }
 
 /* =========================================================================
-   PAGE: SHOW DETAIL
+   DISCOVER
    ========================================================================= */
-function renderShowDetail(slug) {
-  const show = findShowBySlug(slug)
-  if (!show) return shell('#/lists', 'Not found', '#/lists', `<p class="px-4 py-8 text-sm text-inksoft">That show isn't in the catalog.</p>`)
+function renderDiscover() {
   const user = getUser()
-  const lists = getLists()
-  const items = getListItems()
-  const reviews = getReviews()
-
-  const defaultLists = lists.filter((l) => l.kind !== 'custom')
-  const customLists = lists.filter((l) => l.kind === 'custom')
-  const currentDefaultListId = (items.find((i) => i.showId === show.id && defaultLists.some((l) => l.id === i.listId)) || {}).listId
-  const customListIdsWithShow = new Set(items.filter((i) => i.showId === show.id).map((i) => i.listId))
-
-  const myReview = reviews.find((r) => r.showId === show.id && r.authorId === user.id)
-  const allReviews = [...reviews.filter((r) => r.showId === show.id), ...FRIEND_REVIEWS.filter((r) => r.showId === show.id)]
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-  const avgRating = allReviews.length ? allReviews.reduce((s, r) => s + r.rating, 0) / allReviews.length : null
-
-  const customChips = customLists.length
-    ? `<div class="flex flex-wrap gap-2 mt-2.5">${customLists.map((l) => `<button onclick="toggleCustomList('${show.id}','${l.id}')" class="text-xs rounded-full border px-3 py-1.5 transition-colors ${customListIdsWithShow.has(l.id) ? 'border-accent bg-accentsoft text-accent' : 'border-line text-inksoft'}">${customListIdsWithShow.has(l.id) ? '✓ ' : '+ '}${esc(l.name)}</button>`).join('')}</div>`
-    : ''
-
-  const reviewsHtml = allReviews.length
-    ? `<div class="mt-7"><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">All reviews</p><div class="flex flex-col gap-3">
-        ${allReviews.map((r) => {
-          const isMine = r.authorId === user.id
-          const friend = !isMine ? FRIENDS.find((f) => f.id === r.authorId) : null
-          return `<div class="rounded-2xl border border-line bg-surface p-3.5">
-            <div class="flex items-center justify-between mb-1"><span class="text-sm font-medium text-ink">${isMine ? 'You' : esc(friend ? friend.name : 'Unknown')}</span>${starsReadOnly(r.rating, 'sm')}</div>
-            ${r.text ? `<p class="text-sm text-ink/80">${esc(r.text)}</p>` : ''}
-          </div>`
-        }).join('')}
-      </div></div>`
-    : ''
-
-  const html = `
-    <div class="px-4 pt-4 pb-8">
-      ${posterHero(show)}
-      <div class="mt-4">
-        <h2 class="font-display italic text-3xl text-ink leading-tight">${esc(show.title)}</h2>
-        <p class="text-xs text-inksoft mt-1">${show.year} · ${esc(show.genres.join(', '))}</p>
-        <div class="flex flex-wrap gap-1.5 mt-2.5">${platformBadges(show.platforms)}</div>
-        ${avgRating != null ? `<div class="flex items-center gap-2 mt-2.5">${starsReadOnly(Math.round(avgRating), 'sm')}<span class="text-xs text-inksoft">${avgRating.toFixed(1)} · ${allReviews.length} review${allReviews.length === 1 ? '' : 's'}</span></div>` : ''}
+  const posted = new Set(getPosts().map((p) => p.movieId))
+  const dismissed = new Set(getDismissed())
+  const myMoods = new Set(user.genres)
+  getPosts().forEach((p) => { const m = findMovie(p.movieId); if (m) m.moods.forEach((x) => myMoods.add(x)) })
+  const candidates = MOVIES.filter((m) => !posted.has(m.id) && !dismissed.has(m.id)).slice(0, 8)
+  const cards = candidates.map((m) => {
+    const sharedMovie = MOVIES.find((x) => posted.has(x.id) && x.moods.some((mm) => m.moods.includes(mm)))
+    const reason = sharedMovie ? `Because you loved ${esc(sharedMovie.title)}` : (m.moods.some((x) => myMoods.has(x)) ? `Matches your taste for ${esc(m.moods.find((x) => myMoods.has(x)))}` : 'New this week')
+    return `<article style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:6px;">${ICONS.sparkle}<span style="font-size:12px;font-weight:500;color:#7A756D;">${reason}</span></div>
+      ${posterStill(m, { height: 280 })}
+      <p style="margin:0;font-size:13px;color:#7A756D;">${esc(m.genre)} · ${m.moods.slice(0, 2).join(', ')}</p>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button onclick="discoverAddToList('${m.id}')" aria-label="Add to list" style="width:32px;height:32px;border-radius:8px;border:1px solid #E7E2D9;background:#FFFFFF;color:#43635C;display:flex;align-items:center;justify-content:center;">${ICONS.addlist}</button>
+        <div style="flex:1;"></div>
+        <button onclick="discoverDismiss('${m.id}')" aria-label="Not interested" style="width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:#ADA89C;display:flex;align-items:center;justify-content:center;">${ICONS.close}</button>
       </div>
-
-      <p class="text-sm text-ink/80 leading-relaxed mt-4">${esc(show.synopsis)}</p>
-
-      <div class="flex items-center justify-between mt-6 mb-2.5">
-        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft">Your lists</p>
-        <button onclick="openQr('${show.slug}')" class="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs text-inksoft"><span>▦</span> Share QR</button>
-      </div>
-
-      <select onchange="setDefaultStatus('${show.id}', this.value)" class="w-full bg-surface2 border border-line rounded-full text-sm px-3 py-2 outline-none mb-2.5 text-ink">
-        <option value="" disabled ${!currentDefaultListId ? 'selected' : ''}>Add to a default list…</option>
-        ${defaultLists.map((l) => `<option value="${l.kind}" ${currentDefaultListId === l.id ? 'selected' : ''}>${STATUS_LABELS[l.kind] || esc(l.name)}</option>`).join('')}
-      </select>
-
-      ${customChips}
-
-      <div class="mt-7">
-        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">${myReview ? 'Your review' : 'Rate & review'}</p>
-        <div class="rounded-2xl border border-line bg-surface p-4">
-          ${starsInteractive('review-stars', (myReview && myReview.rating) || 0, 'lg')}
-          <textarea id="review-text" placeholder="${myReview && myReview.text ? esc(myReview.text) : 'What did you think?'}" rows="2" class="w-full mt-3 rounded-xl bg-surface2 border border-line px-3 py-2 text-sm outline-none focus:border-accent text-ink resize-none"></textarea>
-          <button onclick="submitReview('${show.id}')" class="mt-3 w-full bg-accent text-accentink text-sm font-medium py-2 rounded-full">${myReview ? 'Update review' : 'Post review'}</button>
-        </div>
-      </div>
-
-      ${reviewsHtml}
+    </article>`
+  }).join('')
+  const body = `
+    <div style="flex-shrink:0;box-sizing:border-box;padding:10px 16px 12px;">
+      <span style="font-size:12px;color:#7A756D;">Curated from today's web · updated this morning</span>
     </div>
-    <div id="qr-modal-root"></div>
-  `
-  return shell('#/lists', show.title, '#/lists', html)
-}
-function setDefaultStatus(showId, kind) { moveToDefaultList(showId, kind); renderRoute() }
-function toggleCustomList(showId, listId) {
-  const items = getListItems()
-  const has = items.some((i) => i.listId === listId && i.showId === showId)
-  if (has) removeFromList(listId, showId); else addToList(listId, showId)
-  renderRoute()
-}
-function submitReview(showId) {
-  const rating = getStars('review-stars')
-  if (!rating) return
-  const text = document.getElementById('review-text').value
-  const user = getUser()
-  addReview({ id: uid('rev'), showId, authorId: user.id, rating, text, createdAt: new Date().toISOString() })
-  renderRoute()
-}
-function openQr(slug) {
-  const show = findShowBySlug(slug)
-  const url = publicShowUrl(slug)
-  const root = document.getElementById('qr-modal-root')
-  if (!root) return
-  root.innerHTML = `
-    <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm" onclick="closeQr(event)">
-      <div class="animate-pop w-full sm:w-96 sm:rounded-xl2 rounded-t-xl2 bg-surface border border-line p-6 text-center" onclick="event.stopPropagation()">
-        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-1">Scan to view &amp; download</p>
-        <h2 class="font-display italic text-2xl text-ink mb-4">${esc(show.title)}</h2>
-        <div class="bg-white rounded-xl p-3 inline-block"><img id="qr-img" alt="QR code linking to ${esc(show.title)}" class="w-56 h-56" /></div>
-        <p class="text-xs text-inksoft mt-4 break-all">${esc(url)}</p>
-        <p class="text-xs text-inksoft mt-1">Anyone who scans this lands on ${esc(show.title)}'s page and gets prompted to download Reel.</p>
-        <button onclick="closeQr()" class="mt-5 w-full rounded-full border border-line py-2.5 text-sm font-medium text-inksoft">Close</button>
-      </div>
+    <div style="box-sizing:border-box;padding:0 16px 24px;display:flex;flex-direction:column;gap:22px;">
+      ${candidates.length ? cards : `<p style="font-size:13px;color:#7A756D;text-align:center;padding:30px 10px;">You've seen everything in the demo catalog — nice work.</p>`}
     </div>`
-  makeQrDataUrl(url).then((dataUrl) => { const img = document.getElementById('qr-img'); if (img) img.src = dataUrl })
+  return tabShell('#/discover', 'Discover', `<span aria-hidden="true" style="width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#B08968;">${ICONS.sparkle.replace('width="13" height="13"', 'width="17" height="17"')}</span>`, body)
 }
-function closeQr(e) { if (e && e.target !== e.currentTarget) return; const root = document.getElementById('qr-modal-root'); if (root) root.innerHTML = '' }
+function discoverDismiss(id) { dismissMovie(id); renderRoute() }
+function discoverAddToList(movieId) {
+  const lists = getLists()
+  const root = document.createElement('div')
+  root.id = 'quick-list-modal'
+  const chips = lists.map((l) => `<button onclick="discoverAssignList('${movieId}','${l.id}')" style="height:34px;padding:0 14px;border-radius:9px;border:1.5px solid #E7E2D9;background:#FFFFFF;color:#24211E;font-size:13px;font-weight:500;">${esc(l.name)}</button>`).join('')
+  root.innerHTML = `<div class="animate-pop" style="position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.4);" onclick="closeQuickListModal(event)">
+    <div style="width:100%;max-width:420px;background:#FFFFFF;border-radius:22px 22px 0 0;box-sizing:border-box;padding:16px 20px 32px;" onclick="event.stopPropagation()">
+      <div class="font-display" style="font-size:17px;font-weight:600;margin-bottom:10px;">Add to a list</div>
+      ${lists.length ? `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">${chips}</div>` : `<p style="font-size:13px;color:#7A756D;margin-bottom:10px;">You don't have any lists yet — this creates one.</p>`}
+      <button onclick="discoverNewListPrompt('${movieId}')" style="width:100%;height:40px;border-radius:9px;border:1px dashed #ADA89C;background:transparent;color:#7A756D;font-size:13px;font-weight:500;">+ New list</button>
+    </div>
+  </div>`
+  document.body.appendChild(root)
+}
+function discoverAssignList(movieId, listId) {
+  const m = findMovie(movieId)
+  const draft = { id: uid('post'), authorId: getUser().id, movieId, photo: null, ratings: { writing: 0, cinematography: 0, directing: 0 }, actingRatings: m.actors.map((a) => ({ actor: a, rating: 0 })), caption: '', listId, createdAt: new Date().toISOString() }
+  addPost(draft)
+  dismissMovie(movieId)
+  closeQuickListModal()
+  renderRoute()
+}
+function discoverNewListPrompt(movieId) {
+  const name = prompt('Name this list')
+  if (!name || !name.trim()) return
+  const l = createList(name.trim())
+  discoverAssignList(movieId, l.id)
+}
 
 /* =========================================================================
-   PAGE: CAPTURE
+   CAMERA → CONFIRM → RATE
    ========================================================================= */
-let captureState = null
-function resetCaptureState() {
-  captureState = { step: 'capture', photo: null, candidates: [], show: null, selectedListId: null, creatingList: false }
-}
-resetCaptureState()
-
+let draftPost = null
+function resetDraft() { draftPost = { photo: null, movie: null, listId: null } }
+resetDraft()
 let activeStream = null
-function stopCamera() {
-  if (activeStream) { activeStream.getTracks().forEach((t) => t.stop()); activeStream = null }
-}
+function stopCamera() { if (activeStream) { activeStream.getTracks().forEach((t) => t.stop()); activeStream = null } }
 
-function renderCapture() {
-  const lists = getLists()
-  let body = ''
-
-  if (captureState.step === 'capture') {
-    body = `
-      <div class="relative rounded-2xl overflow-hidden bg-black aspect-[3/4]" id="camera-wrap">
-        <video id="camera-video" playsinline muted class="w-full h-full object-cover"></video>
-        <div id="camera-loading" class="absolute inset-0 flex items-center justify-center bg-black/60"><p class="text-sm text-white/60">Starting camera…</p></div>
-        <div id="camera-fail" hidden class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center bg-black px-6">
-          <p class="text-4xl opacity-70">📷</p>
-          <p class="text-sm text-white/60 max-w-xs">Couldn't access your camera directly — use your device camera instead.</p>
-          <button onclick="document.getElementById('capture-file').click()" class="bg-accent text-accentink text-sm font-medium px-5 py-2.5 rounded-full">Open camera</button>
-        </div>
-        <div class="pointer-events-none absolute inset-6 rounded-xl border border-white/40 animate-scan"></div>
-        <p class="absolute top-3 left-0 right-0 text-center text-xs text-white/70">Point at the TV and tap the shutter</p>
-        <div class="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-8">
-          <button onclick="document.getElementById('capture-file').click()" class="h-10 w-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center text-lg" aria-label="Upload from gallery">🖼️</button>
-          <button id="shutter-btn" onclick="shutterCapture()" disabled class="h-16 w-16 rounded-full bg-white ring-4 ring-white/25 active:scale-95 transition-transform disabled:opacity-40" aria-label="Take photo"></button>
-          <span class="h-10 w-10"></span>
-        </div>
-        <input id="capture-file" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleFileCapture(event)" />
+function renderCamera() {
+  pendingAfterRender = startCamera
+  return `<div style="min-height:100%;background:#141311;color:#FFFFFF;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;">
+      <video id="camera-video" playsinline muted style="width:100%;height:100%;object-fit:cover;"></video>
+      <div id="camera-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(20,19,17,0.7);"><p style="font-size:13px;color:rgba(255,255,255,0.6);">Starting camera…</p></div>
+      <div id="camera-fail" hidden style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;background:#141311;padding:0 24px;">
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);max-width:260px;">Couldn't access your camera — use your device camera instead.</p>
+        <button onclick="document.getElementById('capture-file').click()" style="background:#43635C;color:#FFFFFF;font-size:13px;font-weight:600;padding:10px 20px;border-radius:999px;border:none;">Open camera</button>
       </div>
-    `
-    pendingAfterRender = startCamera
-  } else if (captureState.step === 'recognizing') {
-    body = `
-      <div class="flex flex-col items-center gap-4 py-16">
-        ${captureState.photo ? `<img src="${captureState.photo}" class="w-40 rounded-xl opacity-70" />` : ''}
-        <div class="flex items-center gap-2 text-inksoft text-sm"><span class="h-1.5 w-1.5 rounded-full bg-accent animate-pulse"></span>Identifying what's on screen…</div>
-      </div>`
-  } else if (captureState.step === 'confirm') {
-    const top = captureState.candidates[0]
-    const rest = captureState.candidates.slice(1)
-    body = `
-      <div class="flex flex-col gap-4">
-        ${top ? `<div>
-          <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Best match</p>
-          <button onclick="selectCandidate('${top.show.id}')" class="w-full flex items-center gap-3 rounded-2xl border border-accent/40 bg-accentsoft p-3 text-left animate-pop">
-            ${posterHtml(top.show, 'sm')}
-            <div class="min-w-0 flex-1"><p class="font-display italic text-lg text-ink">${esc(top.show.title)}</p><p class="text-xs text-inksoft">${top.show.year}</p><div class="flex flex-wrap gap-1 mt-1">${platformBadges(top.show.platforms)}</div></div>
-            <div class="text-right flex-shrink-0"><p class="text-lg font-semibold text-accent">${Math.round(top.confidence * 100)}%</p><p class="text-[10px] text-inksoft">match</p></div>
-          </button>
-        </div>` : ''}
-        ${rest.length ? `<div><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Other possibilities</p><div class="flex flex-col gap-2">
-          ${rest.map((c) => `<button onclick="selectCandidate('${c.show.id}')" class="flex items-center gap-3 rounded-xl border border-line bg-surface p-2.5 text-left">
-            ${posterHtml(c.show, 'sm')}<div class="min-w-0 flex-1"><p class="text-sm font-medium text-ink">${esc(c.show.title)}</p><p class="text-xs text-inksoft">${c.show.year}</p></div><p class="text-sm text-inksoft flex-shrink-0">${Math.round(c.confidence * 100)}%</p>
-          </button>`).join('')}
-        </div></div>` : ''}
-        <div class="flex gap-2 mt-1">
-          <button onclick="resetCaptureState(); renderRoute()" class="flex-1 rounded-full border border-line py-2.5 text-sm font-medium text-inksoft">Retake photo</button>
-          <button onclick="document.getElementById('capture-search-panel').hidden = !document.getElementById('capture-search-panel').hidden" class="flex-1 rounded-full border border-line py-2.5 text-sm font-medium text-inksoft">Not it? Search</button>
-        </div>
-        <div id="capture-search-panel" hidden class="animate-pop">
-          <input id="capture-search-input" oninput="renderCaptureSearchResults(this.value)" placeholder="Search by title, genre, or platform" class="w-full rounded-full bg-surface2 border border-line px-4 py-2.5 text-sm outline-none focus:border-accent text-ink" />
-          <div id="capture-search-results" class="flex flex-col gap-2 mt-2 max-h-72 overflow-y-auto"></div>
-        </div>
-      </div>`
-  } else if (captureState.step === 'compose') {
-    const show = captureState.show
-    if (!captureState.selectedListId) {
-      const watching = lists.find((l) => l.kind === 'watching')
-      captureState.selectedListId = watching ? watching.id : (lists[0] ? lists[0].id : null)
-    }
-    body = `
-      <div class="flex flex-col gap-5 animate-pop">
-        ${captureState.photo ? `<img src="${captureState.photo}" class="w-full aspect-video object-cover rounded-xl" />` : ''}
-        <div class="flex items-center gap-3">
-          ${posterHtml(show, 'sm')}
-          <div><p class="font-display italic text-lg text-ink">${esc(show.title)}</p><div class="flex flex-wrap gap-1 mt-1">${platformBadges(show.platforms)}</div></div>
-          <button onclick="captureState.step='confirm'; renderRoute()" class="ml-auto text-xs text-inksoft underline">change</button>
-        </div>
-        <div>
-          <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Add to which list?</p>
-          <div id="compose-list-picker" class="flex flex-col gap-2">
-            ${lists.map((l) => `<button type="button" onclick="pickComposeList('${l.id}')" data-list-id="${l.id}" class="flex items-center justify-between rounded-xl border px-3 py-2.5 text-left transition-colors ${captureState.selectedListId === l.id ? 'border-accent bg-accentsoft' : 'border-line'}">
-              <span class="text-sm font-medium text-ink">${esc(l.name)}</span><span class="text-xs text-inksoft">${VIS_ICON[l.visibility]}</span>
-            </button>`).join('')}
-            <div id="compose-newlist-toggle"><button onclick="document.getElementById('compose-newlist-toggle').hidden=true; document.getElementById('compose-newlist-form').hidden=false" class="rounded-xl border border-dashed border-line px-3 py-2.5 text-left text-sm text-inksoft w-full">+ New list</button></div>
-            <div id="compose-newlist-form" hidden class="flex gap-2">
-              <input id="compose-newlist-name" placeholder="List name" class="flex-1 bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" />
-              <button onclick="composeCreateList()" class="rounded-lg bg-accent text-accentink px-3 text-sm font-medium">Add</button>
-            </div>
-          </div>
-        </div>
-        <div><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Rating (optional)</p>${starsInteractive('compose-stars', 0, 'lg')}</div>
-        <div><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Note (optional)</p>
-          <textarea id="compose-note" placeholder="What did you think?" rows="3" class="w-full rounded-xl bg-surface2 border border-line px-3 py-2.5 text-sm outline-none focus:border-accent text-ink resize-none"></textarea>
-        </div>
-        <button onclick="submitCapturePost()" class="w-full bg-accent text-accentink font-medium py-3 rounded-full">Add to list</button>
-      </div>`
-  } else if (captureState.step === 'done') {
-    const show = captureState.show
-    body = `
-      <div class="flex flex-col items-center text-center py-16 gap-4 animate-pop">
-        <div class="h-14 w-14 rounded-full border border-accent flex items-center justify-center text-2xl text-accent">✓</div>
-        <p class="font-display italic text-2xl text-ink">Added to ${esc(captureState.postedListName || '')}</p>
-        <p class="text-sm text-inksoft">${esc(show.title)} is now in your "${esc(captureState.postedListName || '')}" list.</p>
-        <div class="flex gap-2 mt-2">
-          <button onclick="resetCaptureState(); renderRoute()" class="rounded-full border border-line px-4 py-2 text-sm text-inksoft">Capture another</button>
-          <button onclick="navigate('#/show/${show.slug}')" class="rounded-full bg-accent text-accentink px-4 py-2 text-sm font-medium">View show</button>
-        </div>
-      </div>`
-  }
-
-  const title = captureState.step === 'compose' ? 'Add to a list' : 'Capture'
-  return shell('#/capture', title, null, `<div class="px-4 pt-3 pb-8">${body}</div>`)
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:220px;height:220px;pointer-events:none;" class="animate-breathe">
+        <div style="position:absolute;top:0;left:0;width:22px;height:22px;border-top:1.5px solid rgba(255,255,255,0.5);border-left:1.5px solid rgba(255,255,255,0.5);"></div>
+        <div style="position:absolute;top:0;right:0;width:22px;height:22px;border-top:1.5px solid rgba(255,255,255,0.5);border-right:1.5px solid rgba(255,255,255,0.5);"></div>
+        <div style="position:absolute;bottom:0;left:0;width:22px;height:22px;border-bottom:1.5px solid rgba(255,255,255,0.5);border-left:1.5px solid rgba(255,255,255,0.5);"></div>
+        <div style="position:absolute;bottom:0;right:0;width:22px;height:22px;border-bottom:1.5px solid rgba(255,255,255,0.5);border-right:1.5px solid rgba(255,255,255,0.5);"></div>
+      </div>
+    </div>
+    <div style="position:absolute;top:0;left:0;right:0;height:72px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:16px 16px 0;" class="safe-top">
+      <a href="#/" aria-label="Close camera" style="width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;color:#FFFFFF;">${ICONS.close}</a>
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.65);">New post</div>
+      <span style="width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;color:#FFFFFF;">${ICONS.flash}</span>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:160px;box-sizing:border-box;background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));display:flex;align-items:center;justify-content:space-between;padding:0 28px 34px;" class="safe-bottom">
+      <button onclick="document.getElementById('capture-file').click()" aria-label="Upload from gallery" style="width:44px;height:44px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.55);background:rgba(255,255,255,0.1);flex-shrink:0;"></button>
+      <button id="shutter-btn" onclick="shutterCapture()" disabled aria-label="Capture" style="width:72px;height:72px;border-radius:999px;border:3px solid #FFFFFF;background:transparent;display:flex;align-items:center;justify-content:center;">
+        <span style="width:58px;height:58px;border-radius:999px;background:#FFFFFF;"></span>
+      </button>
+      <span style="width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;color:#FFFFFF;flex-shrink:0;">${ICONS.flip}</span>
+    </div>
+    <input id="capture-file" type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleFileCapture(event)" />
+  </div>`
 }
-
 function startCamera() {
   const video = document.getElementById('camera-video')
   if (!video) return
   navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then((stream) => {
-    if (captureState.step !== 'capture') { stream.getTracks().forEach((t) => t.stop()); return }
     activeStream = stream
     video.srcObject = stream
     video.play()
-    const loading = document.getElementById('camera-loading'); if (loading) loading.hidden = true
-    const shutterBtn = document.getElementById('shutter-btn'); if (shutterBtn) shutterBtn.disabled = false
+    const l = document.getElementById('camera-loading'); if (l) l.hidden = true
+    const s = document.getElementById('shutter-btn'); if (s) s.disabled = false
   }).catch(() => {
-    const fail = document.getElementById('camera-fail'); if (fail) fail.hidden = false
-    const wrap = document.getElementById('camera-wrap')
-    if (wrap) { const loading = document.getElementById('camera-loading'); if (loading) loading.hidden = true }
+    const f = document.getElementById('camera-fail'); if (f) f.hidden = false
+    const l = document.getElementById('camera-loading'); if (l) l.hidden = true
   })
 }
 function shutterCapture() {
   const video = document.getElementById('camera-video')
   if (!video || !video.videoWidth) return
   const canvas = document.createElement('canvas')
-  canvas.width = video.videoWidth
-  canvas.height = video.videoHeight
-  const ctx = canvas.getContext('2d')
-  ctx.drawImage(video, 0, 0)
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight
+  canvas.getContext('2d').drawImage(video, 0, 0)
   handleCapturedPhoto(canvas.toDataURL('image/jpeg', 0.85))
 }
 function handleFileCapture(evt) {
@@ -928,233 +725,456 @@ function handleFileCapture(evt) {
 }
 function handleCapturedPhoto(dataUrl) {
   stopCamera()
-  captureState.photo = dataUrl
-  captureState.step = 'recognizing'
-  renderRoute()
-  recognizeFromPhoto(dataUrl).then((results) => {
-    if (captureState.step !== 'recognizing') return
-    captureState.candidates = results
-    captureState.step = 'confirm'
-    renderRoute()
-  })
+  resetDraft()
+  draftPost.photo = dataUrl
+  navigate('#/confirm')
+  recognizeFromPhoto(dataUrl).then((movie) => { draftPost.movie = movie; renderRoute() })
 }
-function selectCandidate(showId) {
-  captureState.show = findShowById(showId)
-  captureState.selectedListId = null
-  captureState.step = 'compose'
-  renderRoute()
-}
-function renderCaptureSearchResults(query) {
-  const results = searchShows(query)
-  const el = document.getElementById('capture-search-results')
-  if (!el) return
-  el.innerHTML = results.map((show) => `<button onclick="selectCandidate('${show.id}')" class="flex items-center gap-3 rounded-xl border border-line bg-surface p-2.5 text-left w-full">
-    ${posterHtml(show, 'sm')}<div class="min-w-0 flex-1"><p class="text-sm font-medium text-ink">${esc(show.title)}</p><p class="text-xs text-inksoft">${esc(show.platforms.join(', '))}</p></div>
-  </button>`).join('')
-}
-function pickComposeList(listId) {
-  captureState.selectedListId = listId
-  const container = document.getElementById('compose-list-picker')
-  if (!container) return
-  Array.from(container.querySelectorAll('button[data-list-id]')).forEach((btn) => {
-    const active = btn.dataset.listId === listId
-    btn.className = 'flex items-center justify-between rounded-xl border px-3 py-2.5 text-left transition-colors ' + (active ? 'border-accent bg-accentsoft' : 'border-line')
-  })
-}
-function composeCreateList() {
-  const name = document.getElementById('compose-newlist-name').value.trim()
-  if (!name) return
-  const { list } = createList(name, 'friends')
-  captureState.selectedListId = list.id
-  renderRoute()
-}
-function submitCapturePost() {
-  const show = captureState.show
-  const listId = captureState.selectedListId
-  if (!show || !listId) return
+
+function renderConfirm() {
+  if (!draftPost.photo) { navigate('#/capture'); return '' }
   const lists = getLists()
-  const list = lists.find((l) => l.id === listId)
-  if (!list) return
-  const note = (document.getElementById('compose-note') || {}).value || ''
-  const rating = getStars('compose-stars')
-  const photo = captureState.photo
+  const chips = lists.map((l) => {
+    const on = draftPost.listId === l.id
+    return `<button onclick="confirmPickList('${l.id}')" style="height:34px;padding:0 14px;border-radius:9px;border:1.5px solid ${on ? '#43635C' : '#E7E2D9'};background:${on ? '#43635C' : '#FFFFFF'};color:${on ? '#F6F4EF' : '#24211E'};font-size:13px;font-weight:${on ? 600 : 500};">${esc(l.name)}</button>`
+  }).join('')
+  const matched = draftPost.movie
+  return `<div style="min-height:100%;display:flex;flex-direction:column;">
+    ${topBar('Confirm', {
+      left: `<a href="#/capture" aria-label="Retake" style="width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#24211E;">${ICONS.back}</a>`,
+      right: `<a href="#/" aria-label="Cancel" style="width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#7A756D;">${ICONS.close}</a>`,
+    })}
+    <div style="flex:1;box-sizing:border-box;padding:16px 16px 0;display:flex;flex-direction:column;gap:18px;">
+      <img src="${draftPost.photo}" style="width:100%;height:210px;object-fit:cover;border-radius:14px;" />
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span style="font-size:12px;font-weight:600;color:#7A756D;text-transform:uppercase;letter-spacing:0.04em;">We think this is…</span>
+        ${matched ? `
+        <div style="display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #E7E2D9;border-radius:12px;background:#FFFFFF;">
+          ${posterThumb(matched)}
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span class="font-display" style="font-size:17px;font-weight:600;">${esc(matched.title)}</span>
+            <span style="font-size:12px;color:#7A756D;">${matched.year} · ${esc(matched.genre)}</span>
+          </div>
+        </div>
+        <button onclick="navigate('#/rate')" style="height:44px;border-radius:10px;background:#24211E;color:#F6F4EF;font-size:14px;font-weight:600;border:none;">Yes, that's it</button>
+        ` : `<div style="display:flex;align-items:center;gap:2px;color:#7A756D;font-size:13px;padding:20px 0;">Identifying…</div>`}
+        <button onclick="toggleConfirmSearch()" style="display:flex;align-items:center;gap:6px;background:none;border:none;padding:0;">${ICONS.search}<span style="font-size:13px;color:#7A756D;">Not this one — search title (optional)</span></button>
+        <div id="confirm-search-panel" hidden>
+          <input id="confirm-search-input" oninput="renderConfirmSearchResults(this.value)" placeholder="Search by title" style="width:100%;box-sizing:border-box;border-radius:999px;background:#F6F4EF;border:1px solid #E7E2D9;padding:10px 14px;font-size:14px;outline:none;color:#24211E;" />
+          <div id="confirm-search-results" style="display:flex;flex-direction:column;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto;"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span class="font-display" style="font-size:16px;font-weight:600;">Add to a list</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">${chips}<button onclick="confirmNewListPrompt()" style="height:34px;padding:0 14px;border-radius:9px;border:1px dashed #ADA89C;background:transparent;color:#7A756D;font-size:13px;font-weight:500;">+ New list</button></div>
+        <span style="font-size:12px;color:#ADA89C;">Skip for now — you can add it to a list later</span>
+      </div>
+    </div>
+    <div style="flex-shrink:0;box-sizing:border-box;padding:14px 16px 28px;" class="safe-bottom">
+      <button onclick="navigate('#/rate')" ${matched ? '' : 'disabled'} style="width:100%;height:50px;border-radius:12px;background:${matched ? '#24211E' : '#E7E2D9'};color:${matched ? '#F6F4EF' : '#ADA89C'};font-size:15px;font-weight:600;border:none;">Continue to rate</button>
+    </div>
+  </div>`
+}
+function confirmPickList(id) { draftPost.listId = draftPost.listId === id ? null : id; renderRoute() }
+function confirmNewListPrompt() {
+  const name = prompt('Name this list')
+  if (!name || !name.trim()) return
+  const l = createList(name.trim())
+  draftPost.listId = l.id
+  renderRoute()
+}
+function toggleConfirmSearch() { const p = document.getElementById('confirm-search-panel'); if (p) p.hidden = !p.hidden }
+function renderConfirmSearchResults(q) {
+  const results = searchMovies(q)
+  const el = document.getElementById('confirm-search-results')
+  if (!el) return
+  el.innerHTML = results.map((m) => `<button onclick="confirmSelectMovie('${m.id}')" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;border:1px solid #E7E2D9;background:#FFFFFF;text-align:left;">${posterThumb(m, 36, 52)}<div><div style="font-size:13px;font-weight:600;">${esc(m.title)}</div><div style="font-size:11px;color:#7A756D;">${m.year}</div></div></button>`).join('')
+}
+function confirmSelectMovie(id) { draftPost.movie = findMovie(id); renderRoute() }
 
-  if (list.kind !== 'custom') moveToDefaultList(show.id, list.kind, { photo, note })
-  else addToList(list.id, show.id, { photo, note })
+function renderRate() {
+  if (!draftPost.movie) { navigate('#/confirm'); return '' }
+  const m = draftPost.movie
+  const actingRows = m.actors.map((a, i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;">
+      <span style="font-size:14px;">${esc(a)}</span>
+      ${starRowInteractive('rate-acting-' + i, 0, 15)}
+    </div>`).join('')
+  return `<div style="min-height:100%;display:flex;flex-direction:column;">
+    ${topBar('Rate it', { back: '#/confirm' })}
+    <div style="flex:1;box-sizing:border-box;padding:16px 16px 0;display:flex;flex-direction:column;gap:18px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        ${posterThumb(m, 44, 64)}
+        <div><div class="font-display" style="font-size:17px;font-weight:600;">${esc(m.title)}</div><div style="font-size:12px;color:#7A756D;">${m.year} · ${esc(m.genre)}</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="padding:10px 0;border-bottom:1px solid #EFEBE2;">
+          <div style="font-size:13px;font-weight:600;color:#7A756D;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px;">Acting</div>
+          ${actingRows}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EFEBE2;">
+          <span style="font-size:14px;font-weight:500;">Writing</span>${starRowInteractive('rate-writing', 0, 16)}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EFEBE2;">
+          <span style="font-size:14px;font-weight:500;">Cinematography</span>${starRowInteractive('rate-cinematography', 0, 16)}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;">
+          <span style="font-size:14px;font-weight:500;">Directing</span>${starRowInteractive('rate-directing', 0, 16)}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <span class="font-display" style="font-size:16px;font-weight:600;">Caption (optional)</span>
+        <textarea id="rate-caption" rows="2" placeholder="What stuck with you?" style="width:100%;box-sizing:border-box;border-radius:10px;background:#F6F4EF;border:1px solid #E7E2D9;padding:10px 12px;font-size:14px;outline:none;resize:none;color:#24211E;"></textarea>
+      </div>
+    </div>
+    <div style="flex-shrink:0;box-sizing:border-box;padding:14px 16px 28px;" class="safe-bottom">
+      <button onclick="submitRating()" style="width:100%;height:50px;border-radius:12px;background:#24211E;color:#F6F4EF;font-size:15px;font-weight:600;border:none;">Post</button>
+    </div>
+  </div>`
+}
+function submitRating() {
+  const m = draftPost.movie
+  const actingRatings = m.actors.map((a, i) => ({ actor: a, rating: getStarRow('rate-acting-' + i) }))
+  const ratings = { writing: getStarRow('rate-writing'), cinematography: getStarRow('rate-cinematography'), directing: getStarRow('rate-directing') }
+  const caption = (document.getElementById('rate-caption') || {}).value || ''
+  const user = getUser()
+  const post = { id: uid('post'), authorId: user.id, movieId: m.id, photo: draftPost.photo, ratings, actingRatings, caption, listId: draftPost.listId, createdAt: new Date().toISOString() }
+  addPost(post)
+  resetDraft()
+  navigate('#/post/' + post.id)
+}
 
-  if (rating) {
-    const user = getUser()
-    addReview({ id: uid('rev'), showId: show.id, authorId: user.id, rating, text: note, createdAt: new Date().toISOString() })
-  }
-
-  captureState.postedListName = list.name
-  captureState.step = 'done'
+/* =========================================================================
+   POST DETAIL ("flip")
+   ========================================================================= */
+function findPostAnywhere(id) {
+  const mine = getPosts().find((p) => p.id === id)
+  if (mine) return { post: mine, authorId: getUser().id, authorName: getUser().name, color: '#43635C', mine: true }
+  const fp = FRIEND_POSTS.find((p) => p.id === id)
+  if (fp) { const f = FRIENDS.find((x) => x.id === fp.authorId); return { post: fp, authorId: fp.authorId, authorName: f.name, color: f.color, mine: false } }
+  return null
+}
+function renderPostDetail(id) {
+  const found = findPostAnywhere(id)
+  if (!found) return tabShell('#/', 'Not found', null, `<p style="padding:24px;font-size:13px;color:#7A756D;">That post doesn't exist.</p>`)
+  const { post, authorName, color, mine } = found
+  const m = findMovie(post.movieId)
+  const user = getUser()
+  const myComments = getComments().filter((c) => c.postId === id)
+  const seedComments = FRIEND_COMMENTS.filter((c) => c.postId === id)
+  const allComments = [...seedComments, ...myComments]
+  const actingRows = post.actingRatings.map((a) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;">
+      <span style="font-size:14px;">${esc(a.actor)}</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        ${starRow(a.rating)}
+        ${!mine ? `<button onclick="toggleFollowPerson('${esc(a.actor).replace(/'/g, "\\'")}')" aria-label="Follow ${esc(a.actor)}" style="width:22px;height:22px;border-radius:999px;border:1px solid ${user.followedPeople.includes(a.actor) ? '#43635C' : '#E7E2D9'};background:${user.followedPeople.includes(a.actor) ? '#43635C' : '#FFFFFF'};color:${user.followedPeople.includes(a.actor) ? '#FFFFFF' : '#43635C'};display:flex;align-items:center;justify-content:center;">${user.followedPeople.includes(a.actor) ? ICONS.check : ICONS.follow}</button>` : ''}
+      </div>
+    </div>`).join('')
+  const commentsHtml = allComments.map((c) => {
+    const author = c.authorId === user.id ? user.name : (FRIENDS.find((f) => f.id === c.authorId) || {}).name || 'Someone'
+    const authorColor = c.authorId === user.id ? '#43635C' : (FRIENDS.find((f) => f.id === c.authorId) || {}).color || '#7A756D'
+    return `<div style="display:flex;gap:10px;">
+      ${avatarHtml(author, authorColor, 26)}
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:13px;font-weight:600;">${esc(author)}</span><span style="font-size:11px;color:#43635C;background:#EFEEE7;border-radius:6px;padding:1px 6px;">for @${esc(c.forFriend)}</span></div>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#3A362F;">${esc(c.text)}</p>
+      </div>
+    </div>`
+  }).join('')
+  const photoBlock = post.photo ? `<img src="${post.photo}" style="width:100%;border-radius:14px;object-fit:cover;max-height:200px;" />` : posterStill(m, { height: 180 })
+  return `<div style="min-height:100%;display:flex;flex-direction:column;">
+    <div style="height:56px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid #E7E2D9;" class="safe-top">
+      <a href="#/" aria-label="Back" style="width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#24211E;">${ICONS.back}</a>
+      <div style="display:flex;flex-direction:column;min-width:0;flex:1;">
+        <span class="font-display" style="font-size:17px;font-weight:600;">${esc(m.title)}</span>
+        <span style="font-size:11px;color:#7A756D;">${esc(authorName)}'s ratings · ${timeAgo(post.createdAt)}</span>
+      </div>
+      <a href="#/share/${id}" aria-label="Share this post" style="width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#24211E;">${ICONS.share}</a>
+    </div>
+    <div style="flex:1;box-sizing:border-box;padding:16px 16px 24px;display:flex;flex-direction:column;gap:18px;">
+      ${photoBlock}
+      ${post.caption ? `<p style="margin:0;font-size:14px;line-height:1.5;color:#3A362F;">${esc(post.caption)}</p>` : ''}
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <span class="font-display" style="font-size:17px;font-weight:600;">${mine ? 'What you liked' : 'What they liked'}</span>
+        <span style="font-size:12px;color:#7A756D;">This is the DNA your recommendations are built from</span>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="padding:10px 0;border-bottom:1px solid #EFEBE2;">
+          <div style="font-size:13px;font-weight:600;color:#7A756D;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:8px;">Acting</div>
+          ${actingRows}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:14px;font-weight:500;">Writing</span>${starRow(post.ratings.writing, 12)}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:14px;font-weight:500;">Cinematography</span>${starRow(post.ratings.cinematography, 12)}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;"><span style="font-size:14px;font-weight:500;">Directing</span>${starRow(post.ratings.directing, 12)}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px;margin-top:4px;"><span class="font-display" style="font-size:16px;font-weight:600;">Comments</span></div>
+      <div style="display:flex;flex-direction:column;gap:14px;">${commentsHtml || `<p style="font-size:13px;color:#ADA89C;">No recommendations yet.</p>`}</div>
+    </div>
+    <div id="comment-composer-root"></div>
+    <div style="flex-shrink:0;box-sizing:border-box;padding:10px 16px 20px;border-top:1px solid #E7E2D9;background:#FFFFFF;" class="safe-bottom">
+      <button onclick="openCommentComposer('${id}')" style="width:100%;height:36px;border-radius:10px;background:#F6F4EF;border:1px solid #E7E2D9;display:flex;align-items:center;padding:0 12px;text-align:left;color:#ADA89C;font-size:13px;">Tell a friend why they'd like this…</button>
+    </div>
+  </div>`
+}
+function toggleFollowPerson(name) {
+  const u = getUser()
+  const i = u.followedPeople.indexOf(name)
+  if (i >= 0) u.followedPeople.splice(i, 1); else u.followedPeople.push(name)
+  saveUser(u)
+  renderRoute()
+}
+function openCommentComposer(postId) {
+  const root = document.getElementById('comment-composer-root')
+  if (!root) return
+  const chips = FRIENDS.map((f) => `<button type="button" data-friend="${esc(f.name)}" onclick="pickCommentFriend(this)" style="height:28px;padding:0 10px;border-radius:999px;border:1px solid #E7E2D9;background:#FFFFFF;font-size:12px;">${esc(f.name)}</button>`).join('')
+  root.innerHTML = `<div class="animate-pop" style="box-sizing:border-box;padding:12px 16px;border-top:1px solid #E7E2D9;background:#FFFFFF;display:flex;flex-direction:column;gap:8px;">
+    <span style="font-size:11px;font-weight:600;color:#7A756D;text-transform:uppercase;letter-spacing:0.03em;">For</span>
+    <div id="comment-friend-chips" style="display:flex;gap:6px;flex-wrap:wrap;">${chips}</div>
+    <textarea id="comment-text" rows="2" placeholder="Tell a friend why they'd like this…" style="width:100%;box-sizing:border-box;border-radius:10px;background:#F6F4EF;border:1px solid #E7E2D9;padding:8px 10px;font-size:13px;outline:none;resize:none;color:#24211E;"></textarea>
+    <button onclick="submitComment('${postId}')" style="align-self:flex-end;height:32px;padding:0 16px;border-radius:999px;background:#24211E;color:#F6F4EF;font-size:12px;font-weight:600;border:none;">Send</button>
+  </div>`
+}
+let pickedCommentFriend = null
+function pickCommentFriend(btn) {
+  pickedCommentFriend = btn.dataset.friend
+  Array.from(document.getElementById('comment-friend-chips').children).forEach((b) => {
+    const on = b.dataset.friend === pickedCommentFriend
+    b.style.background = on ? '#43635C' : '#FFFFFF'
+    b.style.color = on ? '#F6F4EF' : '#24211E'
+    b.style.borderColor = on ? '#43635C' : '#E7E2D9'
+  })
+}
+function submitComment(postId) {
+  const text = (document.getElementById('comment-text') || {}).value || ''
+  if (!text.trim() || !pickedCommentFriend) { alert('Pick who this is for, and write a note.'); return }
+  addComment({ id: uid('cmt'), postId, authorId: getUser().id, forFriend: pickedCommentFriend, text: text.trim(), createdAt: new Date().toISOString() })
+  pickedCommentFriend = null
   renderRoute()
 }
 
 /* =========================================================================
-   PAGE: FRIENDS
+   SHARE SHEET
    ========================================================================= */
-function renderFriends() {
-  const rows = FRIENDS.map((friend) => {
-    const listCount = FRIEND_LISTS.filter((l) => l.ownerId === friend.id && l.visibility !== 'private').length
-    return `<a href="#/friends/${friend.id}" class="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3">
-      <span class="h-12 w-12 rounded-full ${friend.avatarClass} flex-shrink-0"></span>
-      <div class="min-w-0 flex-1"><p class="text-sm font-medium text-ink">${esc(friend.name)}</p><p class="text-xs text-inksoft">@${esc(friend.handle)} · ${listCount} list${listCount === 1 ? '' : 's'}</p></div>
-      <span class="text-inksoft">›</span>
-    </a>`
-  }).join('')
-  return shell('#/friends', 'Friends', null, `
-    <div class="px-4 pt-3 pb-8">
-      <p class="text-xs text-inksoft mb-4">This is a local demo, so friends are seeded — in the real app you'd invite people or find them by handle.</p>
-      <div class="flex flex-col gap-2">${rows}</div>
-    </div>`)
-}
-
-function renderFriendProfile(id) {
-  const friend = FRIENDS.find((f) => f.id === id)
-  if (!friend) return shell('#/friends', 'Not found', '#/friends', `<p class="px-4 py-8 text-sm text-inksoft">Couldn't find that friend.</p>`)
-  const lists = FRIEND_LISTS.filter((l) => l.ownerId === id && l.visibility !== 'private')
-  const listsHtml = lists.length
-    ? `<div class="grid grid-cols-2 gap-2.5">${lists.map((l) => listSummaryCard(l, FRIEND_LIST_ITEMS.filter((i) => i.listId === l.id), `#/friends/${friend.id}/lists/${l.id}`)).join('')}</div>`
-    : `<p class="text-sm text-inksoft">No public or shared lists yet.</p>`
-  return shell('#/friends', friend.name, '#/friends', `
-    <div class="px-4 pt-4 pb-8">
-      <div class="flex items-center gap-3">
-        <span class="h-16 w-16 rounded-full ${friend.avatarClass} flex-shrink-0"></span>
-        <div><p class="font-display italic text-2xl text-ink">${esc(friend.name)}</p><p class="text-xs text-inksoft">@${esc(friend.handle)}</p></div>
+function renderShareSheet(postId) {
+  const found = findPostAnywhere(postId)
+  if (!found) return tabShell('#/', 'Not found', null, '')
+  const m = findMovie(found.post.movieId)
+  const url = publicPostUrl(postId)
+  pendingAfterRender = () => { makeQr(url).then((d) => { const img = document.getElementById('share-qr-img'); if (img) img.src = d }) }
+  const shareIcons = [
+    { icon: ICONS.mail, label: 'Messages' },
+    { icon: ICONS.mail, label: 'Mail' },
+    { icon: ICONS.share, label: 'Share', action: "navShare('" + esc(m.title).replace(/'/g, "\\'") + "','" + url + "')" },
+    { icon: ICONS.more, label: 'More' },
+  ]
+  return `<div style="min-height:100%;background:#2F2C27;position:relative;">
+    <div style="position:absolute;left:0;right:0;bottom:0;background:#FFFFFF;border-radius:22px 22px 0 0;box-shadow:0 -8px 24px rgba(0,0,0,0.22);box-sizing:border-box;padding:12px 20px 30px;display:flex;flex-direction:column;align-items:center;gap:16px;" class="safe-bottom">
+      <span style="width:36px;height:4px;border-radius:999px;background:#E7E2D9;"></span>
+      <a href="#/post/${postId}" aria-label="Close" style="position:absolute;top:14px;right:16px;width:30px;height:30px;border-radius:999px;background:#F6F4EF;color:#7A756D;display:flex;align-items:center;justify-content:center;">${ICONS.close}</a>
+      <div style="width:100%;display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(160deg, ${m.gradFrom}, ${m.gradTo});flex-shrink:0;"></div>
+        <div style="display:flex;flex-direction:column;gap:1px;"><span class="font-display" style="font-size:17px;font-weight:600;">${esc(m.title)}</span><span style="font-size:12px;color:#7A756D;">${esc(found.authorName)}'s post</span></div>
       </div>
-      <p class="text-sm text-ink/80 mt-3">${esc(friend.bio)}</p>
-      <div class="mt-6"><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">${esc(friend.name.split(' ')[0])}'s lists</p>${listsHtml}</div>
-    </div>`)
+      <div style="width:180px;height:180px;background:#FFFFFF;border:1px solid #E7E2D9;border-radius:14px;padding:10px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;"><img id="share-qr-img" style="width:100%;height:100%;" /></div>
+      <span style="font-size:12px;color:#7A756D;letter-spacing:0.02em;word-break:break-all;text-align:center;">${esc(url.replace('https://', ''))}</span>
+      <div style="width:100%;display:flex;align-items:center;gap:8px;background:#F6F4EF;border:1px solid #E7E2D9;border-radius:10px;padding:10px 10px 10px 14px;box-sizing:border-box;">
+        <span id="share-link-text" style="flex:1;font-size:13px;color:#3A362F;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(url)}</span>
+        <button onclick="copyShareLink('${url}')" id="share-copy-btn" style="height:30px;padding:0 12px;border-radius:8px;border:none;background:#24211E;color:#F6F4EF;font-size:12px;font-weight:600;flex-shrink:0;">Copy</button>
+      </div>
+      <span style="font-size:11px;font-weight:600;color:#ADA89C;text-transform:uppercase;letter-spacing:0.04em;align-self:flex-start;">Share via</span>
+      <div style="width:100%;display:flex;justify-content:space-between;">
+        ${shareIcons.map((s) => `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><button ${s.action ? `onclick="${s.action}"` : ''} aria-label="${s.label}" style="width:48px;height:48px;border-radius:999px;background:#F6F4EF;color:#24211E;display:flex;align-items:center;justify-content:center;border:none;">${s.icon}</button><span style="font-size:11px;color:#7A756D;">${s.label}</span></div>`).join('')}
+      </div>
+    </div>
+  </div>`
 }
-
-function renderFriendListDetail(id, listId) {
-  const friend = FRIENDS.find((f) => f.id === id)
-  const list = FRIEND_LISTS.find((l) => l.id === listId && l.ownerId === id)
-  if (!friend || !list) return shell('#/friends', 'Not found', id ? `#/friends/${id}` : '#/friends', `<p class="px-4 py-8 text-sm text-inksoft">That list isn't visible to you.</p>`)
-  const items = FRIEND_LIST_ITEMS.filter((i) => i.listId === listId).sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
-  const itemsHtml = items.length
-    ? `<div class="flex flex-col gap-9">${items.map((item) => activityRow(item, friend.name, friend.avatarClass, list.name, null)).join('')}</div>`
-    : `<p class="text-sm text-inksoft text-center py-10">Nothing in this list yet.</p>`
-  return shell('#/friends', `${friend.name.split(' ')[0]}'s ${list.name}`, `#/friends/${friend.id}`, `
-    <div class="px-4 pt-4 pb-8"><p class="text-xs text-inksoft mb-5">${items.length} show${items.length === 1 ? '' : 's'}</p>${itemsHtml}</div>`)
+function copyShareLink(url) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => flashCopyButton())
+  } else { flashCopyButton() }
+}
+function flashCopyButton() {
+  const btn = document.getElementById('share-copy-btn')
+  if (!btn) return
+  const orig = btn.textContent
+  btn.textContent = 'Copied'
+  setTimeout(() => { btn.textContent = orig }, 1400)
+}
+function navShare(title, url) {
+  if (navigator.share) navigator.share({ title: 'Reel', text: title, url }).catch(() => {})
+  else copyShareLink(url)
 }
 
 /* =========================================================================
-   PAGE: PROFILE
+   WEB LISTING (public, no app chrome — the QR landing page)
    ========================================================================= */
+function renderWebListing(postId) {
+  const found = findPostAnywhere(postId)
+  if (!found) return `<div style="min-height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;"><p style="font-size:13px;color:#7A756D;">This post isn't in the demo catalog.</p></div>`
+  const { post, authorName, color } = found
+  const m = findMovie(post.movieId)
+  const rating = overallRating(post)
+  return `<div style="min-height:100%;display:flex;flex-direction:column;">
+    <div style="height:48px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #E7E2D9;" class="safe-top"><span class="font-display" style="font-size:17px;font-weight:600;">Reel</span></div>
+    <div style="flex:1;box-sizing:border-box;padding:16px 16px 0;display:flex;flex-direction:column;gap:14px;max-width:480px;margin:0 auto;width:100%;">
+      ${posterStill(m, { height: 280, rating: rating })}
+      <div style="display:flex;align-items:center;gap:8px;">${avatarHtml(authorName, color, 26)}<span style="font-size:13px;color:#3A362F;"><b>${esc(authorName)}</b> rated this · ${timeAgo(post.createdAt)}</span></div>
+      ${post.caption ? `<p style="margin:0;font-size:14px;line-height:1.5;color:#3A362F;">${esc(post.caption)}</p>` : ''}
+      <div style="position:relative;">
+        <div style="filter:blur(4px);pointer-events:none;user-select:none;display:flex;flex-direction:column;gap:10px;">
+          <div class="font-display" style="font-size:15px;font-weight:600;">What they liked</div>
+          <div style="display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:13px;font-weight:500;">Acting</span><span style="font-size:12px;color:#7A756D;">${post.actingRatings.map((a) => a.actor).join(', ')}</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:13px;font-weight:500;">Writing</span>${starRow(post.ratings.writing)}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:13px;font-weight:500;">Cinematography</span>${starRow(post.ratings.cinematography)}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;"><span style="font-size:13px;font-weight:500;">Directing</span>${starRow(post.ratings.directing)}</div>
+          </div>
+          <div class="font-display" style="font-size:15px;font-weight:600;margin-top:4px;">Comments</div>
+          <div style="display:flex;gap:10px;"><div style="width:24px;height:24px;border-radius:999px;background:#6B5A48;flex-shrink:0;"></div><p style="margin:0;font-size:13px;line-height:1.5;">Someone left a note here.</p></div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(246,244,239,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+          ${ICONS.lock}<span style="font-size:12px;font-weight:600;color:#24211E;text-align:center;max-width:220px;">See the full ratings and comments in the app</span>
+        </div>
+      </div>
+      <div style="height:40px;"></div>
+    </div>
+    <div id="web-banner" style="flex-shrink:0;box-sizing:border-box;padding:14px 16px 20px;display:flex;align-items:center;gap:12px;border-top:1px solid #E7E2D9;background:#FFFFFF;box-shadow:0 -4px 12px rgba(0,0,0,0.06);position:relative;" class="safe-bottom">
+      <button aria-label="Dismiss" onclick="document.getElementById('web-banner').remove()" style="position:absolute;top:6px;right:8px;width:22px;height:22px;border:none;background:transparent;color:#ADA89C;display:flex;align-items:center;justify-content:center;">${ICONS.close.replace('width="16" height="16"', 'width="12" height="12"')}</button>
+      <div style="width:44px;height:44px;border-radius:12px;background:#24211E;color:#F6F4EF;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">R</div>
+      <div style="display:flex;flex-direction:column;gap:1px;flex:1;min-width:0;"><span style="font-size:14px;font-weight:700;">Get Reel</span><span style="font-size:11.5px;color:#7A756D;">See full ratings &amp; build your own taste DNA</span></div>
+      <a href="#/post/${postId}" style="height:36px;padding:0 16px;border-radius:8px;background:#43635C;color:#FFFFFF;font-size:13px;font-weight:600;flex-shrink:0;display:flex;align-items:center;justify-content:center;">Open App</a>
+    </div>
+  </div>`
+}
+
+/* =========================================================================
+   PROFILE (incl. Settings — "not yet designed" in the brief, so designed here)
+   ========================================================================= */
+let settingsOpen = false
 function renderProfile() {
-  const user = getUser()
-  return shell('#/profile', 'Profile', null, `
-    <div class="px-4 pt-4 pb-8 flex flex-col gap-7">
-      <div>
-        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">You</p>
-        <div class="rounded-2xl border border-line bg-surface p-4 flex flex-col gap-3">
-          <label class="text-xs text-inksoft">Display name<input id="profile-name" value="${esc(user.name)}" class="mt-1 w-full bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" /></label>
-          <label class="text-xs text-inksoft">Handle<input id="profile-handle" value="${esc(user.handle)}" class="mt-1 w-full bg-surface2 border border-line rounded-lg px-3 py-2 text-sm outline-none focus:border-accent text-ink" /></label>
-          <button id="profile-save-btn" onclick="profileSave()" class="rounded-full bg-accent text-accentink text-sm font-medium py-2">Save</button>
+  const u = getUser()
+  const posts = getPosts()
+  const lists = getLists()
+  const topTags = (() => {
+    const freq = {}
+    posts.forEach((p) => { const m = findMovie(p.movieId); if (m) m.moods.forEach((t) => { freq[t] = (freq[t] || 0) + 1 }) })
+    const fromRatings = Object.keys(freq).sort((a, b) => freq[b] - freq[a])
+    return (fromRatings.length ? fromRatings : u.genres).slice(0, 4)
+  })()
+  function topPerson(field, roleField) {
+    const scores = {}
+    posts.forEach((p) => { const m = findMovie(p.movieId); if (!m) return; const person = m[roleField]; const val = p.ratings[field]; if (!val) return; if (!scores[person]) scores[person] = []; scores[person].push(val) })
+    const names = Object.keys(scores)
+    if (!names.length) return '—'
+    names.sort((a, b) => (scores[b].reduce((s, v) => s + v, 0) / scores[b].length) - (scores[a].reduce((s, v) => s + v, 0) / scores[a].length))
+    return names[0]
+  }
+  const topDirector = topPerson('directing', 'director')
+  const topWriter = topPerson('writing', 'writer')
+  const topCinematographer = topPerson('cinematography', 'cinematographer')
+  const followedCount = u.followedPeople.length
+
+  const friendMatches = FRIENDS.map((f) => {
+    const theirs = new Set(FRIEND_MOODS[f.id] || [])
+    const mine = new Set(topTags.length ? topTags : u.genres)
+    if (mine.size === 0) return { f, pct: 0 }
+    let shared = 0
+    mine.forEach((t) => { if (theirs.has(t)) shared++ })
+    const pct = Math.round((shared / mine.size) * 100)
+    return { f, pct }
+  }).filter((x) => x.pct > 0).sort((a, b) => b.pct - a.pct)
+  const showMatch = posts.length > 0 && friendMatches.length > 0
+
+  const firstYear = posts.length ? new Date(posts.map((p) => p.createdAt).sort()[0]).getFullYear() : new Date().getFullYear()
+
+  const settingsHtml = settingsOpen ? `
+    <div class="animate-pop" style="display:flex;flex-direction:column;gap:10px;border:1px solid #E7E2D9;border-radius:14px;padding:14px;margin-top:8px;">
+      <label style="font-size:12px;color:#7A756D;">Display name<input id="settings-name" value="${esc(u.name)}" style="margin-top:4px;width:100%;box-sizing:border-box;border-radius:8px;border:1px solid #E7E2D9;background:#F6F4EF;padding:8px 10px;font-size:14px;color:#24211E;" /></label>
+      <button onclick="settingsSave()" style="height:36px;border-radius:9px;background:#24211E;color:#F6F4EF;font-size:13px;font-weight:600;border:none;">Save</button>
+      <p style="font-size:11px;color:#ADA89C;margin:4px 0 0;">Everything lives in this browser's local storage — nothing leaves your device yet.</p>
+      <button onclick="settingsExport()" style="height:36px;border-radius:9px;border:1px solid #E7E2D9;background:#FFFFFF;color:#24211E;font-size:13px;">Export data (.json)</button>
+      <button onclick="document.getElementById('settings-import-file').click()" style="height:36px;border-radius:9px;border:1px solid #E7E2D9;background:#FFFFFF;color:#24211E;font-size:13px;">Import data</button>
+      <input id="settings-import-file" type="file" accept="application/json" style="display:none;" onchange="settingsImport(event)" />
+      <button onclick="settingsClear()" style="height:36px;border-radius:9px;border:1px solid #C98B7A;background:#FFFFFF;color:#B25D53;font-size:13px;">Clear all data</button>
+    </div>` : ''
+
+  const body = `
+    <div style="flex:1;box-sizing:border-box;padding:20px 16px 32px;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;">
+        ${avatarHtml(u.name, '#43635C', 72)}
+        <div class="font-display" style="font-size:20px;font-weight:600;">${esc(u.name)}</div>
+        <div style="font-size:12px;color:#7A756D;">${posts.length} film${posts.length === 1 ? '' : 's'} logged${posts.length ? ' since ' + firstYear : ''}</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-around;padding:12px 0;border-top:1px solid #E7E2D9;border-bottom:1px solid #E7E2D9;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><span class="font-display" style="font-size:17px;font-weight:600;">${posts.length}</span><span style="font-size:11px;color:#7A756D;">Films</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><span class="font-display" style="font-size:17px;font-weight:600;">${lists.length}</span><span style="font-size:11px;color:#7A756D;">Lists</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><span class="font-display" style="font-size:17px;font-weight:600;">${followedCount}</span><span style="font-size:11px;color:#7A756D;">Following</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:2px;"><span class="font-display" style="font-size:16px;font-weight:600;">Your taste DNA</span><span style="font-size:12px;color:#7A756D;">Built from every rating you've left</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">${topTags.length ? topTags.map((t) => `<span style="height:26px;padding:0 11px;border-radius:8px;border:1px solid #E7E2D9;background:#FFFFFF;font-size:12px;font-weight:500;display:flex;align-items:center;">${esc(t)}</span>`).join('') : `<span style="font-size:12px;color:#ADA89C;">Nothing yet — rate a few films.</span>`}</div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:13px;color:#7A756D;">You rate directing highest for</span><span style="font-size:13px;font-weight:600;">${esc(topDirector)}</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:13px;color:#7A756D;">Writing you keep coming back to</span><span style="font-size:13px;font-weight:600;">${esc(topWriter)}</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #EFEBE2;"><span style="font-size:13px;color:#7A756D;">Cinematography you're drawn to</span><span style="font-size:13px;font-weight:600;">${esc(topCinematographer)}</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;"><span style="font-size:13px;color:#7A756D;">Actors you follow</span><span style="font-size:13px;font-weight:600;">${followedCount ? esc(u.followedPeople[0]) + (followedCount > 1 ? ' & ' + (followedCount - 1) + ' other' + (followedCount > 2 ? 's' : '') : '') : '—'}</span></div>
         </div>
       </div>
+      ${showMatch ? `<div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;flex-direction:column;gap:2px;"><span class="font-display" style="font-size:16px;font-weight:600;">Friend match</span><span style="font-size:12px;color:#7A756D;">How close your taste runs to theirs</span></div>
+        ${friendMatches.map((x) => `<div style="display:flex;align-items:center;gap:10px;">
+          ${avatarHtml(x.f.name, x.f.color, 30)}
+          <span style="font-size:13px;font-weight:500;width:76px;flex-shrink:0;">${esc(x.f.name.split(' ')[0])}</span>
+          <div style="flex:1;height:6px;border-radius:999px;background:#E7E2D9;overflow:hidden;"><div style="width:${x.pct}%;height:100%;background:#43635C;border-radius:999px;"></div></div>
+          <span style="font-size:12px;font-weight:600;color:#43635C;width:32px;text-align:right;flex-shrink:0;">${x.pct}%</span>
+        </div>`).join('')}
+      </div>` : `<p style="font-size:12px;color:#ADA89C;">Rate a few films to see how your taste compares with friends.</p>`}
       <div>
-        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">Your data</p>
-        <div class="rounded-2xl border border-line bg-surface p-4 flex flex-col gap-2">
-          <p class="text-xs text-inksoft mb-1">Everything lives in this browser's local storage — nothing leaves your device yet.</p>
-          <button onclick="profileExport()" class="rounded-full border border-line py-2 text-sm text-inksoft">Export data (.json)</button>
-          <button onclick="document.getElementById('profile-import-file').click()" class="rounded-full border border-line py-2 text-sm text-inksoft">Import data</button>
-          <input id="profile-import-file" type="file" accept="application/json" class="hidden" onchange="profileImport(event)" />
-          <button onclick="profileClear()" class="rounded-full border border-danger/40 text-danger py-2 text-sm">Clear all data</button>
-        </div>
+        <button onclick="toggleSettings()" style="display:flex;align-items:center;gap:8px;background:none;border:none;padding:0;color:#7A756D;font-size:13px;font-weight:500;">${ICONS.settings}<span>Settings</span></button>
+        ${settingsHtml}
       </div>
-      <div>
-        <p class="text-[11px] uppercase tracking-[0.15em] text-inksoft mb-2.5">About this build</p>
-        <div class="rounded-2xl border border-line bg-surface p-4 text-xs text-inksoft leading-relaxed flex flex-col gap-2">
-          <p>This is a local-first prototype for working out the UX. A few things are simulated for now:</p>
-          <ul class="list-disc pl-4 flex flex-col gap-1">
-            <li>Show recognition from a photo picks a plausible match from a small local catalog rather than calling a real vision API.</li>
-            <li>Friends and their lists are seeded so the home activity feed feels alive without a backend.</li>
-            <li>"Where to watch" data is hardcoded per show instead of coming from a live availability API.</li>
-            <li>Poster art is a generated duotone treatment, not real licensed artwork.</li>
-          </ul>
-          <p>This build runs as a single self-contained page (vanilla JS, Tailwind via CDN) so it can be opened directly on your phone with no install step. A production version would move the list/review data to a real backend so it syncs across your devices.</p>
-        </div>
+      <div style="border-top:1px solid #E7E2D9;padding-top:14px;">
+        <p style="font-size:11px;color:#ADA89C;line-height:1.6;">About this build: recognition picks a plausible match from a small demo catalog instead of calling real OCR/TMDB. Friend-match uses shared taste tags and is hidden until you've rated something yourself. Cast and crew names are illustrative, not verified. This runs as one self-contained page so it opens instantly on your phone — a production build would move to Expo/React Native per the brief, with a real backend syncing posts across devices.</p>
       </div>
-    </div>`)
+    </div>`
+  return `<div style="min-height:100%;display:flex;flex-direction:column;">
+    <div style="height:56px;flex-shrink:0;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E7E2D9;" class="safe-top">
+      <a href="#/" aria-label="Back to feed" style="width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#24211E;">${ICONS.back}</a>
+      <div class="font-display" style="font-size:19px;font-weight:600;">Profile</div>
+      <button onclick="toggleSettings()" aria-label="Settings" style="width:32px;height:32px;border-radius:999px;border:none;background:transparent;color:#7A756D;display:flex;align-items:center;justify-content:center;">${ICONS.settings}</button>
+    </div>
+    ${body}
+  </div>`
 }
-function profileSave() {
-  const name = document.getElementById('profile-name').value
-  const handle = document.getElementById('profile-handle').value
-  saveUser({ ...getUser(), name, handle })
-  const btn = document.getElementById('profile-save-btn')
-  if (btn) { const orig = btn.textContent; btn.textContent = 'Saved ✓'; setTimeout(() => { btn.textContent = orig }, 1200) }
+function toggleSettings() { settingsOpen = !settingsOpen; renderRoute() }
+function settingsSave() {
+  const u = getUser()
+  u.name = (document.getElementById('settings-name') || {}).value || u.name
+  saveUser(u)
+  renderRoute()
 }
-async function profileExport() {
+async function settingsExport() {
   const downloads = window.claude ? await window.claude.use('downloads').catch(() => null) : null
   if (!downloads) { alert("Export isn't available in this view. Try opening this page in a full browser tab."); return }
-  try {
-    await downloads.save({ filename: 'reel-data.json', data: exportData() })
-  } catch (e) {
-    if (e && e.code === 'declined') return
-    alert('Could not save the file: ' + (e && e.message ? e.message : 'unknown error'))
-  }
+  try { await downloads.save({ filename: 'reel-data.json', data: exportData() }) } catch (e) { if (e && e.code === 'declined') return; alert('Could not save the file: ' + (e && e.message ? e.message : 'unknown error')) }
 }
-function profileImport(evt) {
+function settingsImport(evt) {
   const file = evt.target.files && evt.target.files[0]
   if (!file) return
   const reader = new FileReader()
-  reader.onload = () => {
-    try { importData(reader.result); location.reload() } catch (e) { alert('Could not read that file.') }
-  }
+  reader.onload = () => { try { importData(reader.result); location.reload() } catch (e) { alert('Could not read that file.') } }
   reader.readAsText(file)
 }
-function profileClear() {
-  if (!confirm('Clear all local data? This removes your lists, ratings, and reviews.')) return
+function settingsClear() {
+  if (!confirm('Clear all local data? This resets onboarding and removes your posts, lists and ratings.')) return
   clearAllData()
   location.reload()
-}
-
-/* =========================================================================
-   PAGE: PUBLIC SHOW (the QR landing page — no app chrome)
-   ========================================================================= */
-function renderPublicShow(slug) {
-  const show = findShowBySlug(slug)
-  if (!show) return `<div class="min-h-full flex flex-col items-center justify-center text-center px-6"><p class="text-4xl mb-3 opacity-70">🎞️</p><p class="text-inksoft text-sm">This show isn't in the demo catalog.</p></div>`
-  const reviews = FRIEND_REVIEWS.filter((r) => r.showId === show.id)
-  const avg = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : null
-  const reviewsHtml = reviews.length
-    ? `<div class="w-full max-w-sm mt-6 flex flex-col gap-2 text-left"><p class="text-[11px] uppercase tracking-[0.15em] text-inksoft">From the Reel community</p>
-        ${reviews.slice(0, 3).map((r) => `<div class="rounded-2xl border border-line bg-surface p-3.5">${starsReadOnly(r.rating, 'sm')}<p class="text-sm text-ink/80 mt-1">${esc(r.text)}</p></div>`).join('')}
-      </div>` : ''
-  return `
-    <div class="min-h-full flex flex-col">
-      <header class="px-5 py-4 flex items-center gap-2 safe-top"><span class="text-lg">🎞️</span><span class="font-display italic text-lg text-ink">Reel</span></header>
-      <main class="flex-1 px-5 pb-10 flex flex-col items-center text-center">
-        <div class="w-full max-w-sm">${posterHero(show)}</div>
-        <h1 class="font-display italic text-3xl text-ink mt-5">${esc(show.title)}</h1>
-        <p class="text-sm text-inksoft mt-1">${show.year} · ${esc(show.genres.join(', '))}</p>
-        <div class="flex flex-wrap gap-1.5 justify-center mt-3">${platformBadges(show.platforms)}</div>
-        ${avg != null ? `<div class="flex items-center gap-2 mt-3">${starsReadOnly(Math.round(avg), 'md')}<span class="text-sm text-inksoft">${avg.toFixed(1)} from your friends on Reel</span></div>` : ''}
-        <p class="text-sm text-ink/80 leading-relaxed mt-5 max-w-sm">${esc(show.synopsis)}</p>
-        <div class="w-full max-w-sm mt-8 rounded-2xl border border-line bg-surface p-5">
-          <p class="font-display italic text-xl text-ink mb-1">See what your friends think</p>
-          <p class="text-xs text-inksoft mb-4">Get Reel to read full reviews, track what you're watching, and build your own lists.</p>
-          <div class="flex flex-col gap-2">
-            <button class="rounded-full bg-ink text-bg text-sm font-semibold py-2.5">Get it on the App Store</button>
-            <button class="rounded-full border border-line text-sm font-semibold py-2.5 text-ink">Get it on Google Play</button>
-          </div>
-          <a href="#/" class="block text-xs text-accent mt-3">Already have Reel? Open the app →</a>
-        </div>
-        ${reviewsHtml}
-      </main>
-    </div>`
 }
 
 /* =========================================================================
    INIT
    ========================================================================= */
 window.addEventListener('hashchange', renderRoute)
-document.addEventListener('DOMContentLoaded', () => {
-  getLists() // ensure default lists exist on first load
-  renderRoute()
-})
+document.addEventListener('DOMContentLoaded', renderRoute)
 </script>
